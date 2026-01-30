@@ -1,0 +1,178 @@
+## 11. Security, Audit & Risk Controls
+
+This section prescribes the security model, recommended controls, and audit scope for BizFi / BizMarket. It is written to be actionable: each subsection lists explicit controls, who/what should be audited, and operational safeguards that reduce attack surface and limit loss when incidents occur.
+
+---
+
+### 11.1 Security Model and Threat Surface
+
+**Primary threat surfaces**
+
+* **Smart contracts** — minting factory, BizShare token logic, BizSwap vaults, treasury, distribution module, upgrade/administration entry points.
+* **Offchain bridges & oracles** — on-ramp/off-ramp services, bridge relayers, price oracles, attestor keys.
+* **Custody & SPV accounts** — onchain wallets controlled by SPV, offchain fiat merchant and bank accounts, private key management.
+* **Backend services & APIs** — web servers, databases holding business metadata, reconciliation systems, webhook endpoints.
+* **User clients & wallets** — embedded wallet code, wallet provisioning flows, social/email login mapping.
+* **Third-party integrations** — payment processors, document vault providers, KYC vendors.
+
+**Security model summary**
+
+* Defence-in-depth combining: careful smart-contract design, minimum-privilege offchain processes, strong key custody, real-time monitoring, and formal operational controls.
+* Fail-safe posture: ability to pause protocol activity (circuit breaker) and use treasury reserves to protect investor payouts while remediation occurs.
+
+---
+
+### 11.2 Audit Plan: What to Audit and When
+
+**Audit categories (recommended):**
+
+1. **Pre-deployment Smart-Contract Audit (mandatory)**
+
+   * Full code review by at least two independent auditors.
+   * Scope: factory, BizShare token, BizSwap, vault accounting, distribution module, treasury, attestation integration, admin & upgrade paths, access control logic.
+   * Deliverables: findings list with severity, remediation plan, attacker-cost analysis.
+
+2. **Economic & Game-Theory Review (mandatory)**
+
+   * Independent assessment of economic assumptions, fee mechanics, BizSwap exit mechanics, LP incentives, treasury coverage logic, and attack vectors that exploit economics (e.g., exit cascades, sandwich/MEV scenarios).
+   * Simulation of stress scenarios: mass exits, prolonged defaults, stablecoin depeg.
+
+3. **Infrastructure & Operational Security Audit**
+
+   * Review of CI/CD pipelines, secrets management, deployment processes, server hardening, database encryption, and access controls for Bitsave Ops systems.
+
+4. **Bridge & Integrations Review**
+
+   * Security assessment and configuration review of any bridge or on-ramp providers. Validate relayer assumptions, finality, and reconciliation processes.
+
+5. **Attestation & Data Flow Review**
+
+   * Verify EAS attestation processes, attestor key management, hashing canonicalization logic, and offchain storage protections.
+
+6. **Periodic / Release Audits**
+
+   * Re-audit after any material contract upgrade, parameter change, or major feature (e.g., launch of equity/revenue instruments).
+   * Frequency: at minimum annual audits plus pre-release audits for major changes.
+
+7. **Penetration Test & Continuous Security Validation**
+
+   * External pentest on web interfaces and backend every 6–12 months (see 11.6).
+
+**Additional recommendations**
+
+* Produce an “attestation of remediation” from auditors after fixes.
+* Publish executive audit summaries for transparency; full reports available to regulators/auditors under NDA if required.
+
+---
+
+### 11.3 Operational Controls
+
+**Separation of duties**
+
+* Distinct teams for: protocol engineering, deployment/ops, underwriting/KYB, treasury management, and legal/compliance.
+* No single individual or key controls multiple critical functions end-to-end.
+
+**Multi-sig and key custody**
+
+* All production treasury and protocol-critical wallets under multi-signature custody (hardware-backed keys).
+* Multi-sig guardrails: minimum signer threshold, signer diversity (geography/role), periodic signer rotation.
+* Use hardware security modules (HSMs) or hardware wallets; avoid single-key custodial patterns.
+
+**Timelocks & governance**
+
+* Sensitive contract operations (parameter changes, large treasury moves, upgrades) execute via governance with onchain timelocks to allow community/ops review and emergency intervention.
+
+**Operational monitoring**
+
+* Real-time onchain and offchain monitoring: balance watches, unusual volume alerts, failed payout alerts, bridge lag alerts.
+* Implement SLI/SLOs and automated escalation (Slack/ops call + incident response page).
+
+**Least privilege & secrets management**
+
+* Principle of least privilege on backend systems and third-party services.
+* Centralized secrets manager, strict key rotation policies, and audit logging for access.
+
+**Financial controls**
+
+* Separate operational accounts for: listing fees, business-specific disbursements, treasury reserves, and BizSwap liquidity pools.
+* Reconciliation cadence (daily/weekly) with automated alerts for discrepancies.
+
+**Access & change control**
+
+* Code and config changes via authenticated CI with mandatory code review, test coverage, and automated security scans.
+
+---
+
+### 11.4 Disaster Recovery & Incident Response
+
+**Preparedness**
+
+* Maintain an incident response (IR) playbook covering security incidents (onchain exploit, bridge compromise, private-key loss), operational incidents (failed bridge, processor downtime), and financial incidents (treasury shortfall).
+
+**Key IR controls**
+
+* **Circuit breaker / pause**: A well-tested emergency pause for critical contracts to halt new issuance, exits, or transfers while preserving state.
+* **Treasury reserve policy**: Pre-funded reserve to meet immediate payout guarantees for a defined period while IR proceeds.
+* **Communication plan**: Pre-drafted public statements, investor notifications, and partner contact lists for a coordinated response.
+* **Forensics & containment**: Forensic snapshot of chain state and offchain logs; isolate compromised keys or services; rotate affected keys immediately.
+* **Recovery playbook**: Steps for replenishing treasury (insurance, governance vote, emergency fund), patching contracts, and migrating to new contracts if required.
+
+**Testing**
+
+* Regular tabletop exercises and periodic live drills for the IR team. Validate pause/unpause flows and multi-sig emergency operations.
+
+---
+
+### 11.5 Fraud Detection and Underwriting Controls
+
+**Underwriting controls**
+
+* Multi-layered KYB and business vetting: identity verification, document validation, bank/payment history checks, field checks (e.g., on-site or agent verification for microbusinesses when necessary).
+* Credit-scoring heuristics: revenue consistency, expense patterns, repeat-customer indicators, and historical repayment behavior.
+* Manual review thresholds for risky profiles or high-dollar requests.
+
+**Transaction monitoring & fraud detection**
+
+* Monitor offchain payment anomalies (unexpected payment sources, large one-off transfers) and onchain anomalies (rapid exits, wallet clustering, front-running patterns).
+* Implement rule-based and ML-assisted anomaly detection to flag suspicious patterns (e.g., sudden spike in exit requests for a single instrument).
+* Rate-limits and anti-automation controls on submission endpoints to reduce bot risk.
+
+**Controls for BizSwap & LP abuse**
+
+* Slippage and max-exit limits to avoid draining pools by a single actor.
+* LP eligibility and withdrawal notice periods (if applicable) to mitigate mass-withdrawal spirals.
+
+**Escalation & remediation**
+
+* Automated blocking/quarantine of suspicious accounts pending human review.
+* Legal escalation path for fraud cases, evidence preservation, and cooperation with law enforcement where appropriate.
+
+---
+
+### 11.6 Penetration Testing & Bug Bounty Program
+
+**Penetration testing**
+
+* Regular external pentests on frontend, backend, and API surfaces (minimum annually and before major releases). Scope should include:
+
+  * Auth/authz, session management, input validation
+  * Business-logic abuse cases (e.g., bypassing participation limits)
+  * Endpoint hardening and rate-limiting
+  * Cloud infra misconfigurations and privilege escalation
+
+**Smart contract safety testing**
+
+* Automated property-based tests, fuzzing, formal verification for critical functions (treasury, mint/burn, BizSwap settlement).
+* Continuous integration runs unit and integration tests with code coverage minimums.
+
+**Bug bounty program**
+
+* Public bug bounty with a clear scope and rules: onchain contracts, public UIs, and API endpoints.
+* Tiered reward schedule based on severity and exploitability.
+* Rapid triage SLA and responsible disclosure policy.
+* Tight scope for third-party systems (e.g., attestation providers) — coordinate with partners.
+
+**Operational considerations**
+
+* Maintain a dedicated triage and engineering response team to process and remediate reports quickly.
+* Publish a hall-of-fame and post-mortem for high-severity incidents to foster transparency.

@@ -1,0 +1,184 @@
+## 9. Architecture & Technical Design
+
+This section provides a conceptual view of BizFi / BizMarket’s system architecture, smart contract responsibilities, onchain/offchain interactions, and deployment considerations. It outlines how components interact, data is managed, and users engage with the platform.
+
+---
+
+### 9.1 High-Level System Architecture (Components & Data Flows)
+
+**Conceptual diagram description (words)**
+
+* **Front-end layer**
+
+  * User-facing dashboards, deposit/cart flows, search & filters, BizMarket marketplace interfaces.
+  * Embedded wallet interactions and SaveFi integration for deposit, allocation, and withdrawal.
+
+* **API / integration layer**
+
+  * REST/GraphQL endpoints for external integrators and internal front-end communication.
+  * Webhook events for asynchronous notifications (e.g., deposit confirmed, payout scheduled).
+
+* **Smart contract layer**
+
+  * BizShares (tokenized debt/equity/revenue instruments)
+  * Shared factory contract (minting and per-business parameter enforcement)
+  * BizSwap contracts (liquidity vaults, swaps, fee distribution)
+  * Central distribution module (payout orchestration)
+  * Treasury & vault contracts (protocol reserve, default coverage)
+  * Attestation contracts (EAS integration for onchain provenance)
+
+* **Offchain operations & SPV layer**
+
+  * Bitsave Smart Limited handles KYC/KYB, custody, fund bridging, weekly repayment collection, and offchain reconciliations.
+  * Operational databases track business listings, investor positions, payment schedules, and audit logs.
+
+* **External services**
+
+  * Payment processors, stablecoin onramps, custody providers, and third-party attestors for document verification.
+
+**Data flow summary**
+
+1. User deposits funds via front-end → APIs → embedded wallet / smart contract.
+2. Funds tracked offchain by SPV and reconciled to onchain BizShares issuance.
+3. Businesses receive deployed funds from SPV; repayments flow back → offchain reconciliation → central distribution module → investor payouts onchain.
+4. BizSwap liquidity events trigger vault and LP interactions, updating onchain balances and fee allocations.
+5. Attestations link offchain documentation to onchain metadata for auditability.
+
+---
+
+### 9.2 Smart Contract Taxonomy and Responsibilities
+
+**Shared factory contract**
+
+* Centralized contract for minting BizShares per business.
+* Enforces per-business parameters (e.g., debt terms, equity allocation).
+* Handles lifecycle initiation (issuance, shelf life, maturity).
+
+**BizShare token interface**
+
+* Implements token standards for debt instruments, with debt-specific methods:
+
+  * Non-transferable rules for debt tokens.
+  * Lifecycle transitions: issuance, weekly payout calculation, maturity, burn.
+
+**BizSwap liquidity & exit contracts**
+
+* Maintain LP vault balances and mapping of liquidity provision.
+* Facilitate liquidity-gated exits: early exit requests trigger liquidity events, apply 10% exit fee, and distribute proceeds.
+* Account for fee splits (e.g., 20% to LPs, 80% to protocol treasury).
+
+**Central distribution module**
+
+* Orchestrates weekly dividend and repayment payouts.
+* Collects offchain reconciliation data from SPV.
+* Executes onchain distribution events via BizShare contracts.
+
+**Treasury & vault contracts**
+
+* Protocol reserve for default coverage.
+* Maintains state transitions: funded → deployed → payout → default cover.
+* Integrates with central distribution module for emergency payouts if a business defaults.
+
+**Attestation integration**
+
+* EAS attestor contracts store immutable proofs linking business documents to BizShare tokens.
+* Verify dataHash and businessId mapping onchain.
+
+---
+
+### 9.3 Onchain vs Offchain Responsibilities
+
+**Onchain**
+
+* Token issuance, transfers, and lifecycle tracking.
+* BizSwap swap execution, LP accounting, and fee distributions.
+* Treasury & protocol reserve interactions for default coverage.
+* Attestations for business/document provenance.
+
+**Offchain (Bitsave)**
+
+* Business onboarding, KYB, and verification.
+* Investor onboarding and wallet mapping.
+* Fund custody, fiat/USDC conversion, and bridging.
+* Weekly repayment collection, reconciliation, and reporting.
+* Operational monitoring, compliance, and audit preparation.
+
+---
+
+### 9.4 Data Models and Key Onchain Storage Items
+
+**Token metadata**
+
+* Stores type (debt/equity/revenue), per-business parameters, shelf life, and unique token identifiers.
+
+**Attestations**
+
+* Maps `businessId` → `dataHash` → attestations onchain.
+
+**BusinessId mapping**
+
+* Links tokenized instruments to unique businesses.
+* Ensures traceability and enforces non-transferable constraints for debt instruments.
+
+**Vault states**
+
+* Tracks liquidity balances, fee accrual, and exit events in BizSwap.
+
+---
+
+### 9.5 API & Integration Surface
+
+* **REST / GraphQL endpoints**
+
+  * Fetch business listings, token metadata, and user positions.
+  * Submit deposits, cart allocations, and request withdrawals.
+
+* **Webhook events**
+
+  * Payout executed, exit request completed, BizSwap liquidity updated.
+
+* **Integration notes**
+
+  * Designed for front-end UI, third-party integrators, auditors, and partner systems.
+
+---
+
+### 9.6 Wallets & User Identity
+
+* **Embedded wallets**: Users can interact without separate wallet management.
+* **Social/email login**: Provides access control and wallet mapping for usability.
+* **Wallet mapping**: Each investor wallet is linked to SPV records and onchain token positions.
+
+---
+
+### 9.7 Upgradeability and Governance of Smart Contracts
+
+* Proxy patterns enable contract logic upgrades without redeploying token state.
+* Governance controls via timelocks for sensitive operations (e.g., BizSwap fee parameters, treasury withdrawals).
+* Multi-sig approvals required for treasury and distribution module changes.
+
+---
+
+### 9.8 Gas Optimization and Expected Costs
+
+* Minting: batched minting reduces per-token cost.
+* Attestations: stored as minimal `dataHash` references to save gas.
+* Transfers: limited for debt (non-transferable) to reduce state writes.
+* Expected gas costs: optimized for quarterly/weekly payout events, with predictable costs per user transaction.
+
+---
+
+### 9.9 Interoperability
+
+* **Stablecoin standards**: USDC/ERC20 compatible.
+* **Blockchain compatibility**: Designed for Base/Ethereum; modular adapter layer allows expansion to other EVM chains.
+* **Cross-chain bridging**: Optional bridging modules can link to secondary chains for liquidity or reporting.
+
+---
+
+### 9.10 Deployment Topology and Environment
+
+* **Testnets**: Early integration testing, contract validation, and UX testing.
+* **Staging**: Mirrors production with live stablecoins in sandboxed environments.
+* **Production**: Mainnet deployment with multi-sig treasury, SPV custodial accounts, and active BizMarket UI.
+* **Monitoring & alerting**: Offchain operational dashboards for liquidity, payouts, and contract health.

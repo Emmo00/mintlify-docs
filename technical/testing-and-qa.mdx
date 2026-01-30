@@ -1,0 +1,254 @@
+## 18. Testing & QA
+
+This section prescribes the testing and quality-assurance program required to validate BizFi’s tokenized-debt product, BizSwap liquidity mechanics, integrations, and end-to-end pilot flows. For each test area we provide concrete test scenarios and measurable acceptance criteria so teams know when components are safe to promote between environments.
+
+---
+
+### 18.1 Test plan for debt instruments
+
+**Objective:** verify correctness of smart-contract logic, distribution orchestration, lifecycle state transitions, and offchain↔onchain handoffs for debt BizShares.
+
+**Test layers**
+
+1. **Unit tests** (smart contracts, distribution logic)
+2. **Integration tests** (contract ↔ distribution module ↔ attestation ↔ offchain reconciliation)
+3. **Economic simulation tests** (model repayments, defaults, exits, treasury outcomes)
+
+**Recommended coverage & tooling notes**
+
+* Achieve high unit-test coverage (target ≥ 85% for core contract logic).
+* Use deterministic fixtures for amortization schedules and payout calculations.
+* Use contract mocking for external dependencies (oracles, EAS attestor).
+* Run economic simulations offline (Monte Carlo / scenario sweeps) against the accounting model.
+
+**Key test scenarios & acceptance criteria**
+
+A. **Weekly amortization correctness**
+
+* *Scenario:* A BizShare with Principal $100, 4% quarterly yield, 12-week duration — simulate full schedule.
+* *Checks:* weekly payout = 104/12 ≈ 8.666..., cumulative payouts after 12 weeks = $104.
+* *Acceptance:* per-week computed payout within 0.0001 USDC of expected; final cumulative == 104.
+
+B. **Issuance & issuance limits**
+
+* *Scenario:* Minting BizShares via shared factory with per-business cap.
+* *Checks:* factory rejects issuance beyond configured cap; metadata recorded and attestation reference present.
+* *Acceptance:* attempts to exceed cap revert; issued tokens show correct token metadata and businessId mapping.
+
+C. **Maturity & burning**
+
+* *Scenario:* After final distribution, token enters `fulfilled` state and is burned/marked inactive.
+* *Acceptance:* matured tokens cannot be used for payouts or exit requests; burned flag is set and reflected in onchain queries.
+
+D. **Non-transferability enforcement**
+
+* *Scenario:* Attempts to transfer debt BizShare between wallets.
+* *Acceptance:* transfer calls revert; BizSwap exit path remains functional.
+
+E. **Distribution orchestration (integration)**
+
+* *Scenario:* Offchain reconciliation marks a batch as ready; central distribution module executes onchain distribution to N holders.
+* *Checks:* distribution tx executes, all holder balances updated, onchain receipts match offchain batch amounts.
+* *Acceptance:* distribution success rate 100% in test; reconciled ledger entries match tx hashes.
+
+F. **Attestation linkage**
+
+* *Scenario:* Attestor submits BizMarket Reg attestation; distribution references businessId.
+* *Acceptance:* `dataHash` in attestation matches offchain bundle hash; attestation tx is discoverable and linked to listing record.
+
+G. **Edge-case arithmetic / rounding**
+
+* *Scenario:* fractional USDC rounding across many holders.
+* *Acceptance:* rounding policy applied deterministically, sum of distributed amounts equals batch amount or any rounding residue is explicitly handled (e.g., protocol retains residual < $0.01).
+
+H. **Negative / malformed input**
+
+* *Scenario:* Bad payloads for issuance or distribution.
+* *Acceptance:* validations catch and reject invalid payloads with clear error codes; no partial state writes.
+
+**Economic simulation tests**
+
+* **Monte Carlo stress:** simulate large portfolios (N>10k BizShares) with randomized default probabilities, varying repayment delays, and exit patterns.
+
+  * *Acceptance:* under defined stress cases (see BizSwap stress tests), treasury runway does not become negative for scenarios within the design envelope; produce report with percentiles (P50, P95, P99) of treasury depletion time.
+* **Sensitivity sweeps:** vary default rate, exit rate, LP withdrawal rate; measure threshold where protocol becomes insolvent.
+
+  * *Acceptance:* documented breakpoints and recommended mitigations (e.g., required liquidity buffer, fee adjustments).
+
+---
+
+### 18.2 BizSwap stress tests and LP behaviour simulation
+
+**Objective:** validate BizSwap under extreme usage: mass exits, concentrated exits on single business, LP mass withdrawals, and fee distribution correctness.
+
+**Test scenarios**
+
+A. **High-exit storm**
+
+* *Scenario:* 1,000 correlated exit requests arrive within a short window (configurable, e.g., 24 hours).
+* *Checks:* BizSwap processes exits in FIFO/priority order, applies 10% exit fee, distributes LP share (20%) and treasury share (80%) correctly.
+* *Acceptance:* Exit requests are executed up to liquidity available; any queued exits are correctly queued and user receives accurate queue ETA. No discrepancy between expected net payout and onchain settlement beyond rounding limits.
+
+B. **LP mass withdrawal**
+
+* *Scenario:* 30% of LP pool requests withdrawal within one epoch.
+* *Checks:* pool share accounting, withdrawal notice/lock enforced, pool invariant preserved for ongoing exits.
+* *Acceptance:* withdrawals honored per policy (immediate or delayed per design); protocol liquidity buffer remains sufficient to process queued exits per SLAs; system logs raise alerts when pool reduction compromises coverage.
+
+C. **Concentrated-exit on single business**
+
+* *Scenario:* Large number of holders of a single BizShare request exit.
+* *Checks:* pool utilization for that instrument, proportional fee allocation to LPs, and treasury top-up if necessary.
+* *Acceptance:* exit mechanics still adhere to fee-split rules; if treasury is used, accounting entries created and flagged in reconciliation.
+
+D. **Fee splitting validation**
+
+* *Scenario:* For a given exit, verify computed 10% fee is split 20% LP and 80% treasury.
+* *Acceptance:* onchain fee accounting matches expected split; LP balances reflect accrued fees; treasury accrual increases accordingly.
+
+E. **Liquidity starvation and queuing**
+
+* *Scenario:* total exit demand > pool liquidity.
+* *Checks:* correct queuing, notification to users, and no negative balances.
+* *Acceptance:* queue behavior consistent with spec; system never pays out > pool balance; queued exits persist and execute when liquidity renewed.
+
+F. **Stress with economic adverse event**
+
+* *Scenario:* combine stablecoin delay/depeg simulation with exit storm.
+* *Checks:* treasury triggers, emergency pause behavior, and notification procedures.
+* *Acceptance:* automated pausing logic and incident flow triggered per policy; no unhandled funds lost.
+
+**Metrics and thresholds**
+
+* Exit processing SLA: when liquidity available, target median execution time < 24 hours.
+* Fee distribution accuracy: 100% match to model within 0.0001 USDC tolerance.
+* Queue growth alert: if queued exits exceed X% (configurable; e.g., 10%) of outstanding obligations, generate critical alert.
+
+---
+
+### 18.3 End-to-end pilot validation checklist (collection → payout → exit)
+
+**Objective:** provide a pass/fail checklist to validate pilot readiness and evidence for Phase 1 success metrics.
+
+**E2E test steps**
+
+1. **Onboarding & attestation**
+
+   * Verify each of 20 businesses has completed KYB, signed MoU, and has an onchain attestation (attestation tx present).
+   * *Acceptance:* all 20 attestations confirmed onchain prior to funding.
+
+2. **SPV custody & funding**
+
+   * Confirm $5,000 aggregated converted to USDC and available under SPV custody (onchain or bridge-ready).
+   * *Acceptance:* reconciled offchain ledger + onchain deposit evidence.
+
+3. **Issuance**
+
+   * Issue BizShares per approved structuring.
+   * *Acceptance:* all expected BizShares minted and assigned; metadata correct.
+
+4. **Weekly collections**
+
+   * Simulate or execute weekly repayments from businesses to SPV.
+   * *Acceptance:* On-time receipt ≥ 95% of scheduled business repayments; exceptions documented.
+
+5. **Bridging & distribution**
+
+   * Bridge funds to distribution module and execute weekly onchain payouts.
+   * *Acceptance:* 100% of scheduled payouts completed on schedule for investors.
+
+6. **Exit path test**
+
+   * Execute a representative set of BizSwap exits (including early, mid, late lifecycle).
+   * *Acceptance:* net payouts match expectations; exit fee split appears in LP and treasury ledgers.
+
+7. **Reconciliation & reporting**
+
+   * Run reconciliation for each batch: confirm offchain receipts → bridge tx → distribution tx.
+   * *Acceptance:* reconciliation exceptions ≤ 0.5%; exceptions resolved within 72 hours.
+
+8. **Security & incident drills**
+
+   * Run emergency pause and unpause test in staging; validate multi-sig flows and incident communication templates.
+   * *Acceptance:* emergency pause works and is logged; operations can resume per runbook.
+
+9. **Pilot KPI verification**
+
+   * Confirm pilot KPIs (see Section 15.2): repayment rates, default rates, reconciliation accuracy, UX survey results.
+   * *Acceptance:* meet go/no-go thresholds defined in roadmap.
+
+**Artifacts required for sign-off**
+
+* Pilot reconciliation report, audit summary, security test results, operator runbooks, and executive summary.
+
+---
+
+### 18.4 Regression testing & CI/CD pipeline considerations
+
+**Objective:** ensure safe, repeatable deployments with automated checks, gating, and release controls.
+
+**CI/CD pipeline stages**
+
+1. **Pre-commit / PR checks**
+
+   * Linting, static analysis, unit tests, contract-specific linters.
+   * *Acceptance:* PRs must pass all checks locally/CI before merge.
+
+2. **Automated test suite**
+
+   * Run unit tests, integration tests, and economic model smoke tests in CI.
+   * *Acceptance:* All tests pass; coverage thresholds met (product team to set per module; suggested >= 85% for critical contracts).
+
+3. **Security checks**
+
+   * Run automated security scanners (vulnerability checks, dependency scanning).
+   * Fuzzing or property testing for critical functions where available.
+
+4. **Staging deployment**
+
+   * Deploy to staging environment that mirrors production. Run full integration & E2E tests including:
+
+     * Distribution orchestration test, BizSwap simulation, attestation flow, reconciliation pipeline.
+   * *Acceptance:* Green across E2E tests before production promotion.
+
+5. **Canary / Partial rollout (production)**
+
+   * If appropriate, deploy changes behind feature flags or limited canary cohort. Monitor metrics for anomalies.
+   * *Acceptance:* no critical alerts or regression signals for a defined observation window (e.g., 48–72 hours) before full rollout.
+
+6. **Post-deploy smoke checks**
+
+   * Automated checks of key onchain state: contract health, balances, invariants (e.g., total issued \<= cap).
+   * *Acceptance:* invariants hold; no admin keys changed unexpectedly.
+
+**Regression test scenarios**
+
+* **Upgrade path regression**: upgrade contract logic (proxy) and verify that historical token state remains consistent and functions (payouts, exits) continue operating.
+
+  * *Acceptance:* state parity validated and no behaviour regressions.
+* **Admin action regression**: simulate timelock queueing and parameter change flow; ensure timelock executes correctly and revokes unauthorized changes.
+
+  * *Acceptance:* timelock works, and unauthorized changes blocked.
+* **Bridge/reconciliation regression**: simulate bridging delays and verify that distribution module queues without loss and reconciliation recovers state.
+
+  * *Acceptance:* no data loss; reconciliation converges once bridge completes.
+
+**Quality gates & release criteria**
+
+* All critical/high audit findings remediated and re-tested.
+* Test coverage and regression suite passing in CI.
+* Staging E2E tests green and canary period without critical alerts.
+* Ops & Security sign-off on release checklist (including monitoring, alerting, and incident contacts).
+
+**Automation & observability**
+
+* Integrate test runs with release dashboards and deployment dashboards.
+* Automatic rollback criteria defined (e.g., repeated failed payouts, sudden liquidity depletion, or critical contract errors).
+
+---
+
+## Closing notes
+
+* Testing must be treated as continuous and integrated into daily development. Economic models should be part of automated test suites (smoke tests) to detect regressions in assumptions.
+* All tests and simulations must be recorded, reproducible, and archived for audit.
+* Acceptance criteria above should be tuned during the pilot; the thresholds in this section are conservative starting points to ensure safety and operational resilience.

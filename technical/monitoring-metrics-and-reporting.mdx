@@ -1,0 +1,202 @@
+## 12. Monitoring, Metrics & Reporting
+
+This section defines the monitoring strategy, the key metrics to track for protocol health and business performance, and the reporting cadence and deliverables for investors. For each metric we provide a clear definition and suggested alert thresholds where the project context permits; thresholds are conservative defaults and should be tuned during pilot and early production based on observed behavior.
+
+---
+
+### 12.1 Key Performance Indicators (KPIs) for BizMarket & BizFi
+
+These are the high-level business and product KPIs that leadership, ops, and compliance should monitor.
+
+* **Total Investors**
+
+  * *Definition:* Count of unique wallets (or user accounts mapped to wallets) that hold any BizShare or have made a BizMarket purchase.
+  * *Suggested alerts:* Weekly growth < −5% month-over-month (MoM) or sudden drop > 10% day-over-day (DoD) requires investigation.
+
+* **Capital Raised**
+
+  * *Definition:* Cumulative amount (USD) deployed to businesses through BizFi (offchain disbursements recorded by SPV).
+  * *Suggested alerts:* Any large unplanned drawdown or discrepancy between onchain committed funds and offchain disbursed funds > $5,000 or >2% of last 30-day average (whichever is larger).
+
+* **BizFi Token Price**
+
+  * *Definition:* Market price of the native BizFi token (if applicable) as tracked on primary markets.
+  * *Suggested alerts:* Price volatility > 30% within 24h or sudden delisting events; coordinate comms if token is central to business operations.
+
+* **Market Cap**
+
+  * *Definition:* Market capitalization of BizFi token (price × circulating supply) or an index market cap for BizShares if applicable.
+  * *Suggested alerts:* Rapid decline > 30% over 7 days warrants executive review.
+
+* **Monthly Revenue (Protocol)**
+
+  * *Definition:* Monthly inbound fees and service revenues accrued to the protocol (listing fees, exit fees, service revenue).
+  * *Suggested alerts:* Month revenue < 75% of forecast for two consecutive months.
+
+* **Growth Rate**
+
+  * *Definition:* Percent change in key adoption metrics (Total Investors, Capital Raised) MoM.
+  * *Suggested alerts:* Negative growth for 2 consecutive months.
+
+* **Liquidity Available**
+
+  * *Definition:* USDC (or equivalent) available in BizSwap vaults and treasury for exits and payout continuity (onchain + immediately bridgeable offchain).
+  * *Suggested alerts:* Liquidity < required buffer (see below) — trigger immediate treasury review.
+
+* **Compliance Status**
+
+  * *Definition:* Indicator of KYB/KYC completion rates, outstanding compliance issues, or jurisdictional restrictions.
+  * *Suggested alerts:* Any business listed without completed KYB flagged; regulatory takedown requests or legal holds require immediate escalation.
+
+**Recommended Liquidity Buffer (operational guideline)**
+
+* Maintain a minimum liquidity buffer equal to at least **4 weeks** of average weekly payout obligations (calculate using average weekly payouts from outstanding BizShares). Alert if liquidity available < 6 weeks of obligations (escalate at \<4 weeks).
+
+---
+
+### 12.2 Onchain Metrics to Capture
+
+These are blockchain-visible metrics that should be tracked automatically and displayed in dashboards.
+
+* **TVL (Total Value Locked)**
+
+  * *Definition:* Total USDC (and equivalent) held in BizMarket smart contracts, LP pools, and treasury vaults.
+  * *Alert:* TVL drop > 20% within 24 hours or sustained outflow > 30% over 7 days.
+
+* **BizShares Outstanding**
+
+  * *Definition:* Number and aggregate principal value of active (unmatured) BizShares by instrument type (debt, equity, revenue).
+  * *Alert:* Concentration risk if > 20% outstanding is tied to a single businessId; flag for portfolio risk review.
+
+* **Weekly Payouts Scheduled / Executed**
+
+  * *Definition:* Scheduled weekly payout amount vs actual distributed amount.
+  * *Alert:* Any failure to distribute scheduled weekly payouts (actual < scheduled) triggers immediate incident workflow.
+
+* **BizSwap Volume & Exit Rate**
+
+  * *Definition:* Aggregate BizSwap exit volume (USDC) and number of exits per period.
+  * *Alert:* Exit rate > expected baseline (e.g., > 150% of 30-day average) or liquidity-to-exit demand ratio < required buffer triggers liquidity operations.
+
+* **Fee Accruals**
+
+  * *Definition:* Onchain-accrued exit fees, LP fees, protocol fee accruals. Useful for treasury projections.
+  * *Alert:* Fee accruals deviating from expected models may signal unexpected behavior.
+
+* **Attestation Events**
+
+  * *Definition:* New attestations published (business registrations, KYB completion).
+  * *Alert:* Attestation failures or malformed attestations during onboarding.
+
+* **Bridge/Onramp Latency & Confirmation**
+
+  * *Definition:* Time between offchain receipt and stablecoin appearing in onchain distribution wallet.
+  * *Alert:* Latency > X hours (configurable; default 6–12 hours) or failed bridging requires manual handling.
+
+---
+
+### 12.3 Operational Dashboards and Alerting
+
+Recommended dashboards and the alerts they should surface. Dashboards should be role-based (Ops, Finance, Compliance, Engineering).
+
+**1. Executive Dashboard (Leadership)**
+
+* Metrics: Total Investors, Capital Raised (MTD), Market Cap (if relevant), TVL, Monthly Revenue.
+* Alerts: Major drops in TVL, regulatory flags, treasury shortfalls.
+
+**2. Treasury & Liquidity Dashboard (Finance/Ops)**
+
+* Metrics: Liquidity Available (onchain + bridgeable offchain), weekly payout obligations, BizSwap pool balances, fee accruals.
+* Suggested Alerts:
+
+  * Liquidity < 6 weeks payouts → warning.
+  * Liquidity < 4 weeks → critical → initiate treasury top-up.
+  * Vault mismatch between onchain balance and recorded ledger > $5,000 or >1% (whichever larger).
+
+**3. Payout & Distribution Dashboard (Payments Team)**
+
+* Metrics: Scheduled payouts, executed payouts, failed distributions, bridging latency.
+* Suggested Alerts:
+
+  * Any failed distribution (actual < scheduled) → critical immediate response.
+  * Bridging latency > 12 hours → investigate.
+  * Reconciliation exception count > 1% of scheduled payouts.
+
+**4. BizSwap & LP Dashboard (Market Ops)**
+
+* Metrics: BizSwap volume (24h/7d), exit request queue, LP balances, fee distribution.
+* Suggested Alerts:
+
+  * Exit demand > 150% of 30-day average.
+  * LP withdrawals > 25% pool in 24h.
+
+**5. Compliance & Onboarding Dashboard (Compliance Team)**
+
+* Metrics: KYB status, outstanding document requests, flagged businesses, attestation failures.
+* Suggested Alerts:
+
+  * New business listed without KYB completed → critical.
+  * Sanctions-screening hit → immediate legal review.
+
+**6. Security & Infrastructure Dashboard (Engineering)**
+
+* Metrics: Contract pause state, admin actions pending (timelock queue), anomalous contract interactions, API error rates.
+* Suggested Alerts:
+
+  * Sudden spike in contract interactions or failed transactions > 3× baseline.
+  * Admin or upgrade actions queued with unexpected parameters → review.
+
+**Alerting channels and SLAs**
+
+* Alerts feed to a triage channel (chat + SMS/email for critical), with defined SLAs:
+
+  * Critical (payer failures, treasury shortfall): immediate < 1 hour response.
+  * High (liquidity < 4 weeks): 2 hours.
+  * Medium (KYB exceptions, attestation failures): 24 hours.
+
+---
+
+### 12.4 Investor Reporting Cadence and Deliverables
+
+Clear, consistent reporting builds trust with investors and supports tax and audit obligations. Below are recommended deliverables and cadence.
+
+**1. Weekly Payout Notifications (per investor)**
+
+* *When:* Immediately after weekly distribution is processed onchain.
+* *Contents:* Amount distributed (USDC), instrument(s) paid, transaction hash, year-to-date totals.
+* *Format:* Email + in-app notification + onchain TX link.
+
+**2. Monthly Investor Statement**
+
+* *When:* Monthly, within 5 business days after month close.
+* *Contents:* Opening balance, purchases/sales/exits during the month, cumulative payouts received, fees paid, current outstanding positions (by businessId/instrument), and summary KPIs.
+* *Format:* PDF statement downloadable from dashboard; machine-readable CSV for programmatic access.
+
+**3. Quarterly Performance Report**
+
+* *When:* Quarterly.
+* *Contents:* Portfolio-level performance, protocol-level metrics (capital deployed, default / repayment rates), pilot metrics (if still in pilot), and narrative on operational events.
+* *Format:* PDF + dashboard.
+
+**4. Annual Tax Reporting (where required)**
+
+* *When:* Annual or as required by jurisdiction.
+* *Contents:* Annual summary of interest/dividend income, realized gains/losses from exits (if applicable), and other required tax info. Include transaction-level detail to support filing.
+* *Format:* Tax-ready CSV and summary PDF; note that local tax obligations vary—advise investors to consult local tax advisors.
+
+**5. Transaction Receipts**
+
+* *When:* For each buy, sell/exit, and payout event.
+* *Contents:* InstrumentId, amount, fees, timestamp, onchain tx hash (if applicable), offchain reconciliation id.
+* *Format:* Immediate receipt via in-app and email.
+
+**6. Ad-hoc Audit & Regulator Reports**
+
+* *When:* On request or regulatory requirement.
+* *Contents:* Reconciliation files, attestation records, KYB documentation (subject to legal/regulatory sharing rules).
+* *Format:* Machine-readable exports, access-controlled.
+
+**Data retention and access**
+
+* Retain investor statements and reconciliation data per local legal requirements (typically 5–7 years). Provide secure access portal for investors to download historical statements.
+
