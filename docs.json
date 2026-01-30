@@ -15,7 +15,7 @@
         "groups": [
           {
             "group": "Getting Started",
-            "pages": ["overview/executive-summary", "overview/product-overview"]
+            "pages": ["index", "overview/executive-summary", "overview/product-overview"]
           },
           {
             "group": "Platform & Products",
