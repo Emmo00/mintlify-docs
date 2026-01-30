@@ -1,6 +1,9 @@
-## 3. Product Catalog (Short Descriptions)
+---
+title: "Product Catalog"
+description: "This documentation provides a structured overview of the product offerings within the BizFi and BizMarket layers of the Bitsave ecosystem, detailing the various tokenized financial instruments and related components."
+---
 
-### 3.1 BizShares — Tokenized Instruments
+### BizShares — Tokenized Instruments
 
 BizShares are onchain tokens that represent structured financial exposure to real-world businesses funded through BizFi. Each BizShare corresponds to a defined financial agreement between a business and the Bitsave financing framework, with payouts routed to token holders via the protocol’s distribution system.
 
@@ -15,7 +18,7 @@ Each category defines distinct rules for payouts, transferability, and investor 
 
 ---
 
-### 3.2 Tokenized Debt (Primary Product)
+### Tokenized Debt (Primary Product)
 
 Tokenized Debt is the core and most mature financial instrument within BizFi. Under this model:
 
@@ -25,11 +28,11 @@ Tokenized Debt is the core and most mature financial instrument within BizFi. Un
 
 Debt BizShares are designed with predictable return structures rather than variable market pricing. They are non-transferable wallet-to-wallet and rely on a controlled exit mechanism.
 
-**See Section 6 for a detailed technical and financial deep dive into Tokenized Debt.**
+**See [here](/product/tokenized-debt-deep-dive) for a detailed technical and financial deep dive into Tokenized Debt.**
 
 ---
 
-### 3.3 Tokenized Equity (Introductory)
+### Tokenized Equity (Introductory)
 
 Tokenized Equity instruments represent onchain exposure to offchain business ownership. These tokens are intended to map to equity or equity-like interests held through legal structures managed offchain.
 
@@ -43,7 +46,7 @@ The equity model is part of the broader BizMarket vision but remains at an early
 
 ---
 
-### 3.4 Tokenized Revenue (Introductory)
+### Tokenized Revenue (Introductory)
 
 Tokenized Revenue instruments represent a share of a business’s revenue streams rather than ownership or fixed debt obligations.
 
@@ -57,7 +60,7 @@ This model is intended for businesses with consistent cash flow but where tradit
 
 ---
 
-### 3.5 Convertible Debt (Introductory)
+### Convertible Debt (Introductory)
 
 Convertible Debt is a hybrid instrument combining elements of debt and equity.
 
@@ -67,7 +70,7 @@ This structure is part of the long-term product roadmap and has not yet been ful
 
 ---
 
-### 3.6 Indexes (Introductory)
+### Indexes (Introductory)
 
 Indexes are planned as pooled instruments that provide diversified exposure across multiple BizShares rather than a single business.
 
@@ -81,7 +84,7 @@ Index products are conceptual at this stage and depend on the maturation of unde
 
 ---
 
-### 3.7 BizSwap (Debt Exit Mechanism)
+### BizSwap (Debt Exit Mechanism)
 
 BizSwap is the controlled exit mechanism for tokenized debt BizShares.
 
@@ -92,18 +95,3 @@ BizSwap ensures:
 * Standardized exit logic for debt instruments
 * Controlled liquidity management
 * Alignment between payout schedules and available liquidity pools
-
----
-
-### 3.8 BizMarket UI Components
-
-The BizMarket interface provides the user-facing layer for interacting with BizShares and related products.
-
-Core components include:
-
-* **Dashboards** — Display investor positions, payout history, and performance metrics
-* **Search and Filters** — Allow users to browse businesses and instruments by category, risk profile, or other parameters
-* **Cart System** — Enables users to select multiple BizShares before confirming participation
-* **Deposit Interface** — Connects user wallets to the funding flow, enforcing participation limits defined by the protocol
-
-These components serve as an interaction layer on top of smart contracts and offchain coordination systems defined within BizFi and BizMarket.
