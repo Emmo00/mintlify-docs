@@ -1,0 +1,316 @@
+## 19. Appendices
+
+This appendix contains reference material, formulas, templates, and sample data to support implementation, audits, and operational teams.
+
+---
+
+### A. Glossary of Terms (concise)
+
+* **BizToken** — Generic name for an onchain token managed within the Bitsave ecosystem.
+* **BizShare** — The onchain token representing a specific BizFi instrument (in current implementation, primarily tokenized debt units).
+* **BizSwap** — Protocol-managed, liquidity-gated exit mechanism for debt BizShares (early-exit swap with flat exit fee).
+* **SPV** — Special Purpose Vehicle (Bitsave Smart Limited) — the legal entity that holds offchain custody, signs agreements with businesses, and bridges funds between offchain and onchain.
+* **EAS** — Ethereum Attestation Service — onchain attestation layer used to anchor `dataHash` references linking offchain documents to onchain business records.
+* **SaveFi** — Bitsave’s savings product; user deposits in SaveFi determine investors’ permitted BizFi participation via the 100× multiplier.
+* **BizFi** — The business-finance vertical of Bitsave that structures, funds, and manages tokenized financial instruments for real-world businesses.
+
+---
+
+### B. Mathematical Annex (formulas & worked examples)
+
+#### B.1 Key constants (current design)
+
+* Principal per BizShare unit: ( P = $100 )
+* Quarterly yield: ( r_q = 4% = 0.04 )
+* Annualized yield (approx): ( r_{ann} = 16% )
+* Duration: ( T = 12 ) weeks (≈ 90 days)
+* Payout cadence: weekly (12 payouts)
+* BizSwap flat exit fee: ( f = 10% = 0.10 ) (applies to remaining value at time of exit)
+* BizSwap fee split: LP share = 20% of exit fee; Treasury share = 80% of exit fee
+
+#### B.2 Formulas
+
+1. **Total interest for term**
+   [
+   I = P \times r_q
+   ]
+
+2. **Total repayment value**
+   [
+   V = P + I = P \times (1 + r_q)
+   ]
+
+3. **Weekly amortized payout (equal payments)**
+   [
+   \text{WeeklyPayout} = \frac{V}{T}
+   ]
+
+4. **Remaining scheduled value after (w) weeks**
+   [
+   R(w) = V - w \times \text{WeeklyPayout}
+   ]
+
+5. **Exit fee on remaining value**
+   [
+   \text{ExitFee}(w) = R(w) \times f
+   ]
+
+6. **Net exit payout (received when exiting at week (w))**
+   [
+   \text{NetExit}(w) = R(w) - \text{ExitFee}(w) = R(w) \times (1 - f)
+   ]
+
+7. **Total realized value for investor who had already received (w) weekly payments then exited**
+   [
+   \text{TotalRealized}(w) = w \times \text{WeeklyPayout} + \text{NetExit}(w)
+   ]
+
+8. **Fee split**
+   [
+   \text{LP_share} = \text{ExitFee} \times 0.20,\quad \text{Treasury_share} = \text{ExitFee} \times 0.80
+   ]
+
+#### B.3 Worked numeric example (baseline constants)
+
+* (P=100)
+* (r_q=0.04) → (I=100 \times 0.04 = 4)
+* (V = 104)
+* (T=12) → Weekly payout (= \dfrac{104}{12} \approx 8.6666667) (rounded display $8.66)
+
+**Exit after 5 weeks** (example in context):
+
+* Amount already collected: (5 \times 8.6666667 = 43.3333335 ) (~$43.33)
+* Remaining scheduled value: (R(5) = 104 - 43.3333335 = 60.6666665) (~$60.67)
+* Exit fee: (60.6666665 \times 0.10 = 6.06666665) (~$6.07)
+* Net exit payout: (60.6666665 - 6.06666665 = 54.59999985) (~$54.60)
+* Total realized (collected + exit): (43.3333335 + 54.59999985 = 97.93333335) (~$97.93)
+
+*(Note: earlier narrative examples rounded differently; implementations should adopt a deterministic rounding policy and state it clearly.)*
+
+#### B.4 Rounding policy recommendation
+
+* Use fixed-point arithmetic (e.g., integer representation in cents or in micro-USDC units).
+* Distribute rounding residuals consistently (e.g., protocol retains sub-cent residuals or they are allocated to treasury). Document which approach is used.
+
+---
+
+### C. Example Attestation Payloads & Schema Encodings (templates)
+
+> **Note:** These are documentation templates. Actual `dataHash` values must be computed using the canonical serialization used by Ops.
+
+#### C.1 BizMarket Reg attestation — schema description (human)
+
+* `businessId` (uint256) — internal listing ID
+* `attestationType` (uint8) — enum (0 = registration, 1 = KYB complete, 2 = financials, 3 = instrumentIssued, etc.)
+* `dataHash` (bytes32) — SHA-256 (or chosen algorithm) of canonicalized document bundle
+* `businessOwner` (address) — Ethereum/Base address for business agent/owner
+
+#### C.2 Example JSON-like payload (pre-encoding)
+
+```json
+{
+  "businessId": 12345,
+  "attestationType": 0,
+  "dataHash": "0x3f8a1b2c4d5e6f7890abcdef1234567890abcdef1234567890abcdef12345678",
+  "businessOwner": "0xaA0bB0cC0dD0EeFf00112233445566778899AaB"
+}
+```
+
+#### C.3 Encoding & submission notes (procedural)
+
+1. Canonicalize document bundle (deterministic ordering, e.g., JSON canonicalization or zipped files in specified order).
+2. Compute `SHA-256` over the canonicalized bytes ⇒ `dataHash`.
+3. Prepare schema-encoded payload per EAS expectations.
+4. Authorized attestor (SPV attestor key) submits attestation tx to EAS, record `txHash` and `blockNumber`.
+5. Store offchain bundle with access control and link it to `dataHash` for later verification.
+
+---
+
+### D. Sample Smart Contract Interfaces / ABIs (skeletons)
+
+Below are high-level skeletons (interface descriptions) to guide implementers. These are **descriptive** (not full ABIs) and should be adapted to final language/standards and audited before deployment.
+
+#### D.1 SharedFactory (responsibilities)
+
+* `createListing(businessId, instrumentType, params) -> listingAddress`
+* `updateListingParams(listingAddress, params)` (admin-only)
+* `getListing(businessId) -> listingAddress, params`
+
+#### D.2 BizShareToken (debt-specific methods)
+
+* `mint(to, units)` — mint tokens (only factory or authorized minter)
+* `balanceOf(address) -> units`
+* `schedulePayout(batchId)` — invoked by distribution module to compute/record payout entitlements
+* `requestExit(holder, units) -> exitId` — creates a BizSwap exit request (holders cannot transfer tokens directly)
+* `markMatured(tokenId)` — transition to fulfilled state and burn/mute token
+
+#### D.3 BizSwapVault / Liquidity (core)
+
+* `provideLiquidity(provider, amountUSDC) -> lpPositionId`
+* `withdrawLiquidity(lpPositionId, amount)` — may have notice period or locked epoch
+* `executeExit(exitId) -> txHash` — executes exit if liquidity sufficient, applies exit fee and distributes shares
+* `getPoolBalance() -> uint256`
+* `getAccruedFees() -> {lpFees, treasuryFees}`
+
+#### D.4 DistributionModule
+
+* `registerBatch(batchId, totalAmount, merkleRootOrList)` — register a payout batch after offchain reconciliation
+* `executeBatch(batchId)` — sends onchain distributions to holders; emits `BatchExecuted` with tx info
+* `setTreasuryFallback(treasuryAddress)` — configuration
+
+#### D.5 Treasury (reserve)
+
+* `deposit(amount)` — receives protocol revenues or replenishment funds
+* `coverPayout(batchId, amount)` — transfers funds to distribution module when business receipts insufficient (requires multi-sig or governance approval rules)
+* `getReserveBalance() -> uint256`
+
+#### D.6 AttestationHelper (EAS integration)
+
+* `submitAttestation(schemaId, encodedData) -> easTxHash` — wrapper that controls which keys may attest
+
+**Security & governance hooks**
+
+* Admin functions protected via role-based access, multi-sig patterns, or timelock mechanisms.
+* Upgrade patterns (if used) must be explicit (proxy + implementation) and recorded in governance documents.
+
+---
+
+### E. Sample Listing Forms & UI Mock Content (fields & validation rules)
+
+Below are templates for form fields and validation rules used in the business onboarding UI.
+
+#### E.1 Listing Form — condensed field list (required/validation)
+
+* `Business Name` — required; string, 3–100 chars
+* `Operating Country` — required; ISO country code
+* `Contact Email` — required; valid email format
+* `Contact Phone` — optional; normalized E.164 format if provided
+* `Business Type / Industry` — required; select from predefined list
+* `Average Monthly Revenue` — required; numeric > 0; currency selector (ISO)
+* `Average Monthly Expenses` — optional; numeric >= 0; currency selector
+* `Amount to Raise (USD)` — required; numeric > 0; USD equivalent auto-calculated if other currency entered
+* `Instrument Type` — required; choices: Debt / Equity / Revenue / Convertible (default to Debt for SMEs)
+* `Documents` — required for Debt: at least one supporting doc (bank statement, POS receipts) — upload or secure link; max file size limits apply
+* `Listing Tier` — required; select Micro/Builder/Growth/Enterprise (auto-suggested by revenue)
+* `Referral Code` — optional; alphanumeric; validate against code list
+* `Consent Checkbox` — required; user must consent to attestations and data processing
+
+#### E.2 Validation rules & UX cues
+
+* Real-time validation for email and phone.
+* Currency fields show USD equivalent and highlight conversion rates.
+* Mandatory file upload enforces accepted file types and content hash calculation before allowing submit.
+* Clear error messages (e.g., “Average Monthly Revenue must be greater than 0”).
+* Show computed `Listing Fee` and `Effective Fee with Referral` prior to payment.
+
+---
+
+### F. Pilot Dataset & Example Ledger Entries
+
+Below are small sample datasets and ledger entries to illustrate bookkeeping and reconciliation patterns for the Phase 1 pilot.
+
+#### F.1 Pilot overview (example)
+
+* Pilot funding pool: **$5,000**
+* 20 micro-businesses, each receives **$250** disbursed offchain (SPV record).
+* Each business’s debt may be structured as multiple BizShare units; for example, a $250 disbursement can be represented by 2 × $100 units + $50 (handled per product rules — pilot may restrict to multiples of $100 or define fractional units).
+
+#### F.2 Sample ledger entries (CSV-like rows)
+
+**Offchain Operational Ledger (sample rows)**
+
+| ledgerId | timestamp           | type            | entity       | amountUSD | currency | ref             | notes                        |
+| -------- | ------------------- | --------------- | ------------ | --------: | -------: | --------------- | ---------------------------- |
+| L-0001   | 2026-01-08 09:12:00 | fiat_inbound    | Business-001 |    250.00 |      USD | INV-1001        | Listing fee conversion       |
+| L-0002   | 2026-01-08 09:30:00 | convert_to_usdc | SPV          |    250.00 |     USDC | BRIDGE-0xabc... | Onramp conversion settled    |
+| L-0003   | 2026-01-08 10:00:00 | disbursement    | Business-001 |    250.00 |      USD | MOUs/Loan-001   | Capital deployed to business |
+| L-0004   | 2026-01-15 09:00:00 | repayment_recv  | Business-001 |     21.67 |      USD | REP-0001        | Weekly repayment (sample)    |
+| L-0005   | 2026-01-15 12:00:00 | bridge_to_chain | SPV          |     21.67 |     USDC | BRIDGE-0xdef... | Bridged for distribution     |
+| L-0006   | 2026-01-15 12:05:00 | distribution    | DistModule   |     21.67 |     USDC | TX-0xfeed...    | Distributed to holders       |
+| L-0007   | 2026-01-20 14:00:00 | bizswap_exit    | Holder-0x123 |     60.00 |     USDC | EXIT-0001       | Exit executed                |
+| L-0008   | 2026-01-20 14:00:00 | exit_fee_split  | BizSwap      |      6.00 |     USDC | EXIT-0001       | 10% fee on remaining value   |
+| L-0009   | 2026-01-20 14:00:00 | lp_share        | LP-0xAAA     |      1.20 |     USDC | EXIT-0001       | 20% of exit fee              |
+| L-0010   | 2026-01-20 14:00:00 | treasury_share  | Treasury     |      4.80 |     USDC | EXIT-0001       | 80% of exit fee              |
+
+*(Note: these illustrative numbers are simplified; a real ledger will include unit accounting, tranche ids, and detailed references.)*
+
+#### F.3 Example per-holder distribution record (for a single BizShare unit)
+
+* `holderWallet`: `0xHolder123`
+* `instrumentId`: `D-1001`
+* `unitsHeld`: `1`
+* `weeklyPayoutScheduled`: `8.6666667 USDC`
+* `weekNumber`: `1`
+* `batchId`: `BATCH-20260115`
+* `distributionTxHash`: `0xfeed...`
+* `status`: `completed`
+
+---
+
+### G. Compliance Checklist & Sample KYC/KYB Questionnaire
+
+#### G.1 Compliance checklist (onboarding & listing)
+
+* [ ] Business form submitted and `businessId` created
+* [ ] Listing fee received and converted to USDC (recorded)
+* [ ] Identity verification for business owner(s) completed (ID docs validated)
+* [ ] Corporate registration checked (if applicable) — registry URL or doc hash recorded
+* [ ] Financial documents uploaded and hashed (dataHash recorded)
+* [ ] Attestation submitted to EAS linking `businessId` and `dataHash`
+* [ ] MoU / contract signed between SPV and business (stored offchain, hash recorded)
+* [ ] Underwriting checklist completed and risk score assigned
+* [ ] Compliance tranche approval (Ops/Compliance/Legal) documented
+* [ ] Listing published with attestations and investor-facing disclosures
+
+#### G.2 Sample KYC / KYB questionnaire (template)
+
+**Section 1 — Business identity**
+
+1. Business legal name: ____________________
+2. Trading / operating name (if different): ____________________
+3. Country of registration: ____________________
+4. Registration number (or reason for absence): ____________________
+5. Registered address: ____________________
+
+**Section 2 — Ownership & control**
+6. Full legal names of beneficial owners (≥25% ownership) — list names, DOB, and nationality.
+7. Director(s) names and contact emails.
+8. Ultimate beneficial owner declaration signed? (Yes/No)
+
+**Section 3 — Contact & operations**
+9. Primary contact person name and role: ____________________
+10. Contact phone and email: ____________________
+11. Operating countries and main sales channels: ____________________
+
+**Section 4 — Financial snapshot**
+12. Average monthly revenue (local currency + USD equivalent): _________________
+13. Average monthly expenses: _________________
+14. Primary banking partner or payment processor: _________________
+15. Existing debts / loans (Yes/No). If Yes, brief details: _________________
+
+**Section 5 — Documents required (upload links)**
+
+* Government-issued ID for owner(s)
+* Corporate registration extract or equivalent (if available)
+* Last 3 months bank statements or POS receipts (as available)
+* Proof of address for business location (photo, map pin, utility bill)
+* Signed MoU / raise term sheet
+
+**Section 6 — Declarations**
+
+* I confirm information supplied is true and accurate. (checkbox + e-signature)
+* I consent to Bitsave Smart Limited performing KYB checks, attestations, and storing hashed documents. (checkbox)
+
+**Operational validation steps (for Compliance)**
+
+* Verify IDs via third-party KYC provider or manual checks.
+* Cross-check business registration with public registry where applicable.
+* Verify bank statements / receipts match reported revenue.
+* Sanctions and PEP screening for owners and directors.
+* Confirm signatory authority for MoU execution.
+
+---
+
+## Closing note — maintenance of appendices
+
+Appendices are living reference material. Maintain versioning (date / author / change log) and ensure legal/compliance updates are applied promptly when regulatory or product changes occur.
