@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Bizfi Docs",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -11,75 +11,109 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Overview",
         "groups": [
           {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
+            "group": "Getting Started",
+            "pages": ["overview/executive-summary", "overview/product-overview"]
           },
           {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
+            "group": "Platform & Products",
+            "pages": ["overview/product-catalog"]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Product",
         "groups": [
           {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
+            "group": "User & Business Flows",
+            "pages": ["product/user-and-business-flows"]
           },
           {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
+            "group": "Revenue & Fees",
+            "pages": ["product/revenue-and-economic-model"]
+          },
+          {
+            "group": "Primary Product — Tokenized Debt",
+            "pages": ["product/tokenized-debt-deep-dive"]
+          },
+          {
+            "group": "Equity & Revenue Products",
+            "pages": ["product/equity-and-revenue-products"]
+          },
+          {
+            "group": "UX & Interfaces",
+            "pages": ["product/ux-product-and-api-reference-catalog"]
+          },
+          {
+            "group": "Operations",
+            "pages": ["product/operations-and-support"]
+          },
+          {
+            "group": "Roadmap",
+            "pages": ["product/roadmap-and-phased-launch-plan"]
+          },
+          {
+            "group": "Governance & Policies",
+            "pages": ["product/governance-and-product-policies"]
+          }
+        ]
+      },
+      {
+        "tab": "Technical",
+        "groups": [
+          {
+            "group": "Architecture",
+            "pages": ["technical/architecture-and-technical-design"]
+          },
+          {
+            "group": "Data & Attestations",
+            "pages": ["technical/data-and-attestations"]
+          },
+          {
+            "group": "Security Engineering",
+            "pages": ["technical/security-audit-and-risk-controls"]
+          },
+          {
+            "group": "Monitoring & Reporting",
+            "pages": ["technical/monitoring-metrics-and-reporting"]
+          },
+          {
+            "group": "Testing & QA",
+            "pages": ["technical/testing-and-qa"]
+          }
+        ]
+      },
+      {
+        "tab": "Risk & Legal",
+        "groups": [
+          {
+            "group": "Compliance & Legal",
+            "pages": ["risk/compliance-legal-and-custody"]
+          },
+          {
+            "group": "Risk Analysis",
+            "pages": ["risk/economic-and-security-risk-analysis"]
+          }
+        ]
+      },
+      {
+        "tab": "Reference",
+        "groups": [
+          {
+            "group": "Appendices",
+            "pages": ["reference/appendices"]
+          },
+          {
+            "group": "FAQ & Troubleshooting",
+            "pages": ["reference/faq-and-troubleshooting"]
           }
         ]
       }
     ],
     "global": {
       "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
       ]
     }
   },
@@ -91,32 +125,23 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:hi@bitsave.io"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://bitsave.io/bizfi"
     }
   },
   "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/BitsaveProtocol",
+      "github": "https://github.com/cryptoSmartNow",
+      "linkedin": "https://linkedin.com/company/BitsaveProtocol"
     }
   }
 }
