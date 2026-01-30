@@ -3,95 +3,113 @@ title: "Introduction"
 description: "Welcome to the new home for your documentation"
 ---
 
-## Setting up
+# BizFi Protocol Documentation
 
-Get your documentation site up and running in minutes.
+**A blockchain-enabled financing protocol that connects real-world businesses with global onchain capital through structured, tokenized financial instruments.**
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+---
 
-## Make it yours
+## What This Protocol Enables
 
-Design a docs site that looks great and empowers your users.
+BizFi enables the issuance, distribution, and management of structured financial products that connect businesses seeking capital with investors providing funding onchain.
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
+At a high level, the protocol supports:
 
-## Create beautiful pages
+* **Access to growth capital for businesses** through structured debt and, in future phases, equity and revenue-linked instruments
+* **Predictable yield opportunities for investors** via structured repayment products with defined terms
+* **Onchain financial coordination** including issuance, tracking, and distribution of payouts
+* **A marketplace environment (BizMarket)** where financial instruments can be discovered, evaluated, and acquired
+* **Liquidity mechanisms** that allow certain instruments to be exited prior to maturity, subject to protocol rules and available liquidity
 
-Everything you need to create world-class documentation.
+The system combines smart contracts, attestations, and offchain operational processes to bridge traditional business financing with blockchain-based infrastructure.
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+---
 
-## Need inspiration?
+## Who This Is For
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+### Businesses / Issuers
+
+Organizations seeking structured capital, including:
+
+* Micro and small businesses seeking working capital or expansion funding
+* Enterprises exploring alternative financing beyond traditional bank loans
+* Projects seeking structured funding with defined repayment or revenue-sharing terms
+
+### Investors / Capital Providers
+
+Participants allocating capital onchain in exchange for structured financial returns:
+
+* Individuals seeking exposure to real-economy yield opportunities
+* Crypto-native investors diversifying into tokenized real-world financial instruments
+* Liquidity providers participating in protocol-defined exit and liquidity mechanisms
+
+### Developers / Integrators
+
+Technical partners building on or integrating with the protocol:
+
+* Applications integrating listings, financial products, or payout data
+* Analytics providers consuming protocol and marketplace data
+* Infrastructure partners supporting wallet, identity, or payment flows
+
+---
+
+## How the Protocol Works (High-Level)
+
+The protocol coordinates capital flows between investors and businesses using a combination of smart contracts and offchain processes.
+
+1. **Businesses Apply for Financing**
+   A business submits information, undergoes onboarding and verification, and lists a financing opportunity on the marketplace.
+
+2. **Financial Instruments Are Issued Onchain**
+   The protocol represents the financing agreement as onchain tokens (“BizShares”) that encode the economic structure of the instrument (for example, a fixed-term debt product).
+
+3. **Investors Allocate Capital**
+   Investors deposit supported stablecoins and acquire these tokenized instruments through the platform interface.
+
+4. **Capital Is Deployed to the Business**
+   Funds are held and deployed through a structured legal and operational framework, enabling the business to use the capital for its stated purpose.
+
+5. **Repayments or Distributions Occur Over Time**
+   Businesses make scheduled payments offchain. These are reconciled, bridged onchain, and distributed to token holders according to the product terms.
+
+6. **Lifecycle Completion or Early Exit**
+   At maturity, instruments complete their lifecycle and final payouts are made. Some instruments may support early exit through a protocol-defined liquidity mechanism, subject to fees and available liquidity.
+
+Throughout this process, the blockchain is used to record ownership, track entitlements, and automate distribution logic, while certain real-world and legal processes occur offchain.
+
+---
+
+## What You’ll Find in This Documentation
+
+This documentation is organized to help different audiences understand the protocol from both financial and technical perspectives.
+
+* **Product Overview**
+  A description of BizFi, BizMarket, and the core financial products available through the platform.
+
+* **Financial Mechanics**
+  Detailed explanations of how capital flows, fees, and payouts are structured, with a deep dive into tokenized debt products.
+
+* **User & Business Flows**
+  Step-by-step overviews of how businesses list opportunities and how investors participate.
+
+* **Architecture & Technical Design**
+  A conceptual overview of smart contracts, onchain components, and how they interact with offchain systems.
+
+* **Risk & Legal**
+  High-level explanations of legal structures, compliance considerations, and key risks associated with participation.
+
+* **Reference & Appendices**
+  Glossary, mathematical explanations, schemas, and supporting technical reference material.
+
+Readers are encouraged to start with the Product Overview and Financial Mechanics sections before exploring technical or legal details.
+
+---
+
+## Important Disclosures (High-Level)
+
+* This documentation is provided for informational purposes only and does not constitute investment, legal, or tax advice.
+* Participation in tokenized financial instruments involves risk, including the risk of partial or total loss of capital.
+* Some components of the system rely on offchain entities, legal agreements, and operational processes that are not fully enforced by smart contracts alone.
+* Liquidity, returns, and timelines depend on product design, counterparty performance, and market conditions.
+
+Participants should perform their own due diligence and seek independent professional advice where appropriate before engaging with the protocol.

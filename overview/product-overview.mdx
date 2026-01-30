@@ -1,0 +1,124 @@
+## 2. Product Overview
+
+### 2.1 What is BizFi?
+
+BizFi is the business financing layer of the Bitsave ecosystem. It enables real-world businesses to raise capital through structured financial instruments that are represented onchain while being funded and operated offchain.
+
+At a functional level, BizFi:
+
+* Connects pooled stablecoin liquidity from onchain participants to verified businesses
+* Structures funding into defined financial products (primarily tokenized debt in the current phase)
+* Standardizes repayment expectations and yield schedules
+* Routes business-generated cash flows back into the protocol for investor distribution
+
+BizFi acts as the coordination framework between decentralized capital formation and traditional business operations. It defines how funds are deployed, how obligations are tracked, and how investor payouts are maintained under protocol rules.
+
+---
+
+### 2.2 What is BizMarket?
+
+BizMarket is the issuance and market infrastructure layer for business-linked onchain financial instruments.
+
+It provides the framework through which:
+
+* Businesses are mapped to tokenized financial instruments (BizShares/BizTokens)
+* Investors obtain exposure to business financing through onchain tokens
+* Transferability rules and exit mechanisms are defined per instrument type
+
+In its most mature form, BizMarket supports tokenized debt instruments where BizShares represent structured repayment rights with predefined payout schedules. Other instrument types, such as equity and revenue-based tokens, are part of the broader system design but remain at an earlier specification stage.
+
+BizMarket therefore serves as the protocol’s marketplace and instrument registry, defining how business financing becomes standardized, trackable, and accessible onchain.
+
+---
+
+### 2.3 Product Positioning
+
+Bitsave, through BizFi and BizMarket, is positioned as a bridge between traditional business finance (Web2) and onchain capital infrastructure (Web3).
+
+**Web2 ↔ Web3 Bridge**
+
+* Businesses operate in the real economy with conventional legal, banking, and operational structures
+* Investors participate through onchain smart contracts using stablecoins
+* Bitsave Smart Limited and protocol operators connect these two environments by handling custody, deployment, and reporting
+
+**Target Geographies**
+
+* Underserved and emerging markets where small and medium-sized businesses face limited access to structured financing
+* Regions with high stablecoin adoption and demand for USD-denominated yield
+* Cross-border contexts where traditional investment access is restricted or inefficient
+
+**Target Industry Verticals**
+
+* Cash-flow-generating small and medium-sized enterprises
+* Trade, retail, and service businesses with predictable revenue cycles
+* Growth-stage businesses that require working capital or expansion financing without complex equity structuring
+
+The system prioritizes businesses with measurable revenue activity and investors seeking structured, stablecoin-denominated returns with predictable payout behavior.
+
+---
+
+### 2.4 Tagline / Value Proposition
+
+**Build Globally, Raise Globally, Own Globally**
+
+This value proposition reflects three coordinated capabilities:
+
+* **Build Globally** — Businesses operate in local markets while accessing a global pool of digital capital
+* **Raise Globally** — Capital formation occurs onchain, allowing geographically distributed participants to fund real-world enterprises
+* **Own Globally** — Financial exposure to businesses is represented through onchain instruments, enabling borderless participation under standardized rules
+
+The tagline summarizes the system’s role in connecting real-world economic activity with globally accessible digital financial infrastructure.
+
+---
+
+### 2.5 Core Actors and Roles
+
+**Business Owner (Fundraiser)**
+Responsibilities:
+
+* Applies for financing through BizFi
+* Undergoes business verification and KYB processes
+* Receives deployed capital offchain
+* Makes scheduled repayments or revenue distributions to Bitsave offchain
+* Provides operational and financial reporting as required by the protocol
+
+**Saver / Investor (Onchain Participant)**
+Responsibilities:
+
+* Deposits stablecoins into the SaveFi system
+* Receives an investment capacity determined by protocol rules
+* Acquires BizShares representing exposure to business financing
+* Receives stablecoin payouts through the protocol’s distribution system
+* Interacts with smart contracts directly; participation is governed by onchain limits
+
+**Liquidity Provider**
+Responsibilities:
+
+* Supplies stablecoin liquidity to protocol pools that support BizFi financing
+* Enables capital availability for business funding cycles
+* May participate in yield flows depending on pool structure (implementation-specific)
+
+**Bitsave Smart Limited (SPV Entity)**
+Responsibilities:
+
+* Custodially holds investor funds before deployment to businesses
+* Deploys capital offchain to approved businesses
+* Receives business repayments and revenue distributions offchain
+* Acts as the legal and operational bridge between onchain capital and offchain business activity
+
+**Protocol Treasury**
+Responsibilities:
+
+* Holds protocol-owned capital reserves
+* Provides financial backing for payout continuity in cases of business default or delay
+* Receives protocol revenues and may fund system-level obligations
+* Supports guarantees embedded in the BizFi payout model
+
+**Bitsave Ops (Operational Entity)**
+Responsibilities:
+
+* Conducts business due diligence and onboarding
+* Manages offchain financial operations and reconciliation
+* Oversees reporting, performance tracking, and payout coordination
+* Interfaces between technical infrastructure, the SPV entity, and businesses
+* Ensures that offchain obligations align with onchain distribution commitments

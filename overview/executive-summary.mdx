@@ -1,0 +1,79 @@
+## 1. Executive Summary
+
+### 1.1 Purpose of this Documentation
+
+This documentation provides a structured, technical, and operational description of the Bitsave platform and its BizFi and BizMarket systems. Its purpose is to define how capital flows through the ecosystem, how tokenized financial instruments are created and managed, and how protocol-level guarantees are enforced.
+
+The document serves as a reference for understanding:
+
+* The relationship between Bitsave’s savings infrastructure and its business financing layer
+* The lifecycle of onchain financial instruments issued through the protocol
+* The responsibilities of protocol entities and offchain operators
+* The mechanisms that govern investor participation, business funding, and payout distribution
+
+It is intended to reduce ambiguity in system design and act as a foundation for implementation, auditing, integration, and regulatory analysis.
+
+---
+
+### 1.2 Audience and Intended Use
+
+This documentation is written for multiple stakeholder groups, each with distinct objectives:
+
+**Business Owners (Fundraisers)**
+Use this document to understand how their businesses are evaluated, onboarded, and financed through tokenized instruments, including repayment expectations and reporting responsibilities.
+
+**Investors (Onchain Participants)**
+Use this document to understand how savings activity determines investment capacity, how BizShares function, how payouts are structured, and what guarantees are provided by the protocol.
+
+**Integrators and Developers**
+Use this document to understand the smart contract architecture, capital flow logic, token standards, and distribution systems required to interface with Bitsave’s infrastructure.
+
+**Auditors and Security Reviewers**
+Use this document to assess protocol guarantees, custody boundaries, payout mechanisms, and the separation between onchain logic and offchain financial operations.
+
+**Legal and Compliance Reviewers**
+Use this document to understand the role of Bitsave Smart Limited, the offchain handling of business funds, the structure of tokenized instruments, and the distinction between onchain representations and real-world financial agreements.
+
+---
+
+### 1.3 One-Page Product Map
+
+The Bitsave ecosystem is composed of layered financial infrastructure that connects user savings to business financing through tokenized instruments.
+
+**Bitsave (Platform Layer)**
+Bitsave is the core financial coordination layer. It manages user savings records, enforces participation limits, oversees business onboarding, and operates the distribution infrastructure that routes payouts to investors.
+
+**SaveFi (Savings Layer)**
+SaveFi is the user-facing savings system. Participants deposit stablecoins into protocol contracts under defined constraints. Savings activity determines each user’s maximum allowable participation in BizFi investments through a smart contract–enforced multiplier.
+
+**BizFi (Business Finance Layer)**
+BizFi is the capital formation layer where businesses receive funding from the protocol. Capital is deployed offchain to verified businesses and represented onchain through tokenized financial instruments. BizFi defines the rules for fundraising structures, repayment expectations, and yield schedules.
+
+**BizMarket (Market Infrastructure Layer)**
+BizMarket is the marketplace framework where business-linked tokens (BizShares/BizTokens) are issued and, where applicable, transferred or exited. The debt segment of BizMarket is the most mature and forms the foundation of the current system design.
+
+**BizShares (Tokenized Financial Instruments)**
+BizShares are onchain tokens representing structured financial exposure to a specific business. In the current primary implementation, BizShares represent tokenized debt instruments with predefined payout schedules. Other structures (equity and revenue-based instruments) are part of the broader design but remain at an earlier specification stage.
+
+---
+
+### 1.4 Key Design Principles and Guarantees
+
+The Bitsave ecosystem is designed around predictable financial behavior, separation of operational responsibilities, and verifiable onchain records.
+
+**Stablecoin-Denominated Payouts**
+All investor payouts are denominated and distributed in stablecoins. This removes exposure to business-level revenue volatility at the point of distribution and provides predictable settlement units for participants.
+
+**Weekly Payout Cadence**
+Payouts to investors follow a fixed weekly distribution cycle. This cadence is independent of the individual business cash flow timing, as offchain receipts are aggregated and routed through the protocol’s distribution module.
+
+**Predictable Exit Structure**
+Debt-based BizShares are designed with predefined return schedules rather than variable market pricing. Investors know the expected payout structure at the time of participation, subject to protocol guarantees.
+
+**Protocol-Level Payment Backing**
+In the event of a business default or delayed repayment, the protocol commits to maintaining investor payout schedules using protocol-controlled reserves or alternative revenue streams. This separates investor yield continuity from individual business performance.
+
+**Onchain Attestations and Enforcement**
+Participation limits, instrument issuance, and payout distributions are enforced or recorded onchain. Smart contracts define deposit caps, investment ceilings, and distribution logic, ensuring that core financial constraints are verifiable and not purely offchain promises.
+
+Together, these principles define Bitsave as a system that combines offchain business financing with onchain enforcement, recordkeeping, and investor-facing guarantees.
