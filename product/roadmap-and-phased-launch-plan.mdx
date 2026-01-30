@@ -1,0 +1,191 @@
+## 15. Roadmap & Phased Launch Plan
+
+This section sets out a pragmatic, measurable launch plan for BizFi with explicit phases, milestones, owners, and go/no-go criteria. The roadmap prioritizes the tokenized debt product (the most mature offering), validates operational and economic assumptions with a controlled pilot, then scales into broader product classes and platform capabilities.
+
+---
+
+### 15.1 Priority: Tokenized Debt (design → implementation → pilot → production)
+
+Overall objective: deliver a safe, auditable, and repeatable tokenized-debt product that demonstrably converts offchain business cashflows into predictable, stablecoin-denominated investor payouts.
+
+Core workstreams (parallel and coordinated):
+
+* **Product**: finalize debt instrument terms, BizSwap exit rules, LP economics.
+* **Engineering**: shared factory, BizShare token, BizSwap contracts, central distribution module, attestation integration.
+* **Operations / Bitsave Ops**: KYB/KYC procedures, SPV custody flows, onboarding playbook.
+* **Legal & Compliance**: SPV structure finalization, jurisdictional assessments, customer disclosures.
+* **Security / Audit**: smart contract audits, economic game-theory review, penetration testing.
+* **Treasury**: define reserve policy & initial funding plan to back payouts.
+
+Milestone sequencing:
+
+1. Finalize product spec & economic model (this doc + Section 6 detail) — Product owner
+2. Security & economic audits commissioned — Security/Finance
+3. Contracts implemented & unit-tested — Engineering
+4. Pilot operational readiness (ops playbooks, SPV funding, attestor keys) — Ops/Legal/Treasury
+5. Pilot execution (Phase 1) — All teams
+6. Post-pilot review and iterative product changes — All teams
+7. Production roll-out + BizSwap full launch — Product + Engineering + Ops
+
+---
+
+### 15.2 Phase 1 (Pilot): 20 micro-loans — $5K pilot
+
+**Objective:** Validate core assumptions: underwriting, repayment collection, BizSwap liquidity model, treasury backstop mechanics, and investor UX in a constrained environment.
+
+**Pilot parameters (as defined):**
+
+* **Pilot cost / funding:** $5,000 total
+* **Loan count:** 20 micro-businesses
+* **Per-business loan size:** $250
+* **Instrument:** Tokenized Debt BizShares (principal $100 units; multiple units per borrower as required)
+* **Duration:** ~12 weeks active per instrument (~4 months end-to-end including onboarding, deployment, and wind-down)
+* **Target return:** $5,200 total back to protocol (pilot target + 4% overall)
+
+**Operational scope & deliverables:**
+
+* Onboard 20 real businesses with completed KYB/KYB and signed MoUs.
+* Deploy capital via SPV and track offchain receipts.
+* Issue onchain attestations for each business registration and instrument.
+* Execute weekly repayment collections and onchain distributions via central distribution module.
+* Enable BizSwap exit functionality for debt instrument (monitor but limit exit volume if necessary).
+* Run monitoring and reconciliation cadence (daily reconciliation, weekly distribution reporting).
+
+**Success metrics (go/no-go thresholds):**
+
+* **On-time repayment rate:** ≥ 95% of scheduled weekly payments received from businesses.
+* **Investor payout continuity:** 100% of scheduled weekly payouts delivered to investors on time (no missed distributions).
+* **Default rate:** ≤ 5% (businesses that fail to make any scheduled payment after grace period).
+* **Reconciliation accuracy:** ≤ 0.5% reconciliation exceptions per week; exceptions resolved within 72 hours.
+* **Pilot UX metrics:** Investor satisfaction (qualitative survey) — average rating ≥ 4/5; business onboarding NPS ≥ 30.
+* **Security / audit remediation:** All critical and high-severity audit issues remediated prior to funding pilot; no unresolved critical vulnerabilities during pilot.
+
+**Governance & sign-off:** Pilot launch requires sign-off from Product Lead, Head of Ops, Legal, Treasury, and Security. If success metrics are not met, pilot moves to remediation mode; no scaling until root causes are addressed.
+
+---
+
+### 15.3 Phase 2: Full Debt Product Roll-out & BizSwap Launch
+
+**Objective:** Move from pilot to production-grade debt offering and fully operational BizSwap marketplace for early exits.
+
+**Key milestones:**
+
+* **Post-pilot review & roadmap updates** (2 weeks) — incorporate findings and fix priority issues.
+* **Full smart-contract audit(s) & economic re-review** — fix all findings; obtain auditor sign-offs.
+* **Production deployments:** factory, BizShare token, BizSwap vaults, central distribution module.
+* **Treasury funding:** establish initial reserve sized to cover N weeks of expected payouts (governance-defined; suggested minimum 6 weeks of payouts).
+* **LP pool bootstrapping:** recruit initial LPs, define minimums, and seed liquidity program.
+* **UI/UX hardening:** investor flow, cart, deposit, BizSwap UI, receipts, statements.
+* **Operational scaling:** hire/training for ops & compliance, automated reconciliation, redundancy for bridges.
+
+**Release criteria (go/no-go):**
+
+* Audit remediation complete and verified.
+* Treasury reserves funded to required minimum.
+* LP pool depth established to support initial expected exit demands (TVL threshold determined by pilot extrapolation).
+* Monitoring and alerting systems in production with test alerts and runbooks.
+* Legal confirmation on any needed licensing or geofencing for the jurisdictions targeted at launch.
+
+**Success metrics to hit post-launch (first 3 months):**
+
+* **TVL growth:** target TVL ≥ pilot multiple (e.g., 10× pilot scale) depending on market.
+* **BizSwap stability:** exit success rate ≥ 99% when liquidity available; average exit processing time ≤ target SLA (e.g., < 24 hours when liquidity exists).
+* **Operational SLAs:** reconciliation exceptions < 0.5%; bridging latency within defined SLA.
+
+---
+
+### 15.4 Phase 3: Equity & Revenue Product Introductions (intro docs and design)
+
+**Objective:** Introduce equity and revenue tokenization capabilities at an introductory level; run limited pilots and legal validation before full productization.
+
+**Core activities:**
+
+* **Legal & SPV enhancements:** finalize SPV mechanisms for 1:1 equity mapping, custody arrangements, and investor protections. Obtain jurisdictional approvals as required.
+* **Product design:** finalize token economics for equity & revenue tokens (dividend handling, revenue share formulae, cap tables mapping).
+* **Attestation & governance:** expand attestation schemas to support equity/revenue proofs and adjust consent flows.
+* **Pilot(s):** small, controlled equity/revenue pilots (e.g., 3–5 deals per product class) with sophisticated investor cohorts.
+* **UI / Marketplace:** build exploratory market structures (orderbook or managed liquidity approaches) and display investor governance/deed documentation.
+
+**Release criteria:**
+
+* Legal confirmation that the planned equity/revenue token structures are permissible in target jurisdictions or are properly geofenced.
+* Custody and SPV contracts in place to map token to offchain legal ownership.
+* Pilot KPIs achieved: successful issuance, dividend/revenue remittances tracked and distributed, investor acceptance, and no unresolved legal/regulatory flags.
+
+**Design note:** Equity & revenue products are **Design in progress**—their rollout cadence will depend on legal outcomes and pilot learnings.
+
+---
+
+### 15.5 Phase 4: Indexes, Premium Features, Accelerator, Cross-Border Expansions
+
+**Objective:** Expand product breadth and platform capabilities to increase distribution, product-market fit, and revenue diversification.
+
+**Key initiatives:**
+
+1. **Indexes:** Develop index products (sector, risk-adjusted, revenue-weighted) once sufficient instrument depth exists.
+
+   * Build index rebalancing engine, index attestations, and index distribution module.
+2. **Premium investor features:** analytics subscriptions, advanced deal access, portfolio tools, VIP tiers.
+3. **Accelerator & partnerships:** launch an accelerator program to source higher-quality issuers and fund cohorts (partner with builders programs).
+4. **Cross-border expansion:** on-ramp partnerships, localized compliance stacks, country-specific product variants.
+5. **Data & analytics products:** anonymized market insights for subscribers and institutional users.
+
+**Release criteria per initiative:**
+
+* **Indexes:** Minimum number of eligible constituent instruments (governance-defined threshold), proven payout consistency, and data integrity via attestations.
+* **Premium features:** Clear product-market fit signals (KPI thresholds for ARPU and conversion rates).
+* **Accelerator:** Partner agreements, cohort funding commitments, and a pilot cohort result demonstrating repeatable value.
+* **Cross-border expansion:** Local legal clearance and operational partner arrangements in target jurisdictions.
+
+---
+
+### 15.6 Timelines & Release Criteria Per Phase (suggested durations)
+
+*Timelines are estimates and must be validated against resource availability, legal outcomes, and pilot learnings.*
+
+* **Phase 1 — Pilot:** **3–4 months** (includes onboarding, 12-week instrument lifecycle, and 2-week post-pilot review)
+
+  * Release criteria: audit remediation (pre-pilot), Ops readiness, SPV funding, attestor keys, and pilot KPIs met.
+
+* **Phase 2 — Full Debt + BizSwap:** **3–6 months** after pilot sign-off
+
+  * Release criteria: production audits cleared, treasury funded, LPs onboarded, automated reconciliation operating, monitoring in place.
+
+* **Phase 3 — Equity & Revenue:** **6–12 months** after Phase 2 (iterative pilots)
+
+  * Release criteria: legal confirmation, SPV custody processes established, small pilot successes, market infrastructure readiness.
+
+* **Phase 4 — Indexes & Expansion:** **12–24 months** after Phase 2 (parallel work possible once sufficient market depth)
+
+  * Release criteria: instrument depth & liquidity, governance frameworks for indexes, revenue signals for premium products, legal approvals for new jurisdictions.
+
+---
+
+### Roles & Responsibilities — Owners for Each Phase
+
+* **Product Lead:** owns requirements, KPIs, and release criteria.
+* **Engineering / Smart Contracts:** implements factory, BizShare, BizSwap, distribution module.
+* **Bitsave Ops:** KYB/KYC, onboarding, reconciliation, consultancy bookings operations.
+* **Treasury:** funds protocol reserves, defines replenishment mechanics.
+* **Legal & Compliance:** jurisdictional readiness, SPV governance, disclosures.
+* **Security / Audit:** commissions and tracks audits, manages bug-bounty and pentest remediation.
+* **Growth / Partnerships:** LP recruitment, accelerator partnerships, referral & agent program.
+
+---
+
+### Checkpoints, Reviews & Contingencies
+
+* **Pre-launch checkpoint** (each phase): must pass Product, Security, Legal, Ops, and Treasury sign-off.
+* **Pilot review**: data-driven post-mortem within 2 weeks of pilot close; publish internal report with lessons and action plan.
+* **Contingency plans:** if core KPIs fail at any go/no-go, remediate and re-run an incremental pilot. Governance can pause rollout until conditions are met.
+* **Communication:** publish executive summaries of pilot outcomes and major production incidents to governance and stakeholders.
+
+---
+
+### Measurable Success Criteria Summary (top-level)
+
+* Pilot repayment & payout continuity: **On-time payouts 100%**, repayment on-time ≥ **95%**, default rate ≤ **5%**.
+* Operational readiness: reconciliation exceptions ≤ **0.5%**, bridging SLA met > **95%** of time.
+* Liquidity: treasury + LP coverage >= **6 weeks** of payouts before production roll-out.
+* Security: all **critical/high** audit findings remediated prior to funding; successful pen-test and active bug bounty.
+* Market adoption (post-rollout): TVL, investor growth, and capital raised benchmarks established after pilot and adjusted to business targets.

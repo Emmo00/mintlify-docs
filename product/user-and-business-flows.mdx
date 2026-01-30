@@ -1,0 +1,235 @@
+## 4. User & Business Flows (High-Level)
+
+This section outlines the primary operational flows within the Bitsave BizFi and BizMarket ecosystem. These flows describe how businesses are onboarded, how investors participate, how capital moves, and how payouts are distributed.
+
+---
+
+### 4.1 Business Onboarding / Listing Flow
+
+**Narrative:**
+Businesses seeking financing through BizFi undergo a structured onboarding and verification process before being listed with a tokenized instrument on BizMarket.
+
+**Key Steps:**
+
+1. **Application Submission**
+
+   * Business owner submits business details, funding requirements, and financial information through the onboarding interface.
+
+2. **Initial Review**
+
+   * Bitsave Ops performs a preliminary eligibility assessment based on sector, revenue profile, and funding suitability.
+
+3. **KYB and Due Diligence**
+
+   * Mandatory Know Your Business (KYB) checks are conducted.
+   * Supporting documents, ownership structure, and operational history are verified.
+
+4. **Instrument Structuring**
+
+   * Funding structure (e.g., tokenized debt) is defined, including amount, tenure, and payout schedule.
+
+5. **Listing Preparation**
+
+   * Business profile, financial summary, and instrument parameters are prepared for onchain representation.
+
+6. **BizShare Configuration**
+
+   * A BizShare contract instance is created via the protocol factory with parameters specific to the business.
+
+7. **Marketplace Listing**
+
+   * The offering becomes visible on BizMarket for investor participation.
+
+---
+
+### 4.2 Saver / Investor Onboarding & Limits
+
+**Narrative:**
+Investors participate through the SaveFi savings system, which determines their maximum allowable exposure to BizFi instruments via an onchain multiplier.
+
+**Key Steps:**
+
+1. **Wallet Connection / Embedded Wallet Creation**
+
+   * User connects an external wallet or is provisioned an embedded wallet within the application.
+
+2. **Stablecoin Deposit (SaveFi)**
+
+   * User deposits supported stablecoins into SaveFi smart contracts.
+
+3. **Savings Balance Recording**
+
+   * The protocol records the user’s active savings balance onchain.
+
+4. **Investment Capacity Calculation**
+
+   * A smart contract enforces a maximum BizFi participation limit (e.g., up to 100× savings balance).
+
+5. **BizMarket Access**
+
+   * User can browse and select BizShares within their allowed investment capacity.
+
+---
+
+### 4.3 Primary Market Purchase Flow
+
+**Narrative:**
+Investors acquire newly issued BizShares through a structured primary issuance process on BizMarket.
+
+**Key Steps:**
+
+1. **Instrument Selection**
+
+   * User browses available listings and reviews business and instrument details.
+
+2. **Cart Allocation**
+
+   * User adds selected BizShares to a cart with desired allocation amounts.
+
+3. **Deposit Confirmation**
+
+   * User confirms stablecoin allocation, subject to their onchain participation limit.
+
+4. **Fund Locking**
+
+   * Stablecoins are transferred into protocol-controlled contracts.
+
+5. **Allocation Finalization**
+
+   * The system confirms allocation once funding thresholds or sale conditions are met.
+
+6. **BizShare Issuance**
+
+   * BizShares representing the investor’s position are minted and assigned to the investor’s wallet.
+
+---
+
+### 4.4 Secondary Market Exit (BizSwap) Flow — Debt Instruments
+
+**Narrative:**
+Debt BizShares are non-transferable between users. Exits are handled through BizSwap, a protocol-managed liquidity mechanism.
+
+**Key Steps:**
+
+1. **Exit Request Initiation**
+
+   * Investor selects eligible debt BizShares and initiates an exit via BizSwap.
+
+2. **Eligibility & Liquidity Check**
+
+   * Protocol verifies instrument status and available liquidity.
+
+3. **Swap Execution**
+
+   * BizShares are returned to a protocol-controlled pool or retired according to rules.
+   * Investor receives stablecoins based on defined exit logic.
+
+4. **Position Update**
+
+   * Investor’s BizShare balance is reduced or cleared.
+   * Future payout rights adjust accordingly.
+
+---
+
+### 4.5 Liquidity Provider Acquisition Flow
+
+**Narrative:**
+Liquidity providers supply stablecoins that support BizFi financing cycles and BizSwap exit functionality.
+
+**Key Steps:**
+
+1. **Stablecoin Contribution**
+
+   * Liquidity provider deposits stablecoins into designated protocol liquidity pools.
+
+2. **Pool Accounting**
+
+   * Contribution is recorded and tracked within pool contracts.
+
+3. **Capital Utilization**
+
+   * Liquidity is used to support business funding, BizSwap exits, or other protocol-defined functions.
+
+4. **Return Mechanism (Structure-Dependent)**
+
+   * Liquidity providers may receive yield or protocol-defined incentives based on pool design.
+
+---
+
+### 4.6 Dividend / Repayment Flow
+
+**Narrative:**
+Business repayments and revenue distributions occur offchain and are routed back onchain for investor payouts.
+
+**Key Steps:**
+
+1. **Business Payment (Offchain)**
+
+   * Business sends scheduled repayment or revenue share to Bitsave Smart Limited.
+
+2. **Offchain Reconciliation**
+
+   * Bitsave Ops verifies payment amounts and aligns them with instrument obligations.
+
+3. **Treasury Coordination**
+
+   * If required, protocol treasury supplements payout obligations to maintain schedule continuity.
+
+4. **Bridging to Onchain Environment**
+
+   * Funds are bridged or transferred into onchain distribution contracts.
+
+5. **Onchain Distribution**
+
+   * Central distribution module allocates stablecoin payouts to BizShare holders according to recorded balances.
+
+6. **Investor Receipt**
+
+   * Investors receive stablecoins directly in their wallets on the defined payout cadence.
+
+---
+
+### 4.7 Referral & Agent Flow
+
+**Narrative:**
+The platform may incorporate referral mechanisms and agent-based onboarding to expand both business and investor participation.
+
+**Key Steps:**
+
+1. **Referral Code Generation**
+
+   * Users or agents receive unique referral identifiers.
+
+2. **Referred User Onboarding**
+
+   * New participants sign up using referral codes.
+
+3. **Tracking & Attribution**
+
+   * The system records referral relationships onchain or in linked offchain systems.
+
+4. **Incentive Application**
+
+   * Eligible referrals may receive fee discounts or rewards.
+   * Agents may receive compensation based on defined program rules.
+
+---
+
+### 4.8 KYC / KYB Flow
+
+**Narrative:**
+Compliance requirements differ between businesses and investors due to the hybrid onchain–offchain structure.
+
+**Key Steps:**
+
+**For Businesses (Mandatory KYB):**
+
+1. Business submits legal and operational documentation.
+2. Identity of owners and controllers is verified.
+3. Risk and compliance checks are completed before listing approval.
+
+**For Investors (Onchain Participation):**
+
+1. Investors interact directly with smart contracts using wallets.
+2. No mandatory KYC is required at the protocol level for standard participation.
+3. Additional verification layers may be introduced in specific jurisdictions or product types if required.

@@ -1,0 +1,352 @@
+## 6. Deep Dive — Tokenized Debt (Primary Product)
+
+Tokenized Debt is the foundational financial instrument in the current BizFi implementation. This section defines its structure, lifecycle, financial logic, liquidity model, and protocol guarantees in detail.
+
+---
+
+### 6.1 Product Definition & Business Rationale
+
+Tokenized Debt BizShares represent standardized, short-duration debt obligations issued to fund real-world businesses. Each token corresponds to a fixed principal exposure with a predefined return schedule and stablecoin payouts.
+
+**Business Rationale**
+
+For businesses:
+
+* Provides access to working capital without complex equity structuring
+* Matches short operating cycles (inventory, trade, services)
+* Offers predictable repayment scheduling
+
+For investors:
+
+* Predictable payout cadence
+* Stablecoin-denominated returns
+* Short duration and defined exit pathway
+
+For the protocol:
+
+* Standardized instrument design simplifies underwriting, monitoring, and payout management
+* Short tenors reduce long-tail uncertainty
+* Embedded fees and liquidity structure support sustainability
+
+---
+
+### 6.2 Target Issuers and Credit Profile
+
+Tokenized Debt is primarily designed for **micro and small businesses** with observable and recurring cash flows.
+
+**Typical issuer characteristics:**
+
+* Operates in trade, retail, or service sectors
+* Has existing revenue activity and transaction history
+* Requires short-term working capital rather than long-term expansion equity
+* Can support weekly repayment behavior
+
+These businesses often lack access to formal credit markets but can support structured amortized repayment models aligned with operating cycles.
+
+---
+
+### 6.3 Instrument Terms and Constants
+
+Each Tokenized Debt BizShare is standardized as follows:
+
+| Parameter                  | Value                                   |
+| -------------------------- | --------------------------------------- |
+| **Principal**              | $100 (fixed per BizShare)               |
+| **Fixed Yield**            | 4% quarterly / 16% annualized           |
+| **Duration**               | 12 weeks (~90 days)                     |
+| **Repayment Cadence**      | Weekly amortized (principal + interest) |
+| **Payout Currency**        | Stablecoin (USDC)                       |
+| **Shelf Life**             | 12 weeks maximum                        |
+| **BizSwap Early Exit Fee** | 10% flat                                |
+
+Each BizShare represents one $100 principal unit of exposure.
+
+---
+
+### 6.4 Financial Math & Worked Examples
+
+#### 6.4.1 Total Return
+
+**Principal (P):**
+$$
+P = 100
+$$
+
+**Quarterly Yield (r):**
+$$
+r = 4\% = 0.04
+$$
+
+**Total Interest (I):**
+$$
+I = P \times r = 100 \times 0.04 = 4
+$$
+
+**Total Repayment Value (V):**
+$$
+V = P + I = 100 + 4 = 104
+$$
+
+---
+
+#### 6.4.2 Weekly Amortized Payout
+
+Duration = 12 weeks
+
+$$
+\text{Weekly Payout} = \frac{104}{12} = 8.66
+$$
+
+**Investor receives:**
+**$8.66 USDC per week for 12 weeks**
+
+This payout contains both principal and interest components.
+
+---
+
+#### 6.4.3 BizSwap Early Exit Example
+
+Assume investor exits after **Week 4**, having already received:
+
+$$
+4 \times 8.66 = 34.64
+$$
+
+Remaining scheduled value:
+
+$$
+104 - 34.64 = 69.36
+$$
+
+**BizSwap Exit Fee (10%):**
+$$
+69.36 \times 0.10 = 6.936
+$$
+
+**Investor Exit Payout:**
+$$
+69.36 - 6.936 = 62.424
+$$
+
+**Total realized value:**
+$$
+34.64 + 62.424 = 97.064
+$$
+
+Investor exits early at a discount relative to holding to maturity.
+
+---
+
+### 6.5 Token Lifecycle
+
+**1. Issuance**
+
+* BizShare minted after primary purchase
+* Represents $100 principal exposure
+
+**2. Active Payout Phase**
+
+* Weekly USDC distributions occur via central distribution module
+* Token remains in “active” state
+
+**3. Transfer Rules**
+
+* Non-transferable wallet-to-wallet
+* Eligible only for BizSwap exit
+
+**4. Maturity**
+
+* After Week 12 payout, obligation is complete
+* Token transitions to “fulfilled” state
+
+**5. Burning**
+
+* Matured tokens are programmatically burned or marked inactive
+
+---
+
+### 6.6 Non-Transferability Rule (Debt Only)
+
+Debt BizShares cannot be freely traded between users.
+
+**Rationale**
+
+* Prevents uncontrolled secondary speculation
+* Ensures alignment between payout schedules and liquidity pools
+* Simplifies compliance and payout tracking
+
+**Enforcement Options**
+
+* Non-transferable ERC-20 variant
+* Transfer hook restrictions
+* EIP-based soulbound-style logic with protocol exception for BizSwap
+
+---
+
+### 6.7 BizSwap — Liquidity-Gated Exit Mechanism
+
+BizSwap is the controlled exit pathway for debt BizShares.
+
+Investors do not sell to other users. Instead, they return tokens to protocol liquidity pools in exchange for discounted settlement.
+
+---
+
+### 6.7.1 Acquisition Requirement
+
+To receive new BizShares in primary markets, capital must enter protocol liquidity pools. This means:
+
+* Every purchase contributes USDC liquidity
+* Liquidity backs future exit requests
+
+---
+
+### 6.7.2 Buyer = Liquidity Provider
+
+When a user buys BizShares:
+
+* Their USDC helps fund business loans
+* Also supports exit liquidity
+
+When a user exits:
+
+* BizSwap draws from pooled liquidity
+* This creates a liquidity event funded by prior deposits
+
+---
+
+### 6.7.3 Exit Fee Distribution
+
+Exit Fee = **10% of remaining value**
+
+Distribution:
+
+* **20% → Liquidity Providers**
+* **80% → Protocol Treasury**
+
+Creates incentive for liquidity depth and funds protocol guarantees.
+
+---
+
+### 6.8 Liquidity Provider Economics
+
+**Minimum contribution:** 100 USDC
+
+Liquidity providers:
+
+* Support BizSwap exit capacity
+* Earn a share of exit fees
+* Participate in pooled exposure mechanics defined by protocol
+
+Returns depend on exit activity volume.
+
+---
+
+### 6.9 BizSwap Vault
+
+The BizSwap Vault manages liquidity and settlement.
+
+**States:**
+
+1. **Funded** — Holds USDC liquidity
+2. **Allocated** — Portion tied to active BizShares
+3. **Settlement** — Processes exits
+4. **Rebalanced** — Adjusted after payouts and fees
+
+Handles:
+
+* Receiving returned BizShares
+* Paying exit USDC
+* Accounting for fee splits
+
+---
+
+### 6.10 Protocol Guarantees on Investor Payouts
+
+Investor weekly payouts continue even if a business defaults.
+
+The protocol treasury acts as a payment continuity backstop.
+
+---
+
+### 6.10.1 Default Coverage Policy
+
+If a business fails to pay:
+
+* Treasury covers scheduled investor payouts
+* Investors continue receiving weekly USDC
+* No interruption to payout schedule
+
+---
+
+### 6.10.2 Recovery & Subrogation
+
+After covering payments:
+
+* Bitsave pursues recovery offchain
+* Legal, restructuring, or repayment plans executed
+* Recovered funds replenish treasury
+
+Investors are insulated from enforcement complexity.
+
+---
+
+### 6.11 Risk Modeling
+
+Key modeled risks:
+
+* Business default
+* Early exits increasing liquidity pressure
+* Prepayment altering cash timing
+* Treasury depletion risk under extreme scenarios
+
+Short tenors and structured fees mitigate long-duration exposure.
+
+---
+
+### 6.12 Operational Processes
+
+1. Offchain underwriting
+2. Capital deployment
+3. Weekly business repayments to Bitsave
+4. Reconciliation and treasury top-ups if needed
+5. Bridging USDC onchain
+6. Smart contract distributions
+
+---
+
+### 6.13 Pilot Program
+
+**Design**
+
+* Limited number of businesses
+* Controlled capital size
+* Monitoring of repayment behavior
+
+**Success Metrics**
+
+* On-time repayment rate
+* Exit volume vs liquidity
+* Treasury coverage usage
+
+**Roll-Out Plan**
+
+* Gradual scaling
+* Sector diversification
+* Liquidity depth expansion
+
+---
+
+### 6.14 UX Specifics
+
+Investors see:
+
+* Fixed return schedule
+* Weekly payout tracker
+* Exit discount preview
+* Receipts for each payout
+
+Businesses see:
+
+* Repayment calendar
+* Outstanding balance tracker
+* Performance reporting interface

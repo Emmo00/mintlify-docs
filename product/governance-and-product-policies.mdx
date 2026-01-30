@@ -1,0 +1,243 @@
+## 16. Governance & Product Policies
+
+This section defines the governance model, approval policies for listings, pricing and referral rules, fee schedules and their change process, and conflict-of-interest / insider-trading controls. Policy language is formal and prescriptive: it specifies roles, required evidence, decision steps, and enforcement expectations.
+
+---
+
+### 16.1 Protocol Governance Model (roles, decision-making)
+
+**Objective:** ensure transparent, accountable, and auditable decision-making for protocol parameters, treasury actions, product rollouts, and emergency responses.
+
+**Governing bodies & roles**
+
+1. **Protocol Steering Committee (PSC)** — primary decision body for high-level policy, product roadmaps, major treasury allocations, and legal/regulatory posture. Membership: Product Lead, Head of Ops, Head of Legal & Compliance, Head of Treasury, Head of Security.
+
+   * *Authority:* Approve phase gates, large treasury actions (above governance threshold), and policy changes that materially affect investor risk.
+   * *Decision rule:* Quorum = 4 of 5; decisions require simple majority unless otherwise specified.
+
+2. **Treasury Committee** — manages treasury composition, coverage policy, and replenishment actions under PSC policy. Membership: Head of Treasury (chair), CFO (if available), two PSC delegates.
+
+   * *Authority:* Execute predefined replenishment operations up to PSC limits; recommend larger treasury moves to PSC.
+   * *Decision rule:* Unanimous sign-off by committee members for actions above operational threshold.
+
+3. **Risk & Audit Committee** — oversees underwriting standards, economic stress tests, audit remediation verification, and periodic risk reports to PSC. Membership includes Risk Lead, independent auditor representative (or external advisor), and Head of Security.
+
+4. **Operations & Onboarding Committee** — approves individual high-risk listings, KYC/KYB exceptions, and agent/referral program enrollments. Membership: Head of Ops (chair), Compliance Officer, Underwriting Lead.
+
+5. **Admin Multi-Sig (Guardians)** — group of signers (minimum 3-of-5 or configurable) controlling administrative onchain actions: treasury withdrawals, contract upgrades (where allowed), emergency pauses, and attestor key operations. Guardians include senior organization officers and independent trustees.
+
+   * *Timelock & emergency:* All sensitive admin actions are subject to onchain timelocks (e.g., 48–72 hours) except in documented emergency scenarios that require immediate action and three-guardians’ unanimous sign-off; emergency actions must be reported to PSC within 24 hours.
+
+6. **Product Committee** — responsible for product parameter proposals (fees, tiers, thresholds), UI/UX decisions, and release readiness. Membership: Product Manager, Engineering Lead, Design Lead, Head of Ops.
+
+**Decision-making process**
+
+* **Proposals**: Any material change (fees, tiers, treasury policy, new product types) is submitted as a written proposal to PSC with supporting analysis (financial model, risk assessment, legal memo).
+* **Review window**: Standard review cycle is 7 business days for non-urgent items; 21 days for material changes affecting investor economics.
+* **Approval & enactment**: After PSC approval, implementation requires Admin Multi-Sig execution for onchain changes plus Ops execution for offchain procedures. Onchain parameter changes are implemented with published timelocks to allow community review.
+* **Transparency**: All PSC decisions and voting outcomes are recorded and archived; non-confidential executive summaries are published.
+
+**Role accountability**
+
+* Each committee has a named owner and documented roster. Committee members must declare conflicts before deliberations; conflicted members recuse themselves from the relevant vote.
+
+---
+
+### 16.2 Listing Policy & Approval Criteria (tiers, due diligence thresholds)
+
+**Objective:** standardize listing acceptability, due diligence depth per tier, and approval steps to protect investors and the protocol.
+
+**Listing tiers (as implemented)**
+
+* **Micro Business Tier** — target: SMEs under $5,000/month. Listing fee: $10 (standard) / $6 (with referral).
+* **Builder Tier** — target: idea-stage founders / prototypes. Listing fee: $35 / $30 (with referral).
+* **Growth Business Tier** — target: operational businesses > $5,000/month. Listing fee: $60 / $50 (with referral).
+* **Enterprise Projects Tier** — target: asset-backed or large-scale projects. Listing fee: $120 / $100 (with referral).
+
+**Mandatory baseline checks (all tiers)**
+
+* Completed Listing Form with required fields (identity, contact, business description).
+* Proof of business existence (registration or alternative proof) when available.
+* At least two credible social presences or verifiable references for businesses lacking formal registration.
+* Signed consent for attestations and data processing.
+
+**Tiered due diligence (minimum acceptable standards)**
+
+* **Micro Tier (light diligence):**
+
+  * KYB: identity verification of owner (government ID), business contact verification.
+  * Financial evidence: self-reported revenue; recommend at least 3 months of POS receipts or bank statements where available.
+  * Approval authority: Operations & Onboarding Committee (standard workflow).
+  * Additional measures: agent/rep verification for remote onboarding.
+
+* **Builder Tier (moderate diligence):**
+
+  * KYB: identity verification + founder background checks.
+  * Business plan & MVP proof; evidence of early validation (user metrics / prototype).
+  * Approval authority: Operations Committee with Product Committee review.
+
+* **Growth Tier (enhanced diligence):**
+
+  * KYB/KYC: corporate registration checks (where available), director/beneficial owner verification.
+  * Financial verification: last 6 months of revenue data (bank statements, POS records) reconciled with submitted figures.
+  * Debt obligations disclosure and existing investor list (if any).
+  * Onsite or agent verification may be required for materially sized raises.
+  * Approval authority: Operations & Onboarding Committee plus Risk & Audit Committee sign-off for elevated exposures.
+
+* **Enterprise Tier (full diligence):**
+
+  * Full KYB/KYC, audited financials where available, asset verification (property deeds, valuation reports), legal review of title and encumbrances.
+  * Third-party valuation or appraisal may be required.
+  * Pre-issue legal opinion on instrument structure recommended.
+  * Approval authority: PSC with Risk & Audit Committee approval.
+
+**Special approval conditions**
+
+* Any business with cross-border regulatory complexity or operating in a high-risk sector requires Legal sign-off and may be subject to additional controls or geofencing.
+
+**Listing rejection or conditional listing**
+
+* Listings failing required checks are rejected. Conditional listings may be permitted with mitigations (smaller raise limits, additional reporting, or escrowed funds) subject to Ops approval.
+
+**Post-listing obligations**
+
+* Businesses must deliver periodic financial reporting as per the instrument type (weekly receipts for debt instruments; quarterly statements for equity listings). Non-compliance triggers remediation protocols (escalation to PSC, potential pausing of distributions, or contract enforcement).
+
+---
+
+### 16.3 Pricing & Discount Policy for Referrals and Reps
+
+**Objective:** standardize referral discounts and rep incentives while preventing abuse and ensuring clear revenue recognition.
+
+**Referral code rules**
+
+* Each referral code is unique and assigned to a registered agent, creator, or rep.
+* Codes may offer tiered discounts as defined by program (example: Micro $10 → $6 with code). The discount amounts per tier are configured by Product Committee and published in the referral program terms.
+
+**Eligibility**
+
+* Referral codes may be distributed to: authorized agents, approved creators, or promotional partners.
+* A referral discount applies at checkout when the code is presented and validated. Code validation checks: `code active`, `agent not blacklisted`, `first-time listing` (if promotion restricted).
+
+**Rep onboarding & incentives**
+
+* Reps must complete a registration process (identity verification, basic training on listing requirements).
+* Reps receive referral codes tied to their accounts. Compensation models for reps can include:
+
+  * **Upfront commission:** fixed amount per successful listing (paid after KYB completion and fee payment).
+  * **Recurring commission:** percentage of listing fee or success fee distributed over a defined period (subject to program design).
+* Commission payments are documented, subject to AML checks, and reported to Treasury for accounting.
+
+**Anti-abuse measures**
+
+* Referral codes are one-per-listing; self-referral rules are defined (self-referrals disallowed unless explicitly permitted).
+* Excessive or suspicious referral activity flagged for review (e.g., > X listings per agent per week without completed KYB).
+* Fraudulent referrals result in code revocation and potential legal action.
+
+**Discount activation & limits**
+
+* Discounts applied at checkout but do not reduce required attestation or KYB obligations.
+* Discounts do not apply to additional service fees (e.g., expedited underwriting, advisory services) unless explicitly stated.
+
+**Reporting & reconciliation**
+
+* All referral discounts and rep commissions are recorded in the reconciliation system for audit and tax purposes.
+
+---
+
+### 16.4 Fee Schedule & Update Process
+
+**Objective:** maintain a transparent, auditable fee schedule and a controlled, predictable process for fee changes.
+
+**Current fee schedule (published and binding until updated):**
+
+* **Listing fees:**
+
+  * Micro: $10 (referral $6)
+  * Builder: $35 (referral $30)
+  * Growth: $60 (referral $50)
+  * Enterprise: $120 (referral $100)
+* **BizSwap exit fee (debt):** 10% flat on remaining value at exit.
+
+  * Fee split: 20% to LPs; 80% to protocol treasury.
+* **Secondary market trading fee (where applicable):** 1% per trade (as specified in product).
+* **Liquidity provision minimum:** 100 USDC per LP position (default; Product Committee may vary).
+* **Other fees:** minting, pool creation, and premium service fees defined in product annexes (published separately).
+
+**Fee update governance process**
+
+1. **Proposal submission** — Product Committee drafts fee change proposal, including rationale, financial model, and impact analysis (beneficiaries, affected user cohorts).
+2. **Risk & Legal review** — Risk & Audit Committee and Legal validate modeling and confirm regulatory implications.
+3. **Public review window** — Standard public notice of at least 14 calendar days for material fee changes affecting investor economics; notice published via dashboard and email to affected parties.
+4. **PSC decision** — PSC votes on the change. Quorum and majority rules apply as per §16.1.
+5. **Implementation** — Approved changes deployed via onchain parameter update (timelock activated) and offchain billing system updated. Changes become effective only after timelock expiration or as per emergency exception rules.
+6. **Communication** — Publish updated fee schedule, effective date, and rationale. Provide pro-rata or grandfathering provisions for existing commitments where fair and reasonable.
+
+**Emergency fee changes**
+
+* In exceptional circumstances (market crisis, exploit mitigation), PSC may authorize immediate temporary fee adjustments subject to post-facto review and a public rationale within 48 hours. Emergency actions require unanimous approval of Admin Multi-Sig and formal ratification by PSC within 7 days.
+
+**Fee transparency**
+
+* The live fee schedule is published on the BizMarket site and included in the terms of service. Historical fee change logs are archived for audit.
+
+---
+
+### 16.5 Conflict-of-Interest and Insider Trading Policies
+
+**Objective:** prevent misuse of privileged information by employees, contractors, reps, committee members, and affiliated parties; preserve market integrity and protect investor interests.
+
+**Scope**
+
+* Applies to all personnel with access to non-public information about listings, attestations, treasury actions, pending product launches, or any material event affecting BizShares or protocol economics. Applies to PSC members, Admin Multi-Sig signers, Bitsave Ops staff, agents/representatives, and contractors.
+
+**Definitions**
+
+* **Insider information:** material non-public information that could reasonably affect the value or tradability of an instrument (e.g., impending default, major treasury actions, unannounced listings, or product changes affecting investor economics).
+* **Insider trading:** buying, selling, or arranging trades in BizShares, BizFi tokens, or related assets based on insider information prior to public disclosure.
+
+**Prohibited conduct**
+
+* Trading in BizShares or related instruments while in possession of insider information.
+* Tipping or sharing insider information with third parties who may trade or act on it.
+* Using referral or rep mechanisms to circumvent restrictions (e.g., creating accounts to acquire preferential allocations).
+* Employees or committee members soliciting or accepting gifts/compensation from issuers in exchange for favorable listing decisions.
+
+**Pre-clearance and blackout windows**
+
+* **Pre-clearance:** Personnel with potential access to material non-public information must obtain pre-clearance from Compliance before purchasing or selling BizShares or relevant instruments.
+* **Blackout windows:** Defined blackout periods prior to major announcements, product launches, or treasury actions during which trading by insiders is prohibited. The Compliance Officer publishes blackout schedules and enforces them.
+
+**Disclosure and recusal**
+
+* Committee members and decision-makers must disclose potential conflicts before deliberations. If a member has a material interest in a listing or issuer, they must recuse themselves from the decision and leave all related documentation access restricted.
+
+**Rep and agent restrictions**
+
+* Reps cannot acquire preferential allocations in listings they sourced without transparent disclosure and PSC approval. Referral compensation cannot be contingent on opaque equity or token allocations unless disclosed and approved.
+
+**Enforcement**
+
+* Violations result in disciplinary measures up to termination and referral for legal action. Remedies include:
+
+  * Immediate suspension of trading privileges and referral to legal counsel.
+  * Forfeiture of any gains obtained via prohibited trades.
+  * Civil or criminal referral if warranted.
+
+**Monitoring**
+
+* Compliance implements surveillance mechanisms to detect suspicious trading patterns or timing correlated with private events. Compliance audits trading logs, referral assignments, and access logs.
+
+**Training & attestations**
+
+* All covered personnel must complete mandatory annual training on conflict-of-interest and insider-trading policies and sign an annual attestation of understanding and compliance.
+
+**Reporting channels**
+
+* Establish anonymous reporting channels for suspected breaches. All reports reviewed by Compliance and Risk & Audit Committee with documented investigation procedures and timelines.
+
+---
+
+## Closing statement
+
+These governance and product policies are designed to balance the operational flexibility required to run a hybrid onchain/offchain platform with robust controls that protect investors, preserve legal compliance, and ensure transparency. All committees and role holders must operate within the documented procedures; deviations require explicit PSC approval and must be recorded. Legal counsel must review and approve final governance instruments, committee charters, and policy language before public issuance.

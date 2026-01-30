@@ -1,0 +1,263 @@
+## 17. Operations & Support
+
+This section presents the operational playbooks, checklists, and responsibilities required to run BizFi / BizMarket day-to-day. The goal is to make onboarding, investor support, agent operations, bookkeeping, and compliance repeatable, auditable, and safe. Each playbook lists concrete steps, required actors, inputs/outputs, and escalation paths.
+
+---
+
+### 17.1 Onboarding Playbook for Business Owners (step-by-step)
+
+**Objective:** reliably onboard businesses, complete KYB/KYC, collect listing fees, create attestations, and prepare the business for fundraising and token issuance.
+
+**Roles involved:** Onboarding Specialist (Ops), KYB Analyst (Compliance), Underwriter (Risk), Legal Counsel, Product Engineer (for attestation & contract parameters), Finance (payments), SPV Custody.
+
+**High-level timeline:** Day 0 (application) → Day 1–7 (KYB & due diligence) → Day 7–14 (structuring & attestation) → Day 14+ (listing live)
+
+**Step-by-step checklist**
+
+1. **Application intake**
+
+   * Receive completed listing form.
+   * Assign `businessId` and open an onboarding ticket in Ops system.
+   * Return automated receipt + next steps email to applicant.
+
+2. **Initial verification (Ops)**
+
+   * Confirm required fields filled: business name, contact email, monthly revenue, instrument selection.
+   * Validate referral code (if any) and compute listing fee.
+   * Create document upload request (secure offchain storage link).
+
+3. **Payment & fee collection (Finance)**
+
+   * Invoice business in local fiat or accept onramp as configured.
+   * Confirm fiat receipt; convert to USDC via approved on-ramp partner.
+   * Record conversion transaction ID, amount, conversion fee, and final onchain wallet credit if bridged.
+
+4. **KYB & due diligence (Compliance & Underwriting)**
+
+   * Verify identity of owners and beneficial owners (IDs, corporate registry where applicable).
+   * Review financial documents: bank statements, POS receipts, invoices. Capture dataHash for document bundle.
+   * Risk scoring: assign preliminary risk tier and red flags.
+   * If required by tier: request additional documents (audited financials, asset valuations).
+
+5. **Legal & contract (Legal)**
+
+   * Prepare and sign MoU / loan agreement / revenue-share agreement between SPV and business.
+   * Confirm business consents to attestations and data-sharing terms.
+
+6. **Instrument structuring (Product & Underwriting)**
+
+   * Define instrument parameters (principal units, tenor, yield, payout cadence).
+   * Approve BizShare parameters and assign issuance caps and tranche sizes.
+
+7. **Attestation preparation (Ops + Product)**
+
+   * Canonicalize document bundle, compute `dataHash` (SHA-256 recommended).
+   * Prepare EAS attestation payload: `businessId`, `attestationType`, `dataHash`, `businessOwner`.
+   * Submit attestation via authorized attestor and record attestation tx hash and timestamp.
+
+8. **Smart-contract configuration (Engineering)**
+
+   * Use factory to create per-business BizShare parameters or register listing metadata.
+   * Ensure non-transferability flags for debt instruments; set BizSwap parameters.
+
+9. **Pre-listing checks (Operations & Risk)**
+
+   * Confirm SPV has custody of required funds (if necessary).
+   * Confirm attestation confirmed onchain.
+   * Final sign-off from Operations & Underwriting.
+
+10. **Listing & go-live (Ops)**
+
+    * Publish listing to BizMarket (make discoverable by investors).
+    * Generate shareable marketing assets (social text, image, referral link).
+    * Create onboarded business record and schedule reconciliation cadence.
+
+11. **Post-listing monitoring**
+
+    * Track weekly repayments schedule, reconciliation events, and compliance status.
+    * Set reminders for required periodic reporting by business.
+
+**Escalation rules**
+
+* Missing mandatory KYB docs after 7 days → Ops places listing on hold and notifies applicant.
+* Material red flag discovered → suspend onboarding, escalate to Risk & Audit Committee.
+
+---
+
+### 17.2 Investor Support Playbook (deposits, payouts, disputes)
+
+**Objective:** provide prompt, consistent support for investor inquiries and operational issues including deposits, weekly payouts, and disputes.
+
+**Roles involved:** Investor Support Agent, Payments Engineer, Onchain Ops, Reconciliation Specialist, Compliance.
+
+**Support channels:** in-app chat, support email, phone for high-priority cases, and ticketing system.
+
+**Operational checklists**
+
+A. **Deposit support**
+
+* **Common issues:** missing onchain deposit, slow bridge, incorrect memo/identifier for fiat deposit.
+* **Steps for agent:**
+
+  1. Verify user identity and wallet address.
+  2. Check expected deposit reference (onramp/processor txn id).
+  3. Query onchain for deposit TX hash; confirm confirmation count and amount.
+  4. If bridge pending, open bridge support ticket with partner and communicate ETA to user.
+  5. If deposit not found within SLA (e.g., 12–24 hrs), escalate to Payments Engineer and record incident.
+
+B. **Payout inquiries**
+
+* **Common issues:** missing weekly payout, incorrect payout amount, delayed distribution.
+* **Steps for agent:**
+
+  1. Obtain user wallet and instrumentId.
+  2. Confirm scheduled payout amount and batchId from central distribution module.
+  3. Lookup onchain distribution tx hash; confirm user received funds.
+  4. If distribution failed, escalate to Reconciliation Specialist; if treasury top-up used, confirm treasury debit entry.
+  5. Communicate resolution timeline to user and log incident.
+
+C. **Exit / BizSwap issues**
+
+* **Common issues:** exit queued, liquidity insufficiency, unexpected fees.
+* **Steps for agent:**
+
+  1. Retrieve exitId and queue status.
+  2. Confirm pool liquidity and LP balances.
+  3. If exit delayed due to liquidity, explain queue and expected timing or offer alternatives if available.
+  4. If execution failure, escalate to Market Ops.
+
+D. **Dispute resolution**
+
+* **Common disputes:** unauthorized transactions, payout miscalculation, identity fraud.
+* **Steps for agent:**
+
+  1. Create a dispute ticket and assign a severity level.
+  2. Freeze affected flows if necessary (e.g., prevent further exits on suspected fraud).
+  3. Collect evidence: tx hashes, receipts, correspondence.
+  4. Escalate to Compliance for KYC review and to Legal if fraud suspected.
+  5. Provide interim status updates within 24 hours and final resolution per SLA (typical 7–14 business days depending on complexity).
+  6. Document outcome and remedial action.
+
+**SLA guidelines**
+
+* First response: < 4 business hours for normal tickets; < 1 hour for critical (missing payouts).
+* Resolution targets: simple issues resolved within 24–72 hours; disputes may take up to 14 days.
+
+**Knowledge base & canned responses**
+
+* Maintain an internal KB with step-by-step troubleshooting, common error codes, and defined user-facing messages for transparency.
+
+---
+
+### 17.3 Agent / Rep Program Operations (referral code management)
+
+**Objective:** manage agent enrollment, referral code issuance, tracking, commission processing, and anti-fraud controls.
+
+**Roles involved:** Partnerships Lead, Ops, Finance, Compliance.
+
+**Agent onboarding checklist**
+
+1. Agent application submitted with identity and contact details.
+2. Compliance background check and vetting (ID verification, business references).
+3. Training session completed (platform rules, listing quality standards).
+4. Agent agreement signed, including commission structure and T&Cs.
+5. Referral code generated and activated in system.
+
+**Referral code lifecycle**
+
+* **Generate:** create unique code tied to agentId, tier privileges, and discount parameters.
+* **Distribute:** provide agent with code and marketing assets.
+* **Track:** log each use of code with listingId, businessId, timestamp, and resulting fee discount.
+* **Payout commissions:** calculate commission per agreement; schedule payouts monthly after verification of listing fee collection and KYB completion.
+
+**Commission & reconciliation**
+
+* Reconciliation cycle: monthly. Finance compiles referrals, validates successful listings, and issues commission payments after AML screening.
+* Disputed or reversed listings (e.g., KYB fail): commission for that listing is voided.
+
+**Anti-fraud controls**
+
+* Rate-limit per agent (e.g., max X listings per day without manual review).
+* Detect self-referrals by IP/device/wallet clustering and block or flag for Compliance.
+* Random audit sampling: perform 5–10% of agent-originated listings for on-site or phone verification.
+
+**Agent termination**
+
+* Grounds: fraud, repeated low-quality listings, misuse of codes. Termination revokes codes and cancels pending commissions.
+
+---
+
+### 17.4 Bookkeeping & Accounting for Protocol Revenues (how funds are tracked)
+
+**Objective:** maintain clear ledgers linking offchain fiat flows, stablecoin conversions, SPV custody, onchain distributions, and protocol revenue accruals for audit and tax purposes.
+
+**Primary ledgers / systems**
+
+* **Operational ledger (offchain):** records invoices, fiat receipts, conversion events, SPV bank movements, and fee accruals.
+* **Onchain ledger mapping:** maps onchain tx hashes (bridge deposits, distributions, fee receipts) to offchain entries.
+* **Treasury ledger:** tracks protocol reserves, fee inflows, outgoing coverage payments, and recoveries.
+* **Reconciliation register:** ties scheduled payouts to executed onchain distributions and marks exceptions.
+
+**Accounting flows & controls (stepwise)**
+
+1. **Receive fiat payment** → record invoice paid in Operational ledger (`fiat_amount`, `exchange_rate`, `processor_ref`).
+2. **Convert to USDC** → record conversion entry (Fiat → USDC) with fees and net onchain amount; log bridge tx hash once onchain.
+3. **SPV custody** → increment custody account balance; create custody transaction ID.
+4. **Deployment to business** → record disbursement entry (date, amount, contract/MoU reference).
+5. **Business repayment** → record receipt in SPV bank; mark expected distribution batch.
+6. **Bridge to onchain** → create bridging record, link to onchain tx hash and distribution batchId.
+7. **Onchain distribution** → record distribution tx hash and per-holder allocations; update investor statements.
+8. **Fee capture** → allocate fees to protocol revenue accounts (e.g., BizSwap 80% treasury share).
+9. **Treasury movements** → multi-sig approvals for outflows, record movement, and reconcile with onchain events.
+
+**Monthly close checklist**
+
+* Match offchain receipts to onchain bridge events.
+* Reconcile SPV custody balances with bank statements and onchain wallet balances.
+* Reconcile outstanding BizShares principal with issuance records.
+* Produce management P&L (listing fees, exit fees, premium services) and balance sheet including treasury reserves.
+* Export audit package and forward to Risk & Audit Committee.
+
+**Controls**
+
+* Dual-approval for disbursements > threshold.
+* Segregation of duties: person who signs off conversions is not the same who records bookkeeping entry.
+* Regular reconciliation cadence: daily quick checks, weekly detailed, monthly close.
+
+---
+
+### 17.5 Legal & Compliance Team Responsibilities
+
+**Objective:** ensure regulatory compliance, manage KYB/KYC programs, oversee contracts, handle disputes with legal posture, and liaise with regulators.
+
+**Core responsibilities**
+
+* **Policy enforcement:** maintain and update KYC/KYB policies, watchlist screening, and AML procedures.
+* **Document review & contracts:** draft and maintain standardized MoUs, investor agreements, rep contracts, and SPV-related legal documents.
+* **Regulatory monitoring:** track applicable regulatory changes across operating jurisdictions and advise Product/PSC on required adjustments.
+* **Case handling:** lead legal response for disputes, fraud, and enforcement actions; coordinate with external counsel when necessary.
+* **Attestations governance:** authorize attestors and maintain attestor key control policies.
+* **Data privacy:** ensure data processing agreements and consent flows comply with local laws (GDPR, NDPR, etc.).
+* **Escalation & liaison:** primary contact for regulators and law enforcement requests; coordinate disclosure under legal process.
+* **Training & attestations:** deliver mandatory training for Ops, Product, and Partnership teams on legal requirements and insider/COI policies.
+
+**Operational checklists**
+
+* **Weekly**: review KYB exception queue; review pending legal holds; monitor sanctions watchlist.
+* **Monthly**: audit a sample of onboarding files for completeness; review any contract templates requiring changes.
+* **Quarterly**: produce compliance report for PSC; update policies per regulatory changes.
+
+**Incident response**
+
+* Maintain legal playbooks for fraud, default recovery, and breaches.
+* Responsible for initiating enforcement actions via SPV for recovery and coordinating with Treasury for any asset seizures or contract enforcement.
+
+---
+
+## Closing operational notes
+
+* **Documentation & runbooks:** store all operational runbooks, escalation procedures, and templates in a version-controlled internal knowledge base.
+* **Training:** regular cross-functional training for Ops, Support, Compliance, and Product teams.
+* **Continuous improvement:** capture lessons from pilots, incidents, and audits; update playbooks and KPIs quarterly.
+
+These operational procedures and checklists should be adopted as living artifacts and updated as the product and regulatory landscape evolve.

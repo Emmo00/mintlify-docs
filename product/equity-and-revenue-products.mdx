@@ -1,0 +1,182 @@
+## 7. Introductory Coverage — Equity & Revenue Products
+
+This section provides a conceptual overview of additional BizShare instrument types beyond tokenized debt. These products are part of the broader BizFi and BizMarket roadmap and remain at an early design stage.
+
+---
+
+### 7.1 Tokenized Equity — Conceptual Model
+
+Tokenized Equity BizShares represent onchain exposure to ownership interests in real-world businesses. Unlike debt instruments with fixed repayment schedules, equity instruments are performance-linked and long-term in nature.
+
+#### 7.1.1 1:1 Representation of Offchain Shares via SPV Mechanism
+
+Under the intended model:
+
+* Each onchain equity token corresponds **1:1** with an offchain equity unit
+* Legal ownership of underlying shares is held through a **Special Purpose Vehicle (SPV)** structure
+* Bitsave Smart Limited or an associated legal entity acts as the SPV administrator
+* Onchain tokens function as a digital representation of beneficial ownership rather than direct share registry entries
+
+**Design in progress.**
+
+---
+
+#### 7.1.2 Locking of Founder Shares; Offchain Custody
+
+To maintain alignment and prevent adverse selection:
+
+* Founder and early stakeholder shares may be subject to **lock-up provisions**
+* Underlying legal shares corresponding to tokenized equity are held in **offchain custody** by the SPV
+* Transfer of onchain tokens may be linked to SPV-level record updates where required
+
+This structure ensures that token supply corresponds to legally recognized ownership positions.
+
+**Design in progress.**
+
+---
+
+#### 7.1.3 Dividend Distribution & Governance Considerations
+
+Equity tokens may entitle holders to:
+
+* **Dividend distributions** when declared by the business
+* Participation in **economic upside** through profit sharing or exit events
+* Potential **governance rights** depending on the share class represented
+
+Dividend flows would follow a similar pattern to debt payouts:
+
+1. Business declares dividend offchain
+2. Funds remitted to Bitsave SPV
+3. Bridged and distributed onchain
+
+Governance rights, voting mechanisms, and shareholder communication structures remain to be defined.
+
+**Design in progress.**
+
+---
+
+### 7.2 Tokenized Revenue — Conceptual Model
+
+Tokenized Revenue BizShares represent rights to a portion of a business or project’s revenue rather than equity ownership or fixed debt repayment.
+
+#### 7.2.1 Revenue Share Calculation Options
+
+Possible calculation models include:
+
+**1. Gross Revenue Share**
+
+* Investors receive a fixed percentage of total top-line revenue
+* Simpler to audit but less sensitive to cost structure
+
+**2. Net Revenue Share**
+
+* Share is calculated after defined operating expenses
+* More aligned with profitability but requires stronger reporting controls
+
+**3. Fixed Revenue Share Until Cap**
+
+* Investors receive a percentage of revenue until a predefined return multiple is reached
+
+**Suggested Default (for early design):**
+
+* A capped revenue share model tied to gross or adjusted gross revenue for transparency
+
+**Example (illustrative):**
+
+* 5% revenue share until 1.5× principal is returned
+
+**Design in progress.**
+
+---
+
+#### 7.2.2 Use Cases
+
+Revenue-based instruments are suitable for:
+
+* **Enterprise infrastructure projects** with predictable usage revenue
+* **Film and media productions** with revenue participation structures
+* **Real estate income properties** distributing rental income
+* **Franchise or licensing models** with recurring royalties
+
+These structures align investor returns directly with economic activity.
+
+---
+
+### 7.3 Convertible Debt — Introductory Overview
+
+Convertible Debt combines debt-like downside protection with equity-linked upside potential.
+
+**Core Structure:**
+
+* Begins as a debt instrument with defined yield and maturity
+* Under predefined triggers, converts into equity tokens
+
+**Potential Triggers:**
+
+* Future financing round
+* Valuation milestone
+* Maturity date conversion option
+
+**Key Parameters:**
+
+* Conversion discount or premium
+* Valuation cap
+* Maximum equity allocation upon conversion
+
+Convertible mechanics require coordination between onchain token logic and offchain legal agreements.
+
+**Design in progress.**
+
+---
+
+### 7.4 Indexes — Introductory Overview
+
+Indexes are diversified onchain instruments that bundle exposure across multiple BizShares.
+
+**Objectives:**
+
+* Reduce single-business risk
+* Provide simplified exposure to sectors or themes
+* Enable passive-style participation
+
+**Key Design Components:**
+
+* **Weighting methodology** (equal weight, revenue-weighted, risk-adjusted)
+* **Rebalancing schedule** (periodic or rule-based)
+* **Dividend/Payout passthrough** from underlying BizShares
+
+Index tokens would aggregate cash flows from underlying instruments and redistribute proportionally.
+
+**Design in progress.**
+
+---
+
+### 7.5 Market/Exchange Design for Equity & Revenue Tokens
+
+Unlike debt BizShares, equity and revenue tokens may support more flexible market structures.
+
+Potential models include:
+
+**Orderbook-Based Marketplace**
+
+* Peer-to-peer listing and matching
+* Price discovery through bids and asks
+
+**Automated Market Maker (AMM)**
+
+* Liquidity pools facilitate continuous trading
+* Algorithmic pricing based on pool balances
+
+**Managed Liquidity Model**
+
+* Protocol-curated liquidity with guardrails
+* Hybrid between AMM and controlled swaps
+
+The final market design must balance:
+
+* Regulatory considerations
+* Liquidity depth
+* Volatility management
+* Investor protection
+
+**Design in progress.**

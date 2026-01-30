@@ -1,0 +1,397 @@
+## 13. UX, Product & API Reference (catalog)
+
+This section defines the user experience, screen maps, and a skeleton API reference for BizMarket. The content is functional and prescriptive: UI field names, primary user actions, and example endpoint signatures are included to guide designers, frontend engineers, and integrators.
+
+---
+
+### 13.1 Business Dashboard — Features & Screen Map
+
+**Primary route / page:** `bitsave.io/bizfi/dashboard/business/{businessId}`
+
+**Top-level navigation items**
+
+* Dashboard (Overview)
+* My Listings
+* Performance & Reports
+* Consultancy Booking
+* Marketing & Social Share
+* Settings & Profile
+* Documents & Attestations
+
+**Overview (Dashboard) — key modules**
+
+* **Header / Title bar**
+
+  * Business name, listing status badge (Draft / Under Review / Live / Paused / Closed)
+  * Quick actions: `Edit Listing`, `View Investor Summary`, `Start Consultation`, `Share Listing`
+* **Key Metrics Card Row** (compact cards)
+
+  * `BizFi Token Price` (read-only)
+  * `Market Cap` (read-only)
+  * `Total Investors` (integer)
+  * `Capital Raised` (USD)
+  * `Monthly Revenue` (currency)
+  * `Growth Rate` (percentage)
+  * `Liquidity Available` (USDC)
+  * `Compliance Status` (KYB: Pending/Approved/Failed)
+* **Funding Progress**
+
+  * Visual progress bar `Raised / Target` (numeric + %)
+  * `Next Milestone` callout (date / action)
+* **Upcoming Payout Schedule (if issued)**
+
+  * Next payout date, expected amount, cumulative paid
+* **Recent Activity Feed**
+
+  * Listing edits, attestation events, investor questions, exit requests
+
+**My Listings (list view)**
+
+* Table columns: `Listing ID`, `Business Name`, `Instrument Type`, `Target Raise`, `Raised`, `Status`, `Actions (Edit, View, Withdraw)`
+* Filters: `Status`, `Instrument Type`, `Date Range`
+* Action: `Create New Listing` → opens Listing Form
+
+**Listing Form (create / edit) — UI field names**
+
+* *Section: Business Identity*
+
+  * `Business Name` (text, required)
+  * `Operating City / Country` (dropdown, required)
+  * `Registration Number` (text, conditional)
+  * `Business Owner Wallet` (address, optional)
+* *Section: Contact Information*
+
+  * `Contact Email` (email, required)
+  * `Contact Phone` (tel, optional)
+* *Section: Financial Snapshot*
+
+  * `Average Monthly Revenue (local currency)` (number + currency selector, required)
+  * `Average Monthly Expenses (local currency)` (number + currency selector, optional)
+  * `Profit Margin (auto)` (read-only computed)
+* *Section: Instrument Selection*
+
+  * `Instrument Type` (radio: Debt / Equity / Revenue / Convertible)
+  * If **Debt** selected: `Principal per Unit (USD)` (read-only $100), `Tenor (weeks)` (read-only 12), `Yield (quarterly)` (read-only 4%), `Payout Cadence` (read-only weekly)
+  * `Amount to Raise (USD)` (number, required)
+  * `Use of Proceeds` (textarea, required)
+* *Section: Documents & Uploads*
+
+  * `Financial Documents Link` (URL or file upload, required)
+  * `Proof of Registration` (file upload, conditional)
+* *Section: Pricing & Referral*
+
+  * `Listing Tier` (dropdown: Micro / Builder / Growth / Enterprise)
+  * `Referral Code` (text, optional) → shows `Listing Fee` (computed)
+* *Section: Declarations*
+
+  * `Consent to Attestation` (checkbox, required)
+  * `Submit` button (triggers payment flow if fee required)
+
+**Consultancy Booking**
+
+* Form fields: `Select Consultant` (dropdown), `Preferred Date & Time` (calendar), `Session Type` (phone / video), `Notes` (textarea)
+* Action: `Confirm Booking` → generates calendar invite + confirmation message
+
+**Marketing & Social Share**
+
+* Auto-generated assets after listing/payment:
+
+  * `Shareable Link` (copy)
+  * `Pre-populated Social Text` (editable)
+  * `Social Image` (download)
+  * Buttons: `Share to X`, `Share to LinkedIn`, `Share to Facebook`, `Share to Instagram`
+
+**Documents & Attestations**
+
+* List of attestations with `attestationType`, `dataHash`, `attestor`, `timestamp`, and `View / Download (if authorized).`
+
+**Expected user actions**
+
+* Complete required fields, upload docs, submit listing fee, accept terms, and track KYB progress.
+* Use `Edit Listing` to modify non-final fields; edits create a new attestation event when published.
+
+---
+
+### 13.2 Investor UI — Features & Screen Map
+
+**Primary route / page:** `bitsave.io/bizfi/investor`
+
+**Top-level navigation**
+
+* Discover (Marketplace)
+* My Portfolio
+* Deposit & Wallet
+* Cart
+* Chat with Business (unlocked after holding)
+* Payout History & Statements
+
+**Discover (Marketplace)**
+
+* Search bar `Search businesses, sectors, locations`
+* Filters: `Sector`, `Tier`, `Country`, `Instrument Type`, `Revenue Range`, `Risk Tier`
+* Sort: `Newest`, `Highest Yield`, `Most Funded`, `Closest to Target`
+* Results card: `Business Name`, `Instrument Type`, `Yield`, `Time to Maturity`, `Raised / Target`, `Buy / View` button
+
+**Business Detail Page**
+
+* `Business Overview` (summary text)
+* `Financial Snapshot` (Monthly revenue, expenses, profit margin)
+* `Instrument Terms` (for debt: principal, yield, tenor, weekly payout)
+* `Attestations` (links to attestations)
+* `How to Invest` (step-by-step)
+* `Buy` button (opens the purchase modal)
+
+**Deposit & Wallet**
+
+* `Wallet Balance` (USDC onchain)
+* `Embedded Wallet` creation flow (if no wallet) — `Create Embedded Wallet` button
+* `Deposit` flow:
+
+  * `Select Deposit Method` (Onchain Transfer / Bank On-ramp)
+  * `Amount` (number)
+  * `Confirm` → shows expected bridge time and fees
+* `Investment Capacity` card:
+
+  * `Active Savings` (USD)
+  * `Multiplier` (100x)
+  * `Max Investable Liquidity` (computed)
+
+**Cart**
+
+* Shows selected BizShares (businessId, amount, cost)
+* `Spread` feature: `Allocate by %` or `Allocate by Amount` (slider)
+* `Deposit Required` indicator and `Proceed to Checkout` button
+* `Confirm Purchase` final modal with `Accept Terms` checkbox
+
+**Buy Flow (primary market) — expected user actions**
+
+1. Add BizShare(s) to cart.
+2. Confirm allocations and ensure deposit balance is sufficient.
+3. Click `Confirm Purchase`.
+4. Smart-contract / protocol flow mints BizShares once allocation confirmed; user receives confirmation + token in wallet.
+
+**My Portfolio**
+
+* Holding cards: `businessId`, `instrumentType`, `unitsHeld`, `next payout date`, `YTD payouts`
+* Buttons: `View Payout Schedule`, `Request Early Exit (BizSwap eligible only)`, `Share`
+
+**Chat**
+
+* Access unlocked after holding BizShares for a configured period or amount. UI: `Open Chat` with message history and business contact info.
+
+**Payout History & Statements**
+
+* List of payout events with `date`, `amount`, `instrumentId`, `txHash`
+* `Download Statement` (CSV/PDF)
+
+---
+
+### 13.3 BizSwap UX & LP UI Flows
+
+**BizSwap — Investor Exit (debt instruments only)**
+
+* **Route:** `bitsave.io/bizfi/bizswap`
+* **Investor flow steps**
+
+  1. `Request Exit` from holding card → opens Exit modal showing:
+
+     * `Weeks elapsed` / `Payouts received`
+     * `Remaining value` (USD)
+     * `Exit Fee (10%)` (calculated on remaining value)
+     * `Net Exit Payout` (remaining value − exit fee)
+  2. `Confirm Exit` → checks BizSwap liquidity; if sufficient, executes swap and returns USDC to investor wallet, updates holdings.
+  3. Post-exit: send `Exit Receipt` (email + in-app) including `exitFeeBreakdown` and `txHash`.
+
+**BizSwap — liquidity & eligibility checks**
+
+* If insufficient liquidity: show `Queue Exit` with expected wait time and option to `Cancel Request`. Notify user when execution will happen.
+
+**LP UI — Provide Liquidity**
+
+* **Route:** `bitsave.io/bizfi/liquidity`
+* **Primary actions**
+
+  * `Provide Liquidity` modal:
+
+    * `Amount (USDC)` (min 100 USDC)
+    * `Agree to terms` (checkbox)
+    * `Deposit` → LP receives LP-position token/record (not an ERC20 unless designed)
+  * `View LP Stats`:
+
+    * `Current Pool Balance`, `Your Share (%)`, `Fees earned (historical)`, `Pending Exit Obligations`
+  * `Withdraw` flow:
+
+    * `Request Withdraw` → lock/notice period if applicable → `Confirm Withdraw` → funds returned pro rata after reconciliation
+
+**LP Fees & Dashboard**
+
+* Show `Exit Fee Share` (20% share of 10% exit fee = 2% of remaining value per exit) and `Your Accrued Fees` (USDC)
+* Buttons: `Claim Fees`, `Reinvest`
+
+---
+
+### 13.4 API Endpoints — Skeleton Reference
+
+**Authentication & general rules**
+
+* All endpoints require API tokens for server-side integrations; user-level endpoints use JWT or OAuth and must be authenticated.
+* Actions affecting funds require authenticated wallet signatures for onchain actions and API auth for offchain steps.
+
+> The following is a skeleton reference for the primary endpoints. `:id` indicates a path parameter.
+
+---
+
+**POST /api/v1/listings**
+
+* *Purpose:* Create or update a business listing (used by business dashboard)
+* *Auth:* Business account + SPV approval flow
+* *Request body (example fields):*
+
+  * `businessName` (string, required)
+  * `businessOwner` (address or userId, required)
+  * `instrumentType` (enum: debt/equity/revenue, required)
+  * `amountToRaise` (number, required)
+  * `monthlyRevenue` (number + currency, required)
+  * `documents` (array of document metadata or pre-signed upload links)
+  * `tier` (enum: micro/builder/growth/enterprise)
+  * `referralCode` (string, optional)
+* *Response:*
+
+  * `listingId` (string)
+  * `status` (string: draft | under_review | live)
+  * `attestationPending` (boolean)
+  * `nextSteps` (array of strings)
+
+---
+
+**GET /api/v1/businesses/:businessId**
+
+* *Purpose:* Fetch business listing metadata and current instrument details
+* *Auth:* Public read for non-sensitive fields; authenticated for full details
+* *Response:*
+
+  * `businessId`, `businessName`, `instrumentType`, `status`
+  * `financialSnapshot` (monthlyRevenue, expenses, profitMargin)
+  * `instrumentTerms` (principal, yield, tenor, payoutCadence)
+  * `attestations` (list of attestation objects: `attestationType`, `dataHash`, `txHash`, `timestamp`)
+  * `raised`, `target`, `investorCount`
+
+---
+
+**POST /api/v1/purchase**
+
+* *Purpose:* Initiate a primary market purchase (server-side orchestration of minting)
+* *Auth:* Investor (authenticated and wallet-signed where required)
+* *Request body:*
+
+  * `buyerId` (user id / wallet address)
+  * `listingId`
+  * `amountUSD` (number)
+  * `paymentMethod` (onchain / depositId)
+* *Response:*
+
+  * `purchaseId`
+  * `status` (pending | completed | failed)
+  * `mintTx` (onchain tx hash when completed)
+  * `allocatedUnits` (number of BizShares minted)
+
+---
+
+**POST /api/v1/attestations**
+
+* *Purpose:* Create an attestation record (SPV or authorized attestor)
+* *Auth:* Attestor role required
+* *Request body:*
+
+  * `businessId` (number)
+  * `attestationType` (int)
+  * `dataHash` (bytes32)
+  * `businessOwner` (address)
+  * `metadata` (optional JSON)
+* *Response:*
+
+  * `attestationId` (string)
+  * `easTxHash` (tx hash when submitted)
+  * `status` (submitted | confirmed)
+
+---
+
+**POST /api/v1/payouts/schedule**
+
+* *Purpose:* Trigger or query payout batches for a scheduled period
+* *Auth:* Ops role
+* *Request body (trigger):*
+
+  * `batchDate` (ISO date)
+  * `batchId` (optional, generated if not provided)
+* *Response:*
+
+  * `batchId`, `scheduledAt`, `totalAmount`, `payoutTxHash` (when executed), `status`
+
+---
+
+**GET /api/v1/user/:userId/positions**
+
+* *Purpose:* Retrieve investor positions (BizShares held, accrued payouts)
+* *Auth:* Authenticated (owner or ops)
+* *Response:*
+
+  * `positions` (array of objects `{instrumentId, businessId, unitsHeld, nextPayoutDate, accruedAmount}`)
+
+---
+
+**POST /api/v1/bizswap/exit**
+
+* *Purpose:* Initiate BizSwap early exit for a given instrument
+* *Auth:* Investor + wallet signature (for onchain settlement)
+* *Request body:*
+
+  * `userId` or `walletAddress`
+  * `instrumentId`
+  * `unitsToExit` (number)
+* *Response:*
+
+  * `exitId`, `status` (queued | executing | completed | failed)
+  * `exitAmount` (estimated net after 10% fee), `feeBreakdown` (lpShare, treasuryShare)
+  * `txHash` (onchain when executed)
+
+---
+
+**POST /api/v1/liquidity/provide**
+
+* *Purpose:* LP provides USDC liquidity to BizSwap
+* *Auth:* LP authenticated/wallet
+* *Request body:*
+
+  * `providerId` / `walletAddress`
+  * `amountUSDC`
+* *Response:*
+
+  * `lpPositionId`, `poolSharePercentage`, `minWithdrawalAmount`, `accruedFees`
+
+---
+
+**GET /api/v1/reports/reconciliation?from=YYYY-MM-DD&to=YYYY-MM-DD**
+
+* *Purpose:* Retrieve machine-readable reconciliation reports for auditors
+* *Auth:* Ops / Auditor (NDA-protected endpoints)
+* *Response:*
+
+  * `reportId`, `downloadLink` (CSV/JSON), `summaryMetrics`
+
+---
+
+**Notes on API behavior & error handling**
+
+* Endpoints return structured error objects: `{code, message, details}` with standard HTTP statuses.
+* Idempotency keys required for financial actions (purchase, liquidity provide) to avoid duplicate processing.
+* Webhook events: `purchaseCompleted`, `payoutExecuted`, `attestationConfirmed`, `bizswapExitCompleted`.
+
+---
+
+## UI & API Integration Principles
+
+* **Simplicity for non-crypto users:** Embedded wallet flows and clear microcopy explaining onchain steps are essential.
+* **Explicit consent and receipts:** Every financial action (purchase, deposit, exit) surfaces a clear receipt and recorded `transactionId` that links offchain and onchain records.
+* **Progressive disclosure:** Expose simple summaries for general users and advanced metrics/settings for power users and LPs.
+* **Error messages:** Provide actionable errors (e.g., "Insufficient investment capacity — increase active savings or reduce allocation") rather than low-level stack traces.
