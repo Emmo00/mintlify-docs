@@ -1,0 +1,187 @@
+## 14. Economic & Security Risk Analysis
+
+This section identifies the major economic and security risks facing BizFi / BizMarket, rates their qualitative probability and impact, and prescribes specific mitigations. Where appropriate, controls reference protocol mechanics (treasury, BizSwap, attestations) described elsewhere in this document.
+
+---
+
+### 14.1 Macro Risks
+
+#### A. Regulatory Clampdown
+
+* **Impact:** High — classification of instruments as securities, restrictions on cross-border offers, or new licensing requirements could require product suspension, restrict investor access, or impose material compliance costs.
+* **Probability (qualitative):** Medium — regulatory scrutiny on tokenized financial products is increasing globally. Risk is higher in jurisdictions targeted for rollout without prior clear frameworks.
+* **Mitigations:**
+
+  * Jurisdiction-by-jurisdiction legal reviews before market entry; restrict product availability where prohibited (geofencing).
+  * Use SPV and controlled offchain structures to map legal obligations; maintain detailed attestation and audit trails for regulators.
+  * Maintain a compliance escalation path and rapid gating of product features (timelock/pause).
+  * Maintain conservative KYC/KYB posture for businesses and ability to enable investor KYC if required.
+* **Action items:** Legal confirmation required for instrument classification and cross-border marketing rules in target jurisdictions.
+
+#### B. Stablecoin Depegging
+
+* **Impact:** High — if USDC (or used stablecoin) depegs materially, payout value and liquidity may be impaired; LPs and treasury value may decline.
+* **Probability (qualitative):** Low–Medium — major regulated stablecoins have low historical depeg incidence but systemic events can occur.
+* **Mitigations:**
+
+  * Multi-stablecoin support and diversification of treasury holdings.
+  * Treasury hedging strategies and liquidity buffers denominated in multiple instruments.
+  * Emergency playbook to pause distributions and swap depegged assets where feasible.
+  * Stress-test scenarios incorporating stablecoin shock assumptions.
+* **Operational note:** Define thresholds for action (e.g., peg deviation > 3% → alert; >10% → emergency protocol).
+
+#### C. Macro Liquidity Shocks
+
+* **Impact:** High — broad market deleveraging could trigger mass exits, LP withdrawals, and strain treasury reserves.
+* **Probability (qualitative):** Medium — correlated with market cycles.
+* **Mitigations:**
+
+  * Maintain liquidity buffers (e.g., minimum weeks of payouts in reserve).
+  * Limit single-business concentration; enforce portfolio limits.
+  * Dynamic fee/timelock levers to slow withdrawals in stress (governance/timelock controlled).
+  * Regular stress-testing and runway analysis updated to current exposure.
+
+---
+
+### 14.2 Product Risks
+
+#### A. Default Exposure (business inability to pay)
+
+* **Impact:** Medium–High — requires protocol treasury to cover payouts, eroding reserves; repeated defaults could threaten sustainability.
+* **Probability (qualitative):** Medium — microbusiness lending has non-trivial default rates despite conservative design and short tenor.
+* **Mitigations:**
+
+  * Conservative underwriting, pilot learning loop, and fast remediation (collections, restructuring).
+  * Short tenors (12 weeks) and weekly repayments limit accumulation of unpaid amounts.
+  * Diversification across businesses and sectors; set per-business exposure caps.
+  * Treasury reserve policy: maintain predefined coverage buffer and replenishment rules.
+  * Automated monitoring and early-warning indicators (missed payment rates).
+* **Operational note:** Bitsave pursues recovery/subrogation after treasury covers payouts (see 14.5).
+
+#### B. LP Exit Spiral (liquidity providers withdrawing en masse)
+
+* **Impact:** High — sudden LP withdrawals could reduce BizSwap capacity, preventing exits and creating a negative feedback loop.
+* **Probability (qualitative):** Medium — depends on market sentiment and fee attractiveness.
+* **Mitigations:**
+
+  * Minimum LP contribution size and potential notice periods for withdrawals.
+  * Fee-sharing model that adequately compensates LPs (20% of exit fee).
+  * Maintain separate treasury liquidity buffer not reliant solely on LPs for emergency exits.
+  * Monitor LP concentration and impose guardrails (e.g., max withdrawal per epoch).
+  * Stress test BizSwap under extreme exit demand scenarios.
+
+#### C. Early-Exit Exploitation (gaming fee mechanics)
+
+* **Impact:** Medium — actors could attempt strategies that exploit the 10% flat exit fee or timing of payouts.
+* **Probability (qualitative):** Low–Medium — protocol rules reduce some attack surfaces, but economic exploits are possible.
+* **Mitigations:**
+
+  * Economic modeling and adversarial simulations during design (game-theory audit).
+  * Rate limits, slippage tolerances, and anti-front-running measures on BizSwap.
+  * Monitor anomalous exit patterns and impose temporary throttles via governance if required.
+  * Regularly review fee levels relative to market conditions.
+
+---
+
+### 14.3 Operational Risks
+
+#### A. Incorrect Attestation (bad or malformed attestations)
+
+* **Impact:** Medium — incorrect linkage of onchain tokens to offchain documents undermines provenance and investor trust.
+* **Probability (qualitative):** Low — controlled attestor process reduces chances, but human error exists.
+* **Mitigations:**
+
+  * Standardized canonical serialization and hashing procedures; test suites to validate attestation payloads.
+  * Multi-signature attestation approval or dual attestor model for critical attestations.
+  * Audit logs and verification UIs for attestations; ability to issue corrected attestations with governance record.
+* **Action items:** Define attestor roles and remediation workflows; require legal review of attestation liability.
+
+#### B. Bridging Failures & Reconciliation Mismatches
+
+* **Impact:** High — delays between offchain receipt and onchain availability impede distributions and can cause apparent shortfalls.
+* **Probability (qualitative):** Medium — bridging involves external providers and network conditions.
+* **Mitigations:**
+
+  * Use reputable on/off ramps and redundancies where feasible.
+  * Maintain a short-term treasury buffer to cover expected bridging lag.
+  * Automated reconciliation with exception handling and SLA-based escalation.
+  * Clear operational runbooks for manual bridging procedures when automation fails.
+
+#### C. Reconciliation / Accounting Errors
+
+* **Impact:** Medium — incorrect accounting can cause misallocated payouts or regulatory issues.
+* **Probability (qualitative):** Low–Medium — depends on processes and automation maturity.
+* **Mitigations:**
+
+  * Automated reconciliation pipelines with transaction-level linking (offchain receipt → bridge tx → distribution tx).
+  * Periodic external accounting reviews and internal controls (separation of duties).
+  * Reconciliation SLA and exception triage queue with defined resolution timelines.
+
+---
+
+### 14.4 Mitigations (Cross-cutting Controls)
+
+These are system-level mitigations designed to address the above risks.
+
+* **Treasury Backstops & Policy**
+
+  * Maintain an explicitly defined treasury reserve policy: minimum runway (e.g., N weeks of payouts), replenishment triggers, and governance authority to top-up or reallocate funds.
+* **Conservative Underwriting**
+
+  * Short tenor loans, modest yield, mandatory KYB, revenue/expense checks, and pilot scaling.
+* **Stress Tests & Scenario Analysis**
+
+  * Regular economic stress testing (including stablecoin stress, mass exit, default cascades) and publishing summary outcomes to governance/ops.
+* **Operational SLAs & Redundancy**
+
+  * Multiple bridges/onramps, redundant custody arrangements, and secondary attestation paths.
+* **Governance Levers**
+
+  * Time-locked governance mechanisms to adjust fees, pause issuance, or change BizSwap parameters when materially required.
+* **Transparency & Reporting**
+
+  * Frequent reconciliation reports, public KPIs, and published audit summaries to reduce information asymmetry and build trust.
+* **Insurance / Risk Transfer (future)**
+
+  * Explore insurance products or partner guarantees for concentrated exposures or operational risk coverage as the protocol matures.
+
+---
+
+### 14.5 Default Handling & Protocol Guarantees
+
+This subsection describes how the protocol handles defaults and preserves investor payouts, and the subsequent recovery processes.
+
+#### A. Protocol Guarantee — Continuity of Investor Payouts
+
+* **Mechanism:** If a funded business misses scheduled repayments, the protocol treasury will cover the scheduled payouts so that investor weekly distributions continue as planned. The central distribution module executes payments onchain based on reconciled obligations; treasury funds bridge into onchain distribution when necessary.
+* **Immediate Effect:** Investors experience no interruption to cash-flow schedule despite underlying business delinquency.
+* **Rationale:** Preserves investor confidence and prevents panic-driven exits.
+
+#### B. Default Coverage Policy (qualitative)
+
+* **Coverage Triggers:** Missed payment beyond defined grace period or evidence of insolvency.
+* **Coverage Scope:** Treasury pays the weekly scheduled distributions for affected instruments until a recovery plan or repayment is arranged or until reserves are exhausted.
+* **Coverage Limits:** There should be explicit governance-defined caps per instrument, per time period, and for aggregate exposure. (Design/thresholds need to be codified in treasury policy.)
+
+**Flag — governance & legal confirmation required:** The exact limits and legal framing of promises to investors (representations, disclaimers) must be reviewed by counsel.
+
+#### C. Recovery & Subrogation Process
+
+* **Step 1 — Immediate cover:** Treasury funds payouts to investors to maintain schedule.
+* **Step 2 — Preserve evidence and freeze relevant offchain accounts where contractually permitted.**
+* **Step 3 — Enforce contractual remedies:** SPV (Bitsave Smart Limited) exercises contractual rights to recover funds — renegotiation, restructuring, collection, asset seizure per MoU.
+* **Step 4 — Legal action & third-party recovery:** Pursue claims under jurisdictional law where appropriate; any recovered funds replenish the treasury and prioritize restoring protocol reserves.
+* **Step 5 — Reporting:** Maintain transparent incident reporting to investors and governance; document recovered amounts and timing.
+
+#### D. Prioritization & Accounting
+
+* **Investor priority:** Payout continuity is prioritized for the investor schedule. Protocol recovers amounts from the business; recovered funds restore the treasury.
+* **Accounting transparency:** All default coverage transactions and subsequent recoveries are recorded in the treasury ledger and available for audit.
+
+---
+
+## Closing Notes — Risk Posture Summary
+
+* BizFi’s core risk profile stems from connecting short-term, high-volume microbusiness lending with onchain liquidity dynamics. The product design (short tenors, fixed yields, BizSwap-exit mechanics, and treasury coverage) intentionally reduces duration and market risk while transferring operational complexity to a controlled SPV model.
+* The protocol must maintain conservative underwriting, sufficient treasury runway, real-time monitoring, and jurisdiction-by-jurisdiction legal readiness to operate sustainably.
+* Final governance rules, treasury coverage caps, and legal warranties require confirmation by counsel and must be codified in the protocol’s operational policy documents prior to broader market rollout.

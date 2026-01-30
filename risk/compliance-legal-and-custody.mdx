@@ -1,0 +1,270 @@
+## 8. Compliance, Legal & Custody
+
+This section describes the legal, custody, and compliance framework that underpins BizFi / BizMarket operations. It specifies the role of the SPV, outlines custody and funds flows, explains attestation practices, and enumerates compliance, tax, consumer protection, and data-privacy considerations. Items requiring legal confirmation are explicitly flagged.
+
+---
+
+### 8.1 Legal Entity Model and SPV Responsibilities (Bitsave Smart Limited)
+
+**Legal model overview**
+
+* Bitsave Smart Limited (the “SPV”) functions as the on-ramp/off-ramp legal vehicle that holds and administers offchain assets on behalf of onchain investors and the protocol.
+* The SPV is the contractual counterparty to businesses for deployed funds and is the legal custodian of the offchain shares or other legal instruments that back onchain tokens where applicable.
+
+**Primary SPV responsibilities**
+
+* **Custody of investor funds prior to deployment:** receive fiat-converted stablecoins and custody them under the SPV’s accounts.
+* **Counterparty to businesses:** sign MoUs and service agreements with businesses that receive funding.
+* **Legal wrapper for tokenized equity:** hold underlying share certificates / legal interests if equity is tokenized 1:1 via the SPV model.
+* **Reconciliation and bridging coordination:** coordinate the movement of value between offchain accounts and onchain contracts (bridging/settlement).
+* **Regulatory reporting and recordkeeping:** maintain transaction and KYC/KYB records for compliance and audit purposes.
+* **Recovery and enforcement:** pursue contractual remedies and recovery actions in the event of default, in coordination with Bitsave Ops.
+
+**Flag — legal confirmation required**
+
+* The precise SPV structure, allocation of fiduciary duties, and liability model must be reviewed and confirmed by counsel in each operational jurisdiction. This includes licensing requirements (e.g., custody, payments, lending) and the proper contractual design between the SPV, Bitsave Protocol, and token holders.
+
+---
+
+### 8.2 Custody and Funds Flow (fiat → converted USDC → SPV custody → deployment)
+
+This subsection details the stepwise custody path from a business or investor fiat payment through to deployment and repayment.
+
+**High-level custody flow**
+
+1. **Fiat Payment / Business fee collection**
+
+   * Businesses remit listing fees or other fiat payments via approved payment processors.
+   * Bitsave Ops records payment receipts and links them to the business listing record.
+
+2. **Conversion to Stablecoin**
+
+   * Fiat received is converted to USDC (or another approved stablecoin) using approved on-ramp partners or liquidity providers.
+   * Conversion events are reconciled and recorded by the SPV.
+
+3. **SPV Custody**
+
+   * Converted stablecoin balances are held in accounts managed by the SPV (onchain wallet(s) and offchain bank/merchant accounts as required).
+   * The SPV records ownership, and internal ledgers map investor entitlements to onchain records.
+
+4. **Deployment to Business**
+
+   * Once underwriting and approval are complete, the SPV deploys capital to the business under a contractual arrangement (loan agreement, revenue share agreement, or other instruments).
+   * Deployment may involve offchain bank transfers or settlement via onchain transfers to business-controlled wallets by the SPV.
+
+5. **Business Payments / Repayments**
+
+   * Businesses make scheduled repayments or revenue remittances to the SPV per contractual terms.
+   * Bitsave Ops reconciles the incoming payments with expected obligations.
+
+6. **Bridging & Onchain Distribution**
+
+   * Reconciled funds are bridged (if necessary) to onchain distribution modules which then release stablecoin payouts to BizShare holders according to recorded positions.
+
+**Controls and segregation**
+
+* Protocol recommends separation of operational accounts and treasury reserves, multi-signature control for onchain treasury wallets, and standard accounting controls for offchain custody.
+* All custody and conversion partners should be vetted and recorded.
+
+**Flag — legal & regulatory confirmations required**
+
+* The use of third-party on-ramps, custody arrangements, and cross-border fund flows implicate payments, custody, and anti-money-laundering laws in operating jurisdictions. Counsel must confirm licensing and regulatory requirements.
+
+---
+
+### 8.3 Attestation & Provenance (EAS usage, schema examples)
+
+BizMarket establishes verifiable onchain provenance for business listings and issued instruments using an attestation service (EAS — Ethereum Attestation Service).
+
+**Purpose of attestations**
+
+* Bind offchain business identity and documentation to onchain instrument representations.
+* Create immutable references (data hashes) to source documents and form a tamper-evident record that links a `businessId` with instrument metadata and the business owner address.
+
+**Attestation workflow**
+
+1. **Document preparation & hashing**
+
+   * Business-submitted documents (financial statements, registration docs, licenses) are hashed using a deterministic algorithm (e.g., SHA-256). The hash becomes the `dataHash` referenced in the attestation.
+2. **Attestation creation**
+
+   * The SPV or authorized attestor submits an attestation on EAS that includes structured fields (businessId, attestationType, dataHash, businessOwner).
+3. **Onchain reference & indexing**
+
+   * Attestations are stored onchain and indexed for retrieval by UIs, auditors, and integrators.
+
+**Benefits**
+
+* Provides a verifiable link between an onchain token and the legal/offchain documents that support it.
+* Improves auditability and reduces ambiguity around instrument provenance.
+
+---
+
+#### 8.3.1 Attestation Schemas and Encoding Example (BizMarket Reg schema)
+
+**Example schema (conceptual)**
+
+* Fields typically included: `uint256 businessId, uint8 attestationType, bytes32 dataHash, address businessOwner`.
+
+**Illustrative encoding (conceptual snippet):**
+
+```
+const schemaEncoder = new SchemaEncoder("uint256 businessId,uint8 attestationType,bytes32 dataHash,address businessOwner");
+const encodedData = schemaEncoder.encodeData([
+  { name: "businessId", value: "0", type: "uint256" },
+  { name: "attestationType", value: "0", type: "uint8" },
+  { name: "dataHash", value: "", type: "bytes32" },
+  { name: "businessOwner", value: "0x0000000000000000000000000000000000000000", type: "address" }
+]);
+```
+
+**Operational notes**
+
+* The `dataHash` must be computed and stored offchain with access controls prior to attestation.
+* Attestations should be associated with unique `businessId` values managed by Bitsave Ops to prevent collisions.
+
+**Flag — implementation confirmation**
+
+* The exact attestation schema and governance around who is authorized to attest must be finalized by technical and legal teams. Confirm the schema ID, attestor key management, and retention policies before production use.
+
+---
+
+### 8.4 KYC / KYB Policy (business mandatory; investor optional)
+
+**Business KYC / KYB (Mandatory)**
+
+* All businesses seeking to list must complete KYB. Required elements include: business registration documents, proof of beneficial ownership, director/owner IDs, financial records, and bank/payment account information.
+* KYB checks are prerequisite to listing approval and to issuance of any BizShares backed by that business.
+* Enhanced due diligence (EDD) is required for businesses operating in higher-risk sectors or jurisdictions.
+
+**Investor KYC (Optional, jurisdiction-dependent)**
+
+* Standard investor participation in onchain investment and SaveFi is allowed without protocol-level KYC. Investors interact via wallets and are subject to smart contract enforced participation limits.
+* Bitsave reserves the right to introduce investor KYC for specific products, higher exposures, or to meet regulatory requirements in certain jurisdictions or instruments.
+* Where onchain KYC is required by the platform (e.g., for larger allocations or certain jurisdictions), Bitsave will integrate third-party KYC providers and map verified identities to wallet addresses under privacy-preserving methods.
+
+**Flag — compliance confirmation required**
+
+* Whether investor KYC is optional or required may depend on local securities, crowdfunding, and payments regulations. Legal review is required to set firm KYC thresholds and policies by jurisdiction and product.
+
+---
+
+### 8.5 Regulatory Considerations per Jurisdiction (Summary / Risks)
+
+**High-level considerations**
+
+* **Securities classification risk:** Tokenized equity and certain revenue or debt instruments may be classified as securities under local law. Classification impacts licensing, disclosure, and investor eligibility requirements.
+* **Payments & custody regulation:** Converting fiat to stablecoins, custodial arrangements, and running custody services may trigger licensing as a money services business, e-money institution, or custodial provider.
+* **Cross-border rules:** Cross-border fund flows, investor eligibility, and marketing to foreign investors are subject to local restrictions and must be managed appropriately.
+* **Consumer protection:** Retail investor protections (disclosure, cooling-off periods, dispute remedies) vary considerably and may apply.
+* **Tax reporting & withholding:** Requirements for reporting income, withholding taxes, and sharing data with tax authorities differ by jurisdiction.
+
+**Practical risk management**
+
+* Conduct jurisdictional legal assessments for each country in which BizMarket will accept businesses or investors.
+* Avoid marketing restricted products to jurisdictions with clear prohibitions or undeveloped frameworks.
+* Implement geofencing and product gating as needed.
+
+**Flag — legal confirmation required**
+
+* Final regulatory compliance strategy must be approved by counsel with expertise in each target jurisdiction prior to market entry.
+
+---
+
+### 8.6 Tax Implications and Reporting Expectations
+
+**For Businesses (issuers)**
+
+* Income received from BizFi deployments is treated under local corporate income and transactional tax regimes. Businesses must report funds received and resulting expenses per domestic tax law.
+* Tokenization events may have VAT/GST implications depending on jurisdiction and instrument structuring.
+
+**For Investors**
+
+* Payouts (stablecoin distributions) may be taxable as interest, dividend, or income depending on the instrument structure and investor jurisdiction.
+* Capital gains or losses arising from secondary market activity (where permitted) may trigger taxable events.
+* Investors should be informed to consult local tax advisors.
+
+**Platform reporting**
+
+* The SPV and Bitsave Ops should maintain records sufficient to support tax reporting and provide investor statements, including transaction histories and payout summaries.
+
+**Flag — tax counsel required**
+
+* Tax treatment varies widely. Professional tax advice is required to define withholding obligations, reporting formats, and any cross-border tax treaties that may apply.
+
+---
+
+### 8.7 Consumer Protection and Dispute Resolution
+
+**Terms and disclosures**
+
+* All offerings must be accompanied by clear, non-misleading disclosure documents that explain: instrument terms, risks, payout schedules, fee mechanics, and the role of the SPV and protocol.
+* Businesses must provide transparent use-of-proceeds statements for each raise.
+
+**Complaint and dispute resolution process**
+
+1. **Initial complaint submission** — investors or businesses submit complaints through designated support channels.
+2. **Operational review** — Bitsave Ops performs fact-finding and provides a resolution timeline.
+3. **Escalation** — unresolved matters escalate to legal/compliance teams for mediation.
+4. **Remediation** — where appropriate, the protocol may offer remediation (refunds, adjustments, or other remedies) consistent with terms of service and law.
+5. **Arbitration / litigation** — terms of service should set out governing law and dispute-resolution mechanisms (mediation followed by arbitration or courts).
+
+**Consumer protections to consider**
+
+* Clear disclosure of the protocol’s guarantee model (e.g., treasury cover) and limits of guarantees.
+* Cooling-off or refund policies for listing fees where applicable.
+* Mechanisms to prevent and manage fraud, misrepresentation, and insider abuse.
+
+**Flag — legal confirmation required**
+
+* Required consumer protections, permissible remedies, and dispute-resolution frameworks must be validated by counsel against applicable consumer-protection laws.
+
+---
+
+### 8.8 Data Privacy and Storage (Hashing documents, offchain storage links, consent flows)
+
+**Data collection & purpose**
+
+* Bitsave collects personal and business data for onboarding, KYB/KYC, underwriting, and regulatory reporting. Collected data includes IDs, business documents, financial records, and contact details.
+
+**Storage model**
+
+* **Onchain:** Attestations store minimal pointers (e.g., `dataHash`) and metadata required for provenance. No sensitive personal data is stored onchain.
+* **Offchain:** Full documents and sensitive data are stored in encrypted offchain storage (e.g., secure cloud storage, document vaults). Access to offchain data is controlled by access policies.
+
+**Hashing & linking**
+
+* Documents are hashed (deterministic cryptographic hash) before attestation. The `dataHash` is placed in EAS attestations to create tamper-evident references without exposing underlying document content.
+
+**Consent and legal basis**
+
+* Businesses must provide explicit consent to data collection and processing via a tick-box agreement during onboarding. Consent must include purpose limitation, retention period, and third-party sharing details.
+* For jurisdictions where consent alone is insufficient, Bitsave must ensure alternative legal bases (e.g., contract performance, legal obligation).
+
+**Retention & deletion**
+
+* Implement retention schedules aligned with legal requirements (e.g., minimum record-keeping periods for tax and AML obligations).
+* Provide processes for data rectification and deletion where legally required, subject to retention obligations.
+
+**Security controls**
+
+* Encryption at rest and in transit for offchain storage.
+* Least-privilege access controls for internal staff.
+* Audit logs for all data access and changes.
+
+**Flag — legal confirmation required**
+
+* Data localization, retention periods, and consent requirements vary by jurisdiction (e.g., EU GDPR, Nigeria Data Protection Regulation). Legal counsel should confirm obligations and required contractual language for data processing agreements.
+
+---
+
+## Summary of Flags Requiring Legal or Regulatory Confirmation
+
+1. **SPV legal structure and fiduciary duties** — confirm entity form, jurisdiction, and licensing requirements.
+2. **Attestor authority & schema governance** — define who is authorized to attest and liability for attestations.
+3. **Investor KYC policy thresholds** — confirm when investor identity verification is legally required per jurisdiction and product.
+4. **Securities classification** — confirm whether any instruments (particularly equity and some revenue structures) are securities in target jurisdictions.
+5. **Payments, custody, and on-ramp licensing** — confirm licensing requirements for custody and fiat↔stablecoin conversion.
+6. **Tax treatment and reporting obligations** — obtain tax counsel for jurisdictions where the protocol will operate.
+7. **Consumer protection and dispute-remedy obligations** — validate required disclosures and remedies under local consumer law.
+8. **Data privacy and localization rules** — confirm retention, hosting, and consent requirements per jurisdiction.
