@@ -1,150 +1,38 @@
-## 20. FAQ & Troubleshooting
-
-This section answers the most common questions investors and business owners have, and gives step-by-step troubleshooting guides for the frequent operational problems teams encounter. Where appropriate the answers reference the protocol mechanics (BizSwap, SPV, distribution module, bridging).
-
+---
+title: "FAQ & Troubleshooting"
+description: "This section answers the most common questions investors and business owners have, and gives step-by-step troubleshooting guides for the frequent operational problems teams encounter. Where appropriate the answers reference the protocol mechanics (BizSwap, SPV, distribution module, bridging)."
 ---
 
-### 20.1 Top Investor FAQs
+### Top Investor FAQs
 
 **Q — How and when do I receive payouts?**
-A — Debt BizShare payouts are made in stablecoin (USDC) on a **weekly** cadence. High-level flow: the business remits funds to the SPV → SPV reconciles receipts → funds are bridged to the onchain distribution module → the distribution module executes an onchain payout batch and each holder receives USDC to their wallet. After each payout you get an in-app notification and a transaction hash.
+   - A — Debt BizShare payouts are made in stablecoin (USDC) on a **weekly** cadence. High-level flow: the business remits funds to the SPV → SPV reconciles receipts → funds are bridged to the onchain distribution module → the distribution module executes an onchain payout batch and each holder receives USDC to their wallet. After each payout you get an in-app notification and a transaction hash.
 
 **Q — What happens if the business misses a repayment?**
-A — The protocol’s **treasury** is the backstop: if a business misses a scheduled repayment, the treasury covers the scheduled investor payout so that investor cash-flows are uninterrupted. Bitsave Smart Limited (SPV) then pursues offchain recovery from the business; recovered funds replenish the treasury per policy. See Section 6 and Section 14 for detail.
+   - A — The protocol’s **treasury** is the backstop: if a business misses a scheduled repayment, the treasury covers the scheduled investor payout so that investor cash-flows are uninterrupted. Bitsave Smart Limited (SPV) then pursues offchain recovery from the business; recovered funds replenish the treasury per policy. See Section 6 and Section 14 for detail.
 
 **Q — Can I sell my debt BizShares early? How does BizSwap work?**
-A — Yes — debt BizShares are non-transferable wallet-to-wallet but can be exited via **BizSwap**. When you request an early exit the protocol computes the remaining scheduled value, applies a **10% flat exit fee** on that remaining value, and attempts to settle from BizSwap liquidity. If liquidity is sufficient the swap executes and you receive the net USDC (minus fee). If liquidity is insufficient your exit is queued until liquidity becomes available. Exit fee is split: **20% to LPs**, **80% to protocol treasury**.
+   - A — Yes — debt BizShares are non-transferable wallet-to-wallet but can be exited via **BizSwap**. When you request an early exit the protocol computes the remaining scheduled value, applies a **10% flat exit fee** on that remaining value, and attempts to settle from BizSwap liquidity. If liquidity is sufficient the swap executes and you receive the net USDC (minus fee). If liquidity is insufficient your exit is queued until liquidity becomes available. Exit fee is split: **20% to LPs**, **80% to protocol treasury**.
 
 **Q — How much can I invest?**
-A — Your BizFi investment capacity is enforced onchain using your SaveFi balance and the **100× multiplier**: e.g., $100 savings → $10,000 investable. This limit is enforced by smart contracts. Note: if you withdraw your SaveFi savings your historical investment limit does **not** automatically reduce for prior commitments — it is a hard contract limit on deposits (see Section 2 & SaveFi notes).
+   - A — Your BizFi investment capacity is enforced onchain using your SaveFi balance and the **100× multiplier**: e.g., \$100 savings → \$10,000 investable. This limit is enforced by smart contracts. Note: if you withdraw your SaveFi savings your historical investment limit does **not** automatically reduce for prior commitments — it is a hard contract limit on deposits (see Section 2 & SaveFi notes).
 
 **Q — Where can I see my receipts and statements?**
-A — Every buy, exit and payout produces an in-app receipt and email. Monthly statements, downloadable CSVs, and tax documents (where applicable) are available in **My Portfolio → Statements**. If you need a custom reconciliation export, open a support ticket.
+   - A — Every buy, exit and payout produces an in-app receipt and email. Monthly statements, downloadable CSVs, and tax documents (where applicable) are available in **My Portfolio → Statements**. If you need a custom reconciliation export, open a support ticket.
 
 ---
 
-### 20.2 Top Business Owner FAQs
+### Top Business Owner FAQs
 
-**Q — How do I list my business on BizMarket?**
-A — High-level steps:
+- **Q — How do I list my business on BizMarket?**
+   - A — Public onboarding steps: complete the pre-listing form, pay the applicable listing fee, complete KYB/KYC, and submit required documents. Bitsave conducts due diligence and submits attestations to the SPV; once approved the listing is published and fundraising may begin. Detailed onboarding documentation and checklists are available to approved applicants. [INTERNAL ONLY]
 
-1. Fill the pre-listing form (business identity, financial snapshot, amount to raise).
-2. Pay the listing fee (fiat or supported onramp).
-3. Complete KYB/KYC and upload required documents.
-4. Bitsave Ops performs due diligence and prepares an attestation bundle.
-5. SPV signs the MoU and the attestation is submitted onchain (EAS).
-6. If approved, the listing is published and fundraising can start. See Section 17.1 for a detailed onboarding checklist.
+- **Q — What are the fees and how do referral discounts work?**
+   - A — Listing fees are tiered (Micro, Builder, Growth, Enterprise). Published referral discounts apply at checkout when a valid code is provided. Commissioning and reconciliations follow published schedules.
 
-**Q — What are the fees and how do referral discounts work?**
-A — Listing fees are tiered (Micro, Builder, Growth, Enterprise). A valid referral code applies the published discount at checkout (e.g., Micro $10 → $6 with code). Referral codes are managed via the agent program and are validated during onboarding. Commissions and reconciliations are handled monthly.
+- **Q — What does Bitsave do onchain versus offchain?**
+   - A — Offchain (Bitsave / SPV): identity verification (KYB/KYC), custody and settlement of fiat, disbursement to businesses, and recovery activities. Onchain: attestations linking documents to businessId (EAS), issuance of BizShare tokens, BizSwap exit mechanics, and onchain distribution of bridged payouts. The SPV mediates value flows between offchain and onchain layers.
 
-**Q — What does Bitsave do onchain versus offchain?**
-A — **Offchain (Bitsave / SPV)**: KYB/KYC, custody of fiat and converted stablecoins, disbursement to business, collection of repayments, recovery and legal action. **Onchain**: attestations linking documents to `businessId` (EAS), issuance of BizShare tokens, BizSwap exit mechanics, and onchain distribution of bridged payouts. The SPV mediates value flows between these layers (see Section 8 and Section 9).
+- **Q — What reporting and obligations do I have after listing?**
+   - A — Businesses must provide periodic financial reporting according to the instrument (for example: weekly receipts for certain debt instruments; quarterly statements for pilot equity programs). Non-compliance may impact distributions and can trigger enforcement actions per published policy. [INTERNAL ONLY]
 
-**Q — What reporting and obligations do I have after listing?**
-A — Businesses must provide periodic financials per instrument requirements (weekly receipts for debt, quarterly statements for equity pilots). Non-compliance triggers remediation and may lead to paused distributions or enforcement actions.
-
----
-
-### 20.3 Troubleshooting — Common Failure Modes
-
-Below are playbooks for the most frequent operational problems. For any unresolved issue collect the required evidence (wallet address, listingId/businessId, tx hashes, timestamps) and open a support ticket.
-
----
-
-#### A. Failed Collection (business repayment not received)
-
-**Symptoms**
-
-* Scheduled weekly investor payout shows “pending” or distribution failed.
-* Offchain ledger shows no receipt from business.
-
-**Immediate checks**
-
-1. **Confirm schedule:** Verify payout was scheduled for this batch (Distribution Module → batchId).
-2. **Check business remittance:** Ask Ops to confirm whether the business initiated payment and obtain payment reference.
-3. **Check SPV receipt:** Confirm whether SPV bank account shows the payment; if onramp used, confirm conversion completed.
-
-**Step-by-step troubleshooting**
-
-1. Ops: Review `businessId` payment log and locate expected remittance reference.
-2. If remittance exists: confirm bridge to onchain was executed (get bridge tx hash). If not bridged, start bridge; notify investors of expected delay.
-3. If remittance does not exist: contact business (agent) to confirm status; escalate to Risk & Recovery if 24-48 hours overdue.
-4. If funds cannot be collected within grace period → **treasury** covers scheduled payouts to preserve investor cashflows; record a treasury cover entry and start recovery/subrogation process.
-5. Reconcile and close ticket once funds bridged and distributions complete; create post-mortem for repeated failures.
-
-**Data to provide when escalating**
-
-* `businessId`, scheduled batchId, expected amount, business payment reference (if any), timestamps, sample receipts.
-
----
-
-#### B. Bridging Delays (fiat→USDC or SPV→onchain)
-
-**Symptoms**
-
-* After offchain receipt conversion, USDC not visible in onchain distribution wallet within expected time. Bridging latency exceeds expected SLA (default 6–12 hours).
-
-**Immediate checks**
-
-1. Ask Finance/Payments to provide onramp provider reference, onramp tx id, and estimated bridging time.
-2. Check onchain for the bridge transaction hash or pending memos.
-
-**Step-by-step troubleshooting**
-
-1. Confirm offchain conversion succeeded (processor status = settled).
-2. Check whether bridging queue has upstream issues (provider outage).
-
-   * If provider is experiencing delay, switch to alternate provider if preconfigured and authorized.
-3. If bridge tx submitted but unconfirmed onchain: check gas/nonce and network congestion. Increase gas if necessary (per governance/operations rules).
-4. If bridge failed or funds not accepted: escalate to Payments Engineer and open incident with onramp provider.
-5. Notify affected investors with expected ETA and interim treasury coverage if distributions are due and bridging delay threatens the schedule.
-
-**Data to collect**
-
-* Onramp tx reference, merchant ID, expected stablecoin amount, intended onchain wallet address, any error messages from provider.
-
----
-
-#### C. BizSwap Liquidity Shortfall (exit queued / delayed)
-
-**Symptoms**
-
-* Exit request queued; message like “Insufficient BizSwap liquidity — your exit is queued.”
-
-**Immediate checks**
-
-1. Check BizSwap pool balance vs queued exit demand.
-2. Verify LP pool recent withdrawal activity (any mass withdrawal events).
-
-**Step-by-step troubleshooting for users**
-
-1. **If you need funds urgently:** contact support immediately — support can confirm queue position and ETA, but cannot guarantee earlier settlement unless liquidity is added.
-2. **If you can wait:** Leave exit queued; you will be notified when executed. You may cancel the exit request if allowed by product rules.
-3. **If many users queued:** protocol may trigger LP recruitment or treasury top-up per governance rules to process queued exits.
-
-**Operational remediation steps (Ops / Market)**
-
-1. Evaluate whether LPs can be incentivized to add liquidity (short-term incentive program).
-2. Consider controlled treasury intervention to execute a subset of exits while queue is processed; document treasury usage.
-3. Rebalance pool rules or impose temporary throttles to prevent cascading exits (via governance timelock if needed).
-4. Communicate status clearly to affected holders and LPs.
-
-**When to escalate to PSC / Security**
-
-* If queue > configured threshold (e.g., queued exits > 10% of obligations) or if LP withdrawals are concentrated and sudden.
-
----
-
-### Quick Support Checklist (what to provide to support)
-
-When you open a support ticket, include:
-
-* **Your role:** Investor / Business owner / Agent
-* **Wallet address** (for investor) or **businessId / listingId** (for business)
-* **Relevant tx hash(es)** (bridge, distribution, exit) if applicable
-* **BatchId or date/time of event** (payout date, exit request time)
-* **Screenshot or error message** shown in UI
-* **Brief description** of the issue and urgent impact (e.g., funds required)
-
-Providing these items speeds triage and resolution.

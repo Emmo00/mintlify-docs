@@ -70,7 +70,7 @@
             "pages": ["reference/appendices"]
           },
           {
-            "group": "FAQ & Troubleshooting",
+            "group": "FAQ",
             "pages": ["reference/faq-and-troubleshooting"]
           }
         ]
