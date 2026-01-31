@@ -50,18 +50,6 @@
           {
             "group": "Data & Attestations",
             "pages": ["technical/data-and-attestations"]
-          },
-          {
-            "group": "Security Engineering",
-            "pages": ["technical/security-audit-and-risk-controls"]
-          },
-          {
-            "group": "Monitoring & Reporting",
-            "pages": ["technical/monitoring-metrics-and-reporting"]
-          },
-          {
-            "group": "Testing & QA",
-            "pages": ["technical/testing-and-qa"]
           }
         ]
       },
