@@ -43,10 +43,6 @@
             "pages": ["product/equity-and-revenue-products"]
           },
           {
-            "group": "UX & Interfaces",
-            "pages": ["product/ux-product-and-api-reference-catalog"]
-          },
-          {
             "group": "Operations",
             "pages": ["product/operations-and-support"]
           },
