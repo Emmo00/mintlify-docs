@@ -35,12 +35,8 @@
             "pages": ["product/revenue-and-economic-model"]
           },
           {
-            "group": "Primary Product — Tokenized Debt",
-            "pages": ["product/tokenized-debt-deep-dive"]
-          },
-          {
-            "group": "Equity & Revenue Products",
-            "pages": ["product/equity-and-revenue-products"]
+            "group": "Product Deep Dives",
+            "pages": ["product/tokenized-debt-deep-dive", "product/equity-and-revenue-products"]
           },
           {
             "group": "Operations",
