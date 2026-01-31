@@ -1,11 +1,11 @@
 ---
 title: "Architecture & Technical Design"
-description: "This section provides a conceptual, external-facing view of the system architecture, smart contract responsibilities, onchain/offchain interactions, and trust boundaries. Operational deployment topology and internal infrastructure details have been removed or abstracted."
+description: "This section provides a conceptual view of the system architecture, smart contract responsibilities, onchain/offchain interactions, and trust boundaries."
 ---
 
 ### High-Level System Architecture (Components & Data Flows)
 
-Conceptual components (external view):
+Conceptual components:
 
 - **Front-end layer:** User dashboards, marketplace interfaces, deposit and allocation flows.
 - **API / integration layer:** Public-facing endpoints and event hooks for integrators and UIs.
@@ -25,7 +25,7 @@ Conceptual components (external view):
 
 ### Onchain vs Offchain Responsibilities
 
-**Onchain (public responsibilities):**
+**Onchain:**
 
 - Token issuance and lifecycle tracking
 - BizSwap exit execution and fee distribution per contract rules

@@ -1,9 +1,9 @@
 ---
 title: "Tokenized Debt Deep Dive"
-description: "This documentation provides a comprehensive technical and financial deep dive into the Tokenized Debt product within the BizFi and BizMarket ecosystem, detailing its structure, lifecycle, financial mechanics, liquidity model, and protocol guarantees while abstracting internal operational procedures."
+description: "This documentation provides a comprehensive technical and financial deep dive into the Tokenized Debt product within the BizFi and BizMarket ecosystem, detailing its structure, lifecycle, financial mechanics, liquidity model, and protocol guarantees."
 ---
 
-Tokenized Debt is the foundational financial instrument within the BizFi protocol. This document provides an external-facing overview of its structure, lifecycle, financial logic, liquidity model, and protocol guarantees, with all internal operational details removed or abstracted.
+Tokenized Debt is the foundational financial instrument within the BizFi protocol. This document provides an overview of its structure, lifecycle, financial logic, liquidity model, and protocol guarantees.
 
 ## Product Definition & Rationale
 
@@ -152,7 +152,7 @@ Liquidity providers support BizSwap exit capacity, earn a share of exit fees, an
 
 ## BizSwap Vault
 
-The BizSwap Vault manages protocol liquidity and settlement. It receives returned BizShares, pays exit USDC, and accounts for fee splits. Vault state management is handled by protocol smart contracts. [INTERNAL ONLY: Detailed vault state transitions and reconciliation steps.]
+The BizSwap Vault manages protocol liquidity and settlement. It receives returned BizShares, pays exit USDC, and accounts for fee splits. Vault state management is handled by protocol smart contracts.
 
 ## Protocol Guarantees on Investor Payouts
 
@@ -164,7 +164,7 @@ If a business fails to pay, the treasury covers scheduled investor payouts. Inve
 
 ### Recovery & Subrogation
 
-After covering payments, Bitsave pursues recovery offchain. Recovered funds replenish the treasury. Investors are insulated from enforcement complexity. [INTERNAL ONLY: Details of legal, restructuring, or repayment processes.]
+After covering payments, Bitsave pursues recovery offchain. Recovered funds replenish the treasury. Investors are insulated from enforcement complexity.
 
 ## Risk Disclosures & System Limitations
 

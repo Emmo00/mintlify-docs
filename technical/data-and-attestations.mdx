@@ -1,9 +1,9 @@
 ---
 title: "Data & Attestations"
-description: "This section provides a conceptual, external-facing view of the protocol's data and attestation mechanisms, including how offchain business data is anchored onchain, the privacy model, business metadata, index concepts, and reconciliation records. Implementation-specific details have been removed or abstracted."
+description: "This section provides a conceptual, view of the protocol's data and attestation mechanisms, including how offchain business data is anchored onchain, the privacy model, business metadata, index concepts, and reconciliation records."
 ---
 
-### Attestations — Purpose and Public Schema (Conceptual)
+### Attestations — Purpose and Schema (Conceptual)
 
 Attestations create a verifiable link between a public `businessId`, an attestation type, a `dataHash` representing an offchain record, and the business owner address. Attestations are used for provenance and auditability; they do not store sensitive documents onchain.
 
@@ -47,7 +47,7 @@ Additional supporting fields are collected for underwriting and compliance but a
 
 ### Reconciliation & Audit Trail
 
-The protocol maintains reconciliation artifacts that link offchain receipts and bridging events to onchain distributions. Key external-facing record types include:
+The protocol maintains reconciliation artifacts that link offchain receipts and bridging events to onchain distributions. Key record types include:
 
 - Onchain distribution logs (transaction hashes, dates, total distributed, per-holder links)
 - Exit event summaries (exit id, holder, instrument id, remaining value, fees, payout tx)

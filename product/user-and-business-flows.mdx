@@ -1,6 +1,6 @@
 ---
 title: "User & Business Flows"
-description: "This documentation provides high-level user and business interaction flows within the BizFi and BizMarket ecosystem, abstracting internal operational procedures while flagging removed internal-only details."
+description: "This documentation provides high-level user and business interaction flows within the BizFi and BizMarket ecosystem."
 ---
 
 ### Business Onboarding / Listing Flow
@@ -9,7 +9,7 @@ Businesses undergo a structured onboarding and verification process before a tok
 
 Key Steps:
 
-1. **Application Submission** — Business submits required information and supporting documents through the public onboarding interface.
+1. **Application Submission** — Business submits required information and supporting documents through the onboarding interface.
 2. **Eligibility & Compliance Review** — The protocol's compliance and risk teams assess sector suitability, revenue profile, and perform KYB checks.
 3. **Instrument Structuring** — Terms (instrument type, amount, tenure, payout cadence) are defined and presented to investors.
 4. **Listing Publication** — The offering is published on BizMarket with onchain parameters and investor-facing disclosures.
@@ -48,7 +48,7 @@ Debt BizShares are non-transferable between users; exits are executed through Bi
 Key Steps:
 
 1. **Exit Request** — Investor initiates an exit request via BizSwap.
-2. **Eligibility Verification** — Protocol verifies instrument status and external-facing eligibility criteria.
+2. **Eligibility Verification** — Protocol verifies instrument status and eligibility criteria.
 3. **Settlement** — Investor returns BizShares to the protocol and receives stablecoins per the exit formula (including any exit fee).
 
 ---
@@ -56,9 +56,10 @@ Key Steps:
 ### Liquidity Provision
 
 External liquidity providers supply stablecoins to protocol-designated pools to support financing cycles and BizSwap exits.
-Key Steps (external view):
 
-1. **Contribution** — Provider deposits stablecoins into a public liquidity pool.
+Key Steps:
+
+1. **Contribution** — Provider deposits stablecoins into a liquidity pool.
 2. **Pool Exposure** — Provider's contribution is represented according to pool rules and entitles them to defined fee shares.
 3. **Incentives & Returns** — Returns are generated from protocol fee distributions and exit-fee sharing.
 
@@ -66,12 +67,12 @@ Key Steps (external view):
 
 ### Repayment & Distribution
 
-Narrative: Businesses remit repayments or revenue shares which are ultimately used to fund onchain distributions to investors. External documentation describes responsibilities and sequencing without exposing internal reconciliation workflows.
+Businesses remit repayments or revenue shares which are ultimately used to fund onchain distributions to investors.
 
 Key Steps:
 
 1. **Business Payment** — Business remits payments as required by the instrument terms.
-2. **Funds Receipt & Verification** — Protocol acknowledges receipt and verifies amounts (external-facing confirmation only).
+2. **Funds Receipt & Verification** — Protocol acknowledges receipt and verifies amounts.
 3. **Onchain Distribution** — Verified funds are made available for onchain distribution; smart contracts allocate payouts to BizShare holders per their entitlements.
 4. **Investor Receipt** — Investors receive stablecoins on the defined payout cadence.
 
@@ -79,7 +80,7 @@ Key Steps:
 
 ### Referral & Agent Flow
 
-Referral mechanisms and agent programs facilitate acquisition and onboarding; attribution and rewards are applied per public program rules.
+Referral mechanisms and agent programs facilitate acquisition and onboarding; attribution and rewards are applied per program rules.
 
 Key Steps:
 

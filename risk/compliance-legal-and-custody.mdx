@@ -10,7 +10,7 @@ description: "This section describes the legal, custody, and compliance framewor
 * A Special Purpose Vehicle (SPV) or equivalent legal entity is used to hold certain offchain assets and to act as the legal counterparty for onchain instrument representations where required by law.
 * The SPV serves as a legal wrapper that maps onchain token representations to underlying contractual or share interests when instruments require legal remapping.
 
-**Primary SPV responsibilities (external view)**
+**Primary SPV responsibilities**
 
 * Custody and safekeeping of legally required assets associated with tokenized instruments.
 * Contractual counterparty to issuing businesses where an offchain agreement is required.
@@ -25,20 +25,18 @@ description: "This section describes the legal, custody, and compliance framewor
 ---
 
 
-### Custody and Funds Flow (External Overview)
+### Custody and Funds Flow (Overview)
 
-This subsection provides an external-facing description of custody and funds movement without exposing internal operational procedures. Detailed implementation (partners, account structures, and reconciliation workflows) is not included here and is flagged as internal-only.
+This subsection provides a description of custody and funds movement.
 
-**High-level custody flow (external view):**
+**High-level custody flow:**
 
 1. **Fiat/on-ramp** — Fiat received from businesses or investors is converted to approved stablecoins via third-party on-ramps.
 2. **Legal custody** — Converted stablecoins and any fiat holdings associated with tokenized instruments are held under the SPV or appointed custodians as required by law.
 3. **Deployment** — Capital is deployed to businesses pursuant to the contractual terms of the instrument.
 4. **Repayments & Distribution** — Business repayments are routed to the legal vehicle/custodian and made available for onchain distribution to token holders per instrument terms.
 
-[INTERNAL ONLY: Detailed partner lists, account-level custody mappings, conversion reconciliation, multi-sig wallet arrangements, and bridging procedures.]
-
-**Controls and segregation (external view):**
+**Controls and segregation:**
 
 * The protocol requires separation of custody responsibilities and recommends multi-party control over treasury functions where appropriate.
 * Custody and conversion partners should be vetted; governance and transparency mechanisms are applied to protocol-held allocations.
@@ -59,18 +57,16 @@ BizMarket establishes verifiable onchain provenance for business listings and is
 * Create immutable references (data hashes) to source documents and form a tamper-evident record that links a `businessId` with instrument metadata and the business owner address.
 
 
-**Attestation workflow (external view)**
+**Attestation workflow**
 
 1. **Document hashing** — Relevant offchain source documents are hashed to create a tamper-evident `dataHash` that can be referenced onchain.
 2. **Attestation submission** — An authorized attestor records the attestation using a standard attestation service (e.g., EAS), linking the `businessId`, `dataHash`, and other metadata required for provenance.
 3. **Onchain reference & retrieval** — Attestations are stored onchain and indexed for retrieval by UIs, auditors, and integrators to verify provenance.
 
-**Benefits (external view)**
+**Benefits**
 
 * Provides a verifiable link between an onchain instrument and supporting offchain documentation.
 * Enhances auditability and reduces ambiguity around instrument provenance.
-
-[INTERNAL ONLY: Example encoding snippets, implementation helpers, and internal `businessId` management details are omitted from this external document.]
 
 **Flag — implementation confirmation**
 
@@ -134,7 +130,7 @@ BizMarket establishes verifiable onchain provenance for business listings and is
 * Investors should be informed to consult local tax advisors.
 
 
-**Platform reporting (external view)**
+**Platform reporting**
 
 * The legal vehicle and protocol maintain records necessary to support tax reporting and investor statements (transaction histories, payouts, and summaries) as required by law.
 
