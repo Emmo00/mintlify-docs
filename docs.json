@@ -59,10 +59,6 @@
           {
             "group": "Compliance & Legal",
             "pages": ["risk/compliance-legal-and-custody"]
-          },
-          {
-            "group": "Risk Analysis",
-            "pages": ["risk/economic-and-security-risk-analysis"]
           }
         ]
       },
