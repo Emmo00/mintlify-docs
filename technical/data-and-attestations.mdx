@@ -1,231 +1,56 @@
-## 10. Data & Attestations
+---
+title: "Data & Attestations"
+description: "This section provides a conceptual, external-facing view of the protocol's data and attestation mechanisms, including how offchain business data is anchored onchain, the privacy model, business metadata, index concepts, and reconciliation records. Implementation-specific details have been removed or abstracted."
+---
 
-This section describes how BizMarket represents, anchors, and reconciles offchain business data onchain using attestations. It covers the attestation schema, document hashing and privacy model, the business metadata model captured at listing, index data model concepts, and the audit trail / reconciliation reporting that ties onchain events to offchain settlements.
+### Attestations — Purpose and Public Schema (Conceptual)
+
+Attestations create a verifiable link between a public `businessId`, an attestation type, a `dataHash` representing an offchain record, and the business owner address. Attestations are used for provenance and auditability; they do not store sensitive documents onchain.
+
+Canonical attestation fields:
+
+- `businessId` (numeric) — Public identifier for the listing.
+- `attestationType` (enum) — Type of attestation (e.g., registration, financial statements, KYB completion).
+- `dataHash` (bytes32) — Cryptographic hash of the offchain document bundle.
+- `businessOwner` (address) — Wallet address associated with the business representative.
+
+Attestation events onchain include attestor address, transaction hash and timestamp, and a schema identifier. Parties holding the original offchain bundle can verify provenance by matching the `dataHash` to their canonical serialization.
 
 ---
 
-### 10.1 EAS schema details and example encoding (BizMarket Reg schema snippet)
+### Document Hashing and Privacy Model (Summary)
 
-**Purpose:**
-EAS attestations create a verifiable, tamper-evident link between a `businessId` (the protocol’s internal identifier), the offchain documents that support a listing, the instrument type, and the business owner’s wallet address. Attestations are used for provenance and auditability; they do **not** store sensitive documents onchain.
+High-level process:
 
-**Canonical fields (BizMarket Reg attestation):**
+1. Create a deterministic document bundle and canonical serialization.
+2. Compute a cryptographic hash (e.g., SHA-256) to produce `dataHash`.
+3. Store the bundle in encrypted offchain storage and submit the `dataHash` with attestation metadata onchain.
 
-* `businessId` (uint256) — Internal numeric identifier for the business/listing.
-* `attestationType` (uint8) — Enumerated type describing the attestation (e.g., registration, financial statements, KYB completion).
-* `dataHash` (bytes32) — Cryptographic hash of the offchain document payload (document bundle snapshot).
-* `businessOwner` (address) — Ethereum/Base address that the business or its representative controls.
+Privacy principles:
 
-**Example (conceptual) encoding snippet**
-The project uses an encoder to produce the attestation payload prior to submitting it to EAS. Conceptually:
-
-```
-schema: "uint256 businessId,uint8 attestationType,bytes32 dataHash,address businessOwner"
-
-encodedData = encode({
-  businessId: 12345,
-  attestationType: 0,          // e.g., 0 = "registration"
-  dataHash: "0x3f8a...f2b1",   // SHA-256 or other standardized hash
-  businessOwner: "0xAaBb...CcDd"
-})
-```
-
-**Operational attestation metadata (stored onchain as part of the attestation event):**
-
-* Attestor address (who submitted the attestation)
-* Transaction hash and block timestamp
-* Schema identifier (EAS schema id)
-* Optional human-readable metadata stored offchain and referenced by `dataHash`
-
-**Notes / Implementation guidance:**
-
-* Attestations should be issued only by authorized attestors (e.g., the SPV or designated Bitsave attestor keys).
-* Each attestation must reference an offchain record (document bundle) whose hash matches `dataHash`.
-* Keep attestations minimal—store only the fields required for provable linkage; sensitive content stays offchain.
+- Onchain: only non-reversible references (`dataHash`) and minimal metadata are published.
+- Offchain: full documents remain encrypted and access-controlled; PII is never stored onchain.
+- Verification: authorized parties can request the offchain bundle and confirm the hash matches the onchain attestation.
 
 ---
 
-### 10.2 Document Hashing, Linking, and Privacy Model
+### Business Metadata
 
-**Hashing workflow (high level):**
+Key fields exposed in investor-facing listings and used to support attestations:
 
-1. **Document bundle**: For each attestation, collate the related documents (e.g., registration, bank statement snippet, signed MoU) into a deterministic canonical representation (ordered list, normalized file formats).
-2. **Canonical serialization**: Serialize the bundle in a deterministic way (e.g., canonical JSON plus stable ordering and normalized metadata).
-3. **Hashing algorithm**: Compute a cryptographic hash (recommended: SHA-256) over the canonical serialization. Result → `dataHash`.
-4. **Store offchain**: Store the bundle in encrypted offchain storage (secure cloud or document vault) and record access controls.
-5. **Attest onchain**: Submit the `dataHash` with the other schema fields to EAS.
+- `businessId`, `businessName`, `businessOwnerWallet`, `country`, `instrumentType`, `amountToRaise`, `proposedTenor`, `payoutCadence`, `averageMonthlyRevenue` (where disclosed), and `useOfProceeds`.
 
-**Privacy model and what remains offchain:**
-
-* **Onchain**: only `dataHash`, `businessId`, attestationType, timestamps, and attestor metadata. This is non-reversible (hash cannot reveal the document) but verifiable by the party that holds the original bundle.
-* **Offchain**: all sensitive documents (IDs, full financial statements, bank data, audit files) remain encrypted and access-controlled. Bitsave Ops and authorized auditors can retrieve the full bundle for verification under policies and consent.
-* **Access control**: offchain storage must enforce least-privilege and logging. When third parties (auditors, regulators) need to inspect documents, Bitsave provides access under documented procedures and consent.
-
-**Proof model for third parties:**
-
-* The third party requests the offchain bundle; Bitsave provides the bundle along with its canonical serialization and shows that `SHA-256(bundle) == dataHash`. The third party can verify the attestation onchain (matching `businessId` and transaction) and confirm provenance.
-
-**Retention, redaction, and privacy considerations:**
-
-* Maintain retention schedules aligned with legal obligations (tax, AML).
-* If documents must be redacted for privacy, create and attest a redacted canonical bundle and maintain the original under stricter controls.
-* Any policy that requires putting personally identifying data onchain must be avoided—do not store PII onchain.
+Additional supporting fields are collected for underwriting and compliance but are not published in full in investor-facing documents.
 
 ---
 
-### 10.3 Business Metadata Model (fields captured in listing forms)
 
-The business metadata model captures the on- and offchain attributes used for underwriting, investor disclosures, and attestation linkage. Fields are grouped by category and marked as `Required` or `Optional` per the current product context.
+### Reconciliation & Audit Trail
 
-**A. General / Identity**
+The protocol maintains reconciliation artifacts that link offchain receipts and bridging events to onchain distributions. Key external-facing record types include:
 
-* `businessId` (internal numeric id) — Required
-* `businessName` — Required
-* `operatingName` / `brand` — Optional
-* `businessOwnerName` — Required
-* `businessOwnerWallet` (address) — Required for attestation linkage
-* `country` / `city` — Required
-* `registrationNumber` / `publicRegistrationUrl` — Conditional (required if registered)
+- Onchain distribution logs (transaction hashes, dates, total distributed, per-holder links)
+- Exit event summaries (exit id, holder, instrument id, remaining value, fees, payout tx)
+- High-level treasury movement summaries (inflows and outflows linked to public txs)
 
-**B. Contact & Social**
-
-* `contactEmail` — Required
-* `contactPhone` — Optional
-* `socialHandles` (Twitter, LinkedIn, Instagram) — Optional (2 credible socials encouraged)
-
-**C. Business Details / Operations**
-
-* `businessType` / `industry` — Required (dropdown)
-* `yearStarted` — Optional/Recommended
-* `teamSize` — Optional
-* `primarySalesChannels` (Online/Offline) — Required
-
-**D. Financial Snapshot**
-
-* `averageMonthlyRevenue` (currency + amount) — Required for tier determination
-* `averageMonthlyExpenses` (currency + amount) — Required if available
-* `profitMarginEstimate` (auto-calculated from revenue/expenses) — Derived
-* `currentDebtsOrLoans` (Yes/No + details) — Optional but recommended
-* `financialDocumentsLink` (encrypted offchain storage / Google Drive link with access controls) — Required for due diligence
-
-**E. Instrument & Funding**
-
-* `instrumentType` (debt/equity/revenue/convertible) — Required
-* `amountToRaise` (currency + amount) — Required
-* `useOfProceeds` — Required (narrative)
-* `proposedTenor` / `payoutCadence` — Required for debt instruments
-
-**F. Compliance & Declarations**
-
-* `kybStatus` (pending/approved/failed) — System-managed
-* `consentDeclaration` (checkbox) — Required (consent for data processing and attestations)
-
-**Validation and format rules**
-
-* Currency fields must include ISO currency codes and USD equivalents where required.
-* Numeric fields validated for reasonable ranges (e.g., monthly revenue cannot be negative).
-* File links must be hashed and the hash included in attestation metadata.
-
-**Notes:** The above fields are the canonical set captured in the onboarding forms described earlier. Fields required for listing and attestation should be minimized to what’s necessary for investor disclosure and compliance.
-
----
-
-### 10.4 Index Data Model (weights, inclusion criteria, rebalancing schedule)
-
-Indexes aggregate multiple BizShares into a single tokenized product. The index model must be explicit and auditable onchain and offchain.
-
-**Core components of an index data model:**
-
-* `indexId` — Unique identifier for the index
-* `constituents` — List of `businessId` and `instrumentId` pairs included in the index
-* `weightingScheme` — How constituent weights are computed (see options below)
-* `inclusionCriteria` — Rules for which instruments can be included (e.g., instrument type, minimum issuance, credit score)
-* `rebalancePolicy` — Periodic schedule or event-driven rules for reweighting constituents
-* `dividendPassthroughRules` — How incoming cash flows from underlying instruments are aggregated and distributed to index holders
-* `creationDate`, `lastRebalancedAt`, and `governanceRules` — Metadata for provenance and change control
-
-**Weighting schemes (examples):**
-
-* **Equal Weight** — Each constituent contributes equally regardless of size. Simple and transparent.
-* **Size/Market-cap Weight** — Weight proportional to outstanding principal or onchain market value.
-* **Revenue-weighted** — Weight proportional to recent revenue figures (requires stronger attestation and offchain verification).
-* **Risk-adjusted Weight** — Weight adjusted by credit-risk score or delinquency history.
-
-**Inclusion criteria (examples):**
-
-* Minimum outstanding principal (e.g., > $X)
-* Minimum underwriting score or KYB status = `approved`
-* Minimum remaining shelf life (e.g., > 4 weeks)
-
-**Rebalancing schedule:**
-
-* **Periodic**: e.g., weekly or monthly scheduled rebalancing to target weights.
-* **Threshold-based**: rebalance when a constituent deviates from its target by X% or if a new instrument enters.
-* **Governance-triggered**: rebalances authorized by governance or admin panel for special events.
-
-**Dividend / cashflow passthrough mechanics:**
-
-* Cash flows (weekly repayments, exits) from constituents are collected by the SPV, reconciled, and bridged onchain.
-* The index distribution module aggregates constituent flows, applies any index fees, and pro rata distributes to index token holders.
-
-**Auditability:**
-
-* Index composition and rebalancing events are recorded with attestations linking to the underlying instruments’ attestation records for traceability.
-
-**Design note:** Index models require careful design around onchain representation of offchain metrics (e.g., revenue-weighting)—these must be supported by robust attestation and verification processes.
-
----
-
-### 10.5 Audit Trail and Reconciliation Reports (weekly repayments, exits, treasury flows)
-
-Strong reconciliation between offchain cash movements and onchain distributions is critical. Audit trails should be machine-readable, tamper-evident, and retained according to regulatory requirements.
-
-**Core reconciliation artifacts:**
-
-* **Weekly Repayment Register (offchain)**
-
-  * Record per-business expected repayment schedule, actual receipt timestamp, amount received, payment method, and remittance reference.
-  * Fields: `businessId`, `instrumentId`, `scheduledDate`, `receivedDate`, `amountReceivedUSD`, `fundSource`, `reconciliationStatus`, `notes`.
-
-* **Onchain Distribution Log**
-
-  * For each payout event: `distributionTxHash`, `distributionDate`, `totalDistributed`, `perHolderAmounts`, `linkToOffchainBatchId`.
-
-* **BizSwap Exit Report**
-
-  * For each exit: `exitId`, `holderWallet`, `instrumentId`, `remainingValueAtExit`, `exitFee`, `lpShare`, `treasuryShare`, `payoutTxHash`.
-
-* **Treasury Movement Ledger**
-
-  * Tracks protocol reserves: inflows (fees, protocol allocation, recovered funds) and outflows (default coverage payouts, operational expenses).
-  * Fields: `txId`, `type`, `amount`, `counterparty`, `reason`, `onchainTxHash` (where applicable).
-
-* **Bridging / Onramp Reconciliation**
-
-  * Reconciles fiat conversions to USDC and records conversion rates, fees, processor references, and final onchain wallet deposits.
-
-**Reconciliation process (stepwise):**
-
-1. **Daily collection ingestion** — ingest offchain receipts for the day, tag by `businessId`.
-2. **Match to expected schedule** — compare receipts to expected scheduled payments; mark exceptions/delays.
-3. **Record bridging events** — when funds are bridged onchain, link the onchain tx and mark as available for distribution.
-4. **Queue onchain distribution** — central distribution module schedules weekly payouts; create distribution batch.
-5. **Execute and log** — execute onchain distribution and record tx hashes.
-6. **Post-distribution reconciliation** — confirm per-holder receipt, update ledgers, flag failures for manual resolution.
-7. **Generate reports** — produce weekly and monthly reconciliation reports for auditors and regulators.
-
-**Report formats & access patterns:**
-
-* **Machine-readable**: CSV, JSON export for auditors and accounting systems.
-* **Human-readable**: Summarized PDF or dashboard snapshots for management and investors.
-* **Retention & access**: Maintain immutable historical records with audit logs showing who accessed or modified offchain reconciliation entries.
-
-**Auditability connections:**
-
-* Each offchain record references the `dataHash` and attestation tx where relevant (e.g., financial statements used in underwriting).
-* Onchain txs (attestation, bridging, distribution, exiting) are linked to reconciliation entries for end-to-end traceability.
-
-**Exception handling & escalation:**
-
-* Define SLA for resolving mismatches (e.g., 48–72 hours for common bridging mismatches).
-* Treasury top-up rules for shortfalls are executed under documented governance and multi-sig controls.
+These artifacts support third-party audit and investor reporting while preserving sensitive operational details offchain.
