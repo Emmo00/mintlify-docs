@@ -39,10 +39,6 @@
             "pages": ["product/tokenized-debt-deep-dive", "product/equity-and-revenue-products"]
           },
           {
-            "group": "Operations",
-            "pages": ["product/operations-and-support"]
-          },
-          {
             "group": "Roadmap",
             "pages": ["product/roadmap-and-phased-launch-plan"]
           },
