@@ -37,14 +37,6 @@
           {
             "group": "Product Deep Dives",
             "pages": ["product/tokenized-debt-deep-dive", "product/equity-and-revenue-products"]
-          },
-          {
-            "group": "Roadmap",
-            "pages": ["product/roadmap-and-phased-launch-plan"]
-          },
-          {
-            "group": "Governance & Policies",
-            "pages": ["product/governance-and-product-policies"]
           }
         ]
       },
