@@ -38,7 +38,7 @@ Each Tokenized Debt BizShare is standardized as follows:
 | **Repayment Cadence**      | Weekly amortized (principal + interest) |
 | **Payout Currency**        | Stablecoin (USDC)                       |
 | **Shelf Life**             | 12 weeks maximum                        |
-| **BizSwap Early Exit Fee** | 10% flat                                |
+| **BizSwap Early Exit Fee** | 10% flat (on the original price of the biz share)                                |
 
 Each BizShare represents one $100 principal unit of exposure.
 
@@ -93,19 +93,19 @@ $$
 104 - 34.64 = 69.36
 $$
 
-**BizSwap Exit Fee (10%):**
+**BizSwap Exit Fee (10% of `P`):**
 $$
-69.36 \times 0.10 = 6.936
+100 \times 0.10 = 10
 $$
 
 **Investor Exit Payout:**
 $$
-69.36 - 6.936 = 62.424
+69.36 - 10 = 59.36
 $$
 
 **Total realized value:**
 $$
-34.64 + 62.424 = 97.064
+34.64 + 59.36 = 94.00
 $$
 
 Investor exits early at a discount relative to holding to maturity.

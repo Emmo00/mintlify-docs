@@ -19,74 +19,67 @@ description: "This appendix contains reference material, formulas, templates, an
 
 #### B.1 Key constants (current design)
 
-* Principal per BizShare unit: ( P = $100 )
-* Quarterly yield: ( r_q = 4% = 0.04 )
-* Annualized yield (approx): ( r_{ann} = 16% )
-* Duration: ( T = 12 ) weeks (≈ 90 days)
+* Principal per BizShare unit: $$ P = \$100 $$
+* Quarterly yield: $$ r_q = 4\% = 0.04 $$
+* Annualized yield (approx): $$ r_{ann} = 16\% $$
+* Duration: $$ T = 12 $$weeks (≈ 90 days)
 * Payout cadence: weekly (12 payouts)
-* BizSwap flat exit fee: ( f = 10% = 0.10 ) (applies to remaining value at time of exit)
+* BizSwap flat exit fee: $$ f = 10\% = 0.10 $$ (applies to the original principal amount, not the remaining value)
 * BizSwap fee split: LP share = 20% of exit fee; Treasury share = 80% of exit fee
 
 #### B.2 Formulas
 
 1. **Total interest for term**
-   [
+   $$
    I = P \times r_q
-   ]
+   $$
 
 2. **Total repayment value**
-   [
+   $$
    V = P + I = P \times (1 + r_q)
-   ]
+   $$
 
 3. **Weekly amortized payout (equal payments)**
-   [
+   $$
    \text{WeeklyPayout} = \frac{V}{T}
-   ]
+   $$
 
 4. **Remaining scheduled value after (w) weeks**
-   [
+   $$
    R(w) = V - w \times \text{WeeklyPayout}
-   ]
+   $$
 
-5. **Exit fee on remaining value**
-   [
-   \text{ExitFee}(w) = R(w) \times f
-   ]
+5. **Exit fee**
+   $$
+   \text{ExitFee}(w) = P \times f
+   $$
 
 6. **Net exit payout (received when exiting at week (w))**
-   [
-   \text{NetExit}(w) = R(w) - \text{ExitFee}(w) = R(w) \times (1 - f)
-   ]
+   $$
+   \text{NetExit}(w) = R(w) - \text{ExitFee}(w) = R(w) - P \times f
+   $$
 
 7. **Total realized value for investor who had already received (w) weekly payments then exited**
-   [
+   $$
    \text{TotalRealized}(w) = w \times \text{WeeklyPayout} + \text{NetExit}(w)
-   ]
+   $$
 
 8. **Fee split**
-   [
-   \text{LP_share} = \text{ExitFee} \times 0.20,\quad \text{Treasury_share} = \text{ExitFee} \times 0.80
-   ]
+   $$
+   {LP}_\text{share} = \text{ExitFee} \times 0.20, \quad \text{Treasury}_\text{share} = \text{ExitFee} \times 0.80
+   $$
 
 #### B.3 Worked numeric example (baseline constants)
 
-* (P=100)
-* (r_q=0.04) → (I=100 \times 0.04 = 4)
-* (V = 104)
-* (T=12) → Weekly payout (= \dfrac{104}{12} \approx 8.6666667) (rounded display $8.66)
+* $$P=100$$
+* $$r_q=0.04$$ → $$I=100 \times 0.04 = 4$$
+* $$V = 104$$
+* $$T=12$$ → Weekly payout $$= \dfrac{104}{12} \approx 8.6666667$$ (rounded display $8.66)
 
 **Exit after 5 weeks** (example in context):
 
-* Amount already collected: (5 \times 8.6666667 = 43.3333335 ) (~$43.33)
-* Remaining scheduled value: (R(5) = 104 - 43.3333335 = 60.6666665) (~$60.67)
-* Exit fee: (60.6666665 \times 0.10 = 6.06666665) (~$6.07)
-* Net exit payout: (60.6666665 - 6.06666665 = 54.59999985) (~$54.60)
-* Total realized (collected + exit): (43.3333335 + 54.59999985 = 97.93333335) (~$97.93)
-
-*(Note: earlier narrative examples rounded differently; implementations should adopt a deterministic rounding policy and state it clearly.)*
-
-#### B.4 Rounding policy recommendation
-
-* Use fixed-point arithmetic (e.g., integer representation in cents or in micro-USDC units).
-* Distribute rounding residuals consistently (e.g., protocol retains sub-cent residuals or they are allocated to treasury). Document which approach is used.
+* Amount already collected: $$5 \times 8.6666667 = 43.3333335$$ $$\approx\$43.33$$
+* Remaining scheduled value: $$R(5) = 104 - 43.3333335 = 60.6666665$$ $$\approx\$60.67$$
+* Exit fee: $$100 \times 0.10 = 10$$ $$\approx\$10.00$$
+* Net exit payout: $$60.6666665 - 10 = 50.6666665$$ $$\approx\$50.67$$
+* Total realized (collected + exit): $$43.3333335 + 50.6666665 = 94$$ $$\approx\$94.00$$
