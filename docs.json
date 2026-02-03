@@ -54,15 +54,6 @@
         ]
       },
       {
-        "tab": "Risk & Legal",
-        "groups": [
-          {
-            "group": "Compliance & Legal",
-            "pages": ["risk/compliance-legal-and-custody"]
-          }
-        ]
-      },
-      {
         "tab": "Reference",
         "groups": [
           {
