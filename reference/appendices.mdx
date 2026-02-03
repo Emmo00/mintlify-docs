@@ -56,7 +56,7 @@ description: "This appendix contains reference material, formulas, templates, an
 
 6. **Net exit payout (received when exiting at week (w))**
    $$
-   \text{NetExit}(w) = R(w) - \text{ExitFee}(w) = R(w) - P \times f
+   \text{NetExit}(w) = P - (w \times \text{WeeklyPayout}) - \text{ExitFee}(w)
    $$
 
 7. **Total realized value for investor who had already received (w) weekly payments then exited**
@@ -79,7 +79,7 @@ description: "This appendix contains reference material, formulas, templates, an
 **Exit after 5 weeks** (example in context):
 
 * Amount already collected: $$5 \times 8.6666667 = 43.3333335$$ $$\approx\$43.33$$
-* Remaining scheduled value: $$R(5) = 104 - 43.3333335 = 60.6666665$$ $$\approx\$60.67$$
+* Calculated Refund: $$100 - 43.3333335 = 56.6666665$$ $$\approx\$56.67$$
 * Exit fee: $$100 \times 0.10 = 10$$ $$\approx\$10.00$$
-* Net exit payout: $$60.6666665 - 10 = 50.6666665$$ $$\approx\$50.67$$
-* Total realized (collected + exit): $$43.3333335 + 50.6666665 = 94$$ $$\approx\$94.00$$
+* Net exit payout: $$56.6666665 - 10 = 46.6666665$$ $$\approx\$46.67$$
+* Total realized (collected + exit): $$43.3333335 + 46.6666665 = 90$$ $$\approx\$90.00$$
