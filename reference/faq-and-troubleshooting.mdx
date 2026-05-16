@@ -1,21 +1,21 @@
 ---
 title: "FAQ & Troubleshooting"
-description: "This section answers the most common questions investors and business owners have, and gives step-by-step troubleshooting guides for the frequent operational problems teams encounter. Where appropriate the answers reference the protocol mechanics (BizSwap, SPV, distribution module, bridging)."
+description: "This section answers the most common questions investors and business owners have, and gives step-by-step troubleshooting guides for the frequent operational problems teams encounter. Where appropriate the answers reference the protocol mechanics (BizSwap, SPV, distribution module, and offchain settlement)."
 ---
 
 ### Top Investor FAQs
 
 **Q — How and when do I receive payouts?**
-   - A — Debt BizShare payouts are made in stablecoin (USDC) on a **weekly** cadence. High-level flow: the business remits funds to the SPV → SPV reconciles receipts → funds are bridged to the onchain distribution module → the distribution module executes an onchain payout batch and each holder receives USDC to their wallet. After each payout you get an in-app notification and a transaction hash.
+   - A — Payouts are made in stablecoins on the cadence defined by the instrument. BizYield pays monthly, BizCredit pays weekly, and BizBond pays quarterly or at maturity depending on the series. High-level flow: the issuer remits funds to the SPV or custodian → receipts are reconciled → funds are bridged to the onchain distribution module → the distribution module executes an onchain payout batch and each holder receives stablecoins to their wallet. After each payout you get an in-app notification and a transaction hash.
 
 **Q — What happens if the business misses a repayment?**
-   - A — The protocol’s **treasury** is the backstop: if a business misses a scheduled repayment, the treasury covers the scheduled investor payout so that investor cash-flows are uninterrupted. Bitsave Smart Limited (SPV) then pursues offchain recovery from the business; recovered funds replenish the treasury per policy. See Section 6 and Section 14 for detail.
+   - A — The protocol’s treasury and reserve structure is the backstop for supported products: if a business misses a scheduled repayment, the protocol can use reserves to maintain the payout schedule where applicable. BizMarket’s coordination layer then pursues offchain recovery from the business; recovered funds replenish reserves per policy.
 
-**Q — Can I sell my debt BizShares early? How does BizSwap work?**
-   - A — Yes — debt BizShares are non-transferable wallet-to-wallet but can be exited via **BizSwap**. When you request an early exit the protocol computes the refund value (Principal minus Total Collected Payouts), applies a **10% flat exit fee** on the original principal amount, and attempts to settle from BizSwap liquidity. If liquidity is sufficient the swap executes and you receive the net USDC (minus fee). If liquidity is insufficient your exit is queued until liquidity becomes available. Exit fee is split: **20% to LPs**, **80% to protocol treasury**.
+**Q — Can I sell my BizShares early? How does BizSwap work?**
+   - A — Yes — supported BizShares can be exited via **BizSwap** where the instrument permits it. When you request an early exit the protocol computes the refund value, applies the applicable exit fee on the original principal amount, and attempts to settle from BizSwap liquidity. If liquidity is sufficient the swap executes and you receive the net stablecoin amount. If liquidity is insufficient your exit is queued until liquidity becomes available. Exit fee splits follow the product's published rules.
 
 **Q — How much can I invest?**
-   - A — Your BizFi investment capacity is enforced onchain using your SaveFi balance and the **100× multiplier**: e.g., \$100 savings → \$10,000 investable. This limit is enforced by smart contracts. Note: if you withdraw your SaveFi savings your historical investment limit does **not** automatically reduce for prior commitments — it is a hard contract limit on deposits (see Section 2 & SaveFi notes).
+   - A — Your investment capacity is enforced onchain using product-specific limits, account status, and jurisdictional rules. Limits are enforced by smart contracts and may differ by instrument.
 
 **Q — Where can I see my receipts and statements?**
    - A — Every buy, exit and payout produces an in-app receipt and email. Monthly statements, downloadable CSVs, and tax documents (where applicable) are available in **My Portfolio → Statements**. If you need a custom reconciliation export, open a support ticket.
@@ -25,14 +25,14 @@ description: "This section answers the most common questions investors and busin
 ### Top Business Owner FAQs
 
 - **Q — How do I list my business on BizMarket?**
-   - A — Onboarding steps: complete the pre-listing form, pay the applicable listing fee, complete KYB/KYC, and submit required documents. Bitsave conducts due diligence and submits attestations to the SPV; once approved the listing is published and fundraising may begin. Detailed onboarding documentation and checklists are available to approved applicants.
+   - A — Onboarding steps: complete the pre-listing form, pay the applicable listing fee, complete KYB/KYC, and submit required documents. BizMarket conducts due diligence and submits attestations to the SPV or custodian; once approved the listing is published and fundraising may begin. Detailed onboarding documentation and checklists are available to approved applicants.
 
 - **Q — What are the fees and how do referral discounts work?**
-   - A — Listing fees are tiered (Micro, Builder, Growth, Enterprise). Published referral discounts apply at checkout when a valid code is provided. Commissioning and reconciliations follow published schedules.
+   - A — Listing fees are tiered by product and listing size. Published referral discounts apply at checkout when a valid code is provided. Commissioning and reconciliations follow published schedules.
 
-- **Q — What does Bitsave do onchain versus offchain?**
-   - A — Offchain (Bitsave / SPV): identity verification (KYB/KYC), custody and settlement of fiat, disbursement to businesses, and recovery activities. Onchain: attestations linking documents to businessId (EAS), issuance of BizShare tokens, BizSwap exit mechanics, and onchain distribution of bridged payouts. The SPV mediates value flows between offchain and onchain layers.
+- **Q — What does BizMarket do onchain versus offchain?**
+   - A — Offchain (BizMarket’s coordination layer): identity verification (KYB/KYC), custody and settlement of fiat or stablecoins, disbursement to businesses, and recovery activities. Onchain: attestations linking documents to businessId (EAS), issuance of BizShare tokens, BizSwap exit mechanics, and onchain distribution of bridged payouts. The SPV mediates value flows between offchain and onchain layers.
 
 - **Q — What reporting and obligations do I have after listing?**
-   - A — Businesses must provide periodic financial reporting according to the instrument (for example: weekly receipts for certain debt instruments; quarterly statements for pilot equity programs). Non-compliance may impact distributions and can trigger enforcement actions per published policy.
+   - A — Businesses must provide periodic financial reporting according to the instrument (for example: monthly revenue statements for BizYield, weekly servicing reports for BizCredit, and custody confirmations for BizBond). Non-compliance may impact distributions and can trigger enforcement actions per published policy.
 

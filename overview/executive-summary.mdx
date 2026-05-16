@@ -1,11 +1,11 @@
 ---
 title: "Executive Summary"
-description: "This documentation provides a structured, technical, and operational description of the Bitsave platform and its BizFi and BizMarket systems."
+description: "This documentation provides a structured, technical, and operational description of the BizMarket platform and its BizShares family."
 ---
 
 The document serves as a reference for understanding:
 
-* The relationship between Bitsave’s savings infrastructure and its business financing layer
+* The relationship between the platform's operational layer and its BizMarket issuance layer
 * The lifecycle of onchain financial instruments issued through the protocol
 * The responsibilities of protocol entities and offchain operators
 * The mechanisms that govern investor participation, business funding, and payout distribution
@@ -23,13 +23,13 @@ Use this document to understand how their businesses are evaluated, onboarded, a
 Use this document to understand how savings activity determines investment capacity, how BizShares function, how payouts are structured, and what guarantees are provided by the protocol.
 
 **Integrators and Developers**
-Use this document to understand the smart contract architecture, capital flow logic, token standards, and distribution systems required to interface with Bitsave’s infrastructure.
+Use this document to understand the smart contract architecture, capital flow logic, token standards, and distribution systems required to interface with BizMarket’s infrastructure.
 
 **Auditors and Security Reviewers**
 Use this document to assess protocol guarantees, custody boundaries, payout mechanisms, and the separation between onchain logic and offchain financial operations.
 
 **Legal and Compliance Reviewers**
-Use this document to understand the role of Bitsave Smart Limited, the offchain handling of business funds, the structure of tokenized instruments, and the distinction between onchain representations and real-world financial agreements.
+Use this document to understand the role of BizMarket’s coordination layer, the offchain handling of business funds, the structure of tokenized instruments, and the distinction between onchain representations and real-world financial agreements.
 
 ---
 
@@ -37,34 +37,34 @@ Use this document to understand the role of Bitsave Smart Limited, the offchain 
 
 The Bitsave ecosystem is composed of layered financial infrastructure that connects user savings to business financing through tokenized instruments.
 
-**Bitsave (Platform Layer)**
-Bitsave is the core financial coordination layer. It manages user savings records, enforces participation limits, oversees business onboarding, and operates the distribution infrastructure that routes payouts to investors.
+**BizFi (Finance Category)**
+BizFi is the finance category that structures and coordinates tokenized instruments across the ecosystem. It encompasses the product and marketplace layers that connect business financing to onchain capital.
 
-**BizMarket (Market Infrastructure Layer)**
-BizMarket is the marketplace framework where business-linked tokens (BizShares/BizTokens) are issued and, where applicable, transferred or exited. The debt segment of BizMarket is the most mature and forms the foundation of the current system design.
+**BizMarket (Product)**
+BizMarket is the marketplace framework where business-linked tokens (BizShares) are issued and, where applicable, transferred or exited. The current product set centers on BizYield, BizCredit, and BizBond.
 
 **BizShares (Tokenized Financial Instruments)**
-BizShares are onchain tokens representing structured financial exposure to a specific business. In the current primary implementation, BizShares represent tokenized debt instruments with predefined payout schedules. Other structures (equity and revenue-based instruments) are part of the broader design but remain at an earlier specification stage.
+BizShares are onchain tokens representing structured financial exposure to real-world revenue, credit, and sovereign instruments. BizYield ties returns to business revenue, BizCredit ties returns to a managed credit pool, and BizBond ties returns to government-backed securities.
 
 ---
 
 ### Key Design Principles and Guarantees
 
-The Bitsave ecosystem is designed around predictable financial behavior, separation of operational responsibilities, and verifiable onchain records.
+The BizMarket ecosystem is designed around predictable financial behavior, separation of operational responsibilities, and verifiable onchain records.
 
 **Stablecoin-Denominated Payouts**
-All investor payouts are denominated and distributed in stablecoins. This removes exposure to business-level revenue volatility at the point of distribution and provides predictable settlement units for participants.
+All investor payouts are denominated and distributed in stablecoins. This removes exposure to token-price volatility at the point of distribution and provides predictable settlement units for participants.
 
-**Weekly Payout Cadence**
-Payouts to investors follow a fixed weekly distribution cycle. This cadence is independent of the individual business cash flow timing, as offchain receipts are aggregated and routed through the protocol’s distribution module.
+**Product-Specific Payout Cadence**
+BizYield pays monthly, BizCredit pays weekly, and BizBond pays quarterly or at maturity, depending on the series. Each cadence matches the underlying cash flow of the instrument.
 
 **Predictable Exit Structure**
-Debt-based BizShares are designed with predefined return schedules rather than variable market pricing. Investors know the expected payout structure at the time of participation, subject to protocol guarantees.
+BizCredit and BizBond are designed with predefined return schedules rather than variable market pricing. Investors know the expected payout structure at the time of participation, subject to protocol terms.
 
 **Protocol-Level Payment Backing**
-In the event of a business default or delayed repayment, the protocol commits to maintaining investor payout schedules using protocol-controlled reserves or alternative revenue streams. This separates investor yield continuity from individual business performance.
+In the event of a business default or delayed repayment, the protocol uses reserves and operational controls to maintain investor payout schedules where applicable. This separates investor yield continuity from individual business performance.
 
 **Onchain Attestations and Enforcement**
 Participation limits, instrument issuance, and payout distributions are enforced or recorded onchain. Smart contracts define deposit caps, investment ceilings, and distribution logic, ensuring that core financial constraints are verifiable and not purely offchain promises.
 
-Together, these principles define BizMarket as a system that combines offchain business financing with onchain enforcement, recordkeeping, and investor-facing guarantees.
+Together, these principles define BizMarket as a system that combines offchain financing with onchain enforcement, recordkeeping, and investor-facing guarantees.

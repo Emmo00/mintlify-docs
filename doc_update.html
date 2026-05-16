@@ -1,0 +1,1416 @@
+<pre class="prettyprint">
+BIZMARKET
+Understanding BizMarket Instruments
+BizYield · BizCredit · BizBond
+A Complete Guide to Real-World Asset Instruments on BizMarket
+docs.bizmarket.io  ·  Version 1.0  ·  2026</pre
+>
+
+<h1><strong>Introduction</strong></h1>
+
+<p>
+  BizMarket is a real-world asset (RWA) protocol that brings the financial performance of real businesses, credit pools,
+  and government instruments onto the blockchain. Instead of speculating on tokens with no underlying value, BizMarket
+  users invest in instruments backed by actual revenue, actual loan books, and actual sovereign debt.
+</p>
+<p>
+  All BizMarket instruments are collectively referred to as BizShares — on-chain representations of economic rights tied
+  to real-world performance. Within the BizShares family, there are three distinct instrument classes, each calibrated
+  to a different risk and return profile:
+</p>
+
+<table>
+  <tr>
+    <td></td>
+    <td><strong>Instrument</strong></td>
+    <td><strong>Risk Profile</strong></td>
+    <td><strong>Return Type</strong></td>
+  </tr>
+  <tr>
+    <td><strong>▲</strong></td>
+    <td><strong>BizYield</strong> (Tokenized Revenue)</td>
+    <td><strong>High Risk / High Reward</strong></td>
+    <td>Variable — % of business revenue monthly</td>
+  </tr>
+  <tr>
+    <td><strong>■</strong></td>
+    <td><strong>BizCredit</strong> (Tokenized Credit)</td>
+    <td><strong>Medium Risk / Steady Return</strong></td>
+    <td>Fixed — Weekly USDC/cNGN payments</td>
+  </tr>
+  <tr>
+    <td><strong>▼</strong></td>
+    <td><strong>BizBond</strong> (Tokenized Government Instruments)</td>
+    <td><strong>Low Risk / Stable Return</strong></td>
+    <td>Fixed — 10% annually, government-backed</td>
+  </tr>
+</table>
+
+<p>
+  This document explains each instrument in detail: how they work, who they are for, what businesses and assets back
+  them, and how BizMarket’s coordination layer ensures that the value you see on-chain reflects real-world economic
+  activity.
+</p>
+
+<pre class="prettyprint">SECTION 01  —  HIGH RISK · HIGH REWARD</pre>
+
+<h1><strong>BizYield — Tokenized Revenue Instruments</strong></h1>
+
+<p>
+  BizYield instruments represent an on-chain stake in the monthly revenue of a real, operating business. When you hold
+  BizYield shares in a business, you own a percentage of that business’s revenue pool for a defined period. Your returns
+  go up when the business performs well, and they go down when it does not. This is the most direct way to participate
+  in a business’s growth without holding equity.
+</p>
+
+<pre class="prettyprint">
+Think of BizYield as buying a slice of a business's income statement — not its ownership, not its equity, but its revenue. You are a revenue partner for a fixed window of time.</pre
+>
+
+<h2><strong>How BizYield Works</strong></h2>
+
+<p>
+  A business applies to list on BizMarket. After passing BizMarket’s coordination layer assessment (covered in Section
+  4), the business agrees to allocate a defined percentage of its monthly revenue to BizYield holders for a fixed
+  duration. BizMarket tokenizes this arrangement and sells it to users on BizSwap.
+</p>
+
+<table>
+  <tr>
+    <td><strong>Revenue Pool</strong></td>
+    <td>Each listed business sets aside a fixed % of monthly gross revenue for BizYield holders</td>
+  </tr>
+  <tr>
+    <td><strong>Duration</strong></td>
+    <td>Fixed term — typically 12 to 36 months from the instrument’s issue date</td>
+  </tr>
+  <tr>
+    <td><strong>Returns</strong></td>
+    <td>Variable and performance-linked. Higher revenue months = higher earnings for holders</td>
+  </tr>
+  <tr>
+    <td><strong>Payment Currency</strong></td>
+    <td>Converted to USDC or cNGN by BizMarket and deposited to holder wallets on a monthly cycle</td>
+  </tr>
+  <tr>
+    <td><strong>Minimum Holding</strong></td>
+    <td>Defined per instrument. Typically $10 equivalent</td>
+  </tr>
+  <tr>
+    <td><strong>Transferability</strong></td>
+    <td>BizYield shares are transferable within the BizMarket ecosystem via BizSwap only</td>
+  </tr>
+  <tr>
+    <td><strong>Risk Profile</strong></td>
+    <td>High. Revenue can decline, businesses can underperform, or in worst case, cease operations</td>
+  </tr>
+</table>
+
+<h2><strong>Live Example: Shard BizYield</strong></h2>
+
+<p>
+  Shard is the first business listed under BizYield on BizMarket. Shard is raising $10,000 through BizYield, and in
+  exchange, 20% of their monthly gross revenue will be distributed to BizYield holders for 24 months.
+</p>
+
+<table>
+  <tr>
+    <td><strong>Purchase Amount</strong></td>
+    <td><strong>Monthly Revenue Share</strong></td>
+  </tr>
+  <tr>
+    <td>$10</td>
+    <td>0.02% of Shard's monthly revenue pool</td>
+  </tr>
+  <tr>
+    <td>$50</td>
+    <td>0.10% of Shard's monthly revenue pool</td>
+  </tr>
+  <tr>
+    <td>$500</td>
+    <td>1.00% of Shard's monthly revenue pool</td>
+  </tr>
+  <tr>
+    <td>$1,000</td>
+    <td>2.00% of Shard's monthly revenue pool</td>
+  </tr>
+  <tr>
+    <td>$5,000</td>
+    <td>10.00% of Shard's monthly revenue pool</td>
+  </tr>
+  <tr>
+    <td>$10,000</td>
+    <td>20.00% of Shard's monthly revenue pool (full pool)</td>
+  </tr>
+</table>
+
+<pre class="prettyprint">
+Shard BizYield carries a 3-month vesting period. Holders begin earning from Month 4 onwards and continue for the remaining 21 months of the 24-month programme.</pre
+>
+
+<h2><strong>What Kinds of Businesses Are Listed Under BizYield?</strong></h2>
+
+<p>
+  BizYield is designed for businesses with consistent, verifiable, and growing revenue streams. BizMarket’s coordination
+  layer assesses each business before listing. Below are the categories and examples of businesses that fit the BizYield
+  model:
+</p>
+
+<table>
+  <tr>
+    <td>
+      <strong>Aviation & Transport</strong>
+      <p>
+        <em>Airlines, cargo operators, private jet charters</em>
+      </p>
+    </td>
+    <td>
+      An airline with consistent passenger revenue and booking data is a natural BizYield candidate. Its revenue is
+      measurable on a monthly basis, ticket sales are verifiable, and the asset base is real. BizMarket has publicly
+      discussed the airline model as a flagship BizYield example: an airline raises capital by selling a slice of its
+      monthly ticket revenue to BizMarket users, who then earn as long as planes are flying and seats are filling.
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <strong>Real Estate Development</strong>
+      <p>
+        <em>Property developers, co-working spaces, student housing</em>
+      </p>
+    </td>
+    <td>
+      A real estate developer launching a residential project can tokenize a portion of rental income or sales proceeds.
+      As units are sold or rented, revenue flows to BizYield holders. This is especially powerful for projects with long
+      revenue visibility, like student accommodation or serviced apartments.
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <strong>Hospitality & Entertainment</strong>
+      <p>
+        <em>Hotels, event venues, cinemas, resorts</em>
+      </p>
+    </td>
+    <td>
+      Hotels and event venues generate highly trackable revenue through bookings and ticketing. A hotel group listing on
+      BizYield gives holders a share of nightly room revenue. Revenue history from Property Management Systems (PMS)
+      provides a clean audit trail for BizMarket’s assessment.
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <strong>Retail & Consumer Brands</strong>
+      <p>
+        <em>Supermarkets, fashion brands, FMCG distributors</em>
+      </p>
+    </td>
+    <td>
+      High-volume retail businesses with POS data and consistent monthly sales are strong BizYield candidates. Monthly
+      revenue from point-of-sale systems is easy to verify and audit.
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <strong>Technology & SaaS</strong>
+      <p>
+        <em>Subscription platforms, fintech apps, B2B software</em>
+      </p>
+    </td>
+    <td>
+      SaaS businesses with monthly recurring revenue (MRR) are ideal. Their revenue is predictable, contractually
+      backed, and digitally verifiable — making on-chain conversion straightforward.
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <strong>Agriculture & Agribusiness</strong>
+      <p>
+        <em>Farm cooperatives, produce exporters, food processors</em>
+      </p>
+    </td>
+    <td>
+      With verifiable harvest cycles, export records, and offtake agreements, agribusinesses provide solid revenue data.
+      Seasonal revenue patterns are factored into the BizYield structure upfront.
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <strong>Healthcare</strong>
+      <p>
+        <em>Private hospitals, diagnostics chains, pharmacy networks</em>
+      </p>
+    </td>
+    <td>
+      Healthcare businesses with consistent patient throughput and billing records make strong BizYield candidates,
+      particularly in growing African urban markets.
+    </td>
+  </tr>
+</table>
+
+<pre class="prettyprint">
+BizYield is deliberately high risk. A business can have a bad quarter. Revenue can fall. That is the nature of this instrument. BizMarket does not guarantee a fixed return on BizYield instruments — returns are always tied to actual business performance.</pre
+>
+
+<p>Here's the section, ready to copy in:</p>
+<hr />
+<h2>Why Businesses Choose BizYield</h2>
+
+<h3><strong>The Core Distinction: Revenue, Not Equity</strong></h3>
+
+<p>
+  When a business lists on BizYield, it is not selling shares in the company. It is not giving up ownership. It is not
+  diluting its cap table. It is not inviting outside investors onto its board. It is doing something fundamentally
+  different — it is agreeing to share a percentage of its revenue for a defined period of time in exchange for upfront
+  capital today.
+</p>
+<p>This distinction is everything.</p>
+<p>
+  A founder who lists on BizYield on Monday can still walk into a venture capital meeting on Tuesday with 100% of their
+  equity intact. They can raise a Series A, bring on angel investors, or pursue a stock market listing in the future —
+  and none of those conversations are complicated by the existence of a BizYield instrument. BizYield holders have no
+  claim on the business's ownership, no voting rights, no board seats, and no say in how the business is run. They are
+  revenue partners, not shareholders. The business remains entirely the founder's to build, sell, or take public as they
+  see fit.
+</p>
+<p>
+  This is why BizYield is not competing with the stock market. It is not an alternative to equity fundraising. It is a
+  complementary capital tool that sits in a completely different legal and structural lane.
+</p>
+<hr />
+<h3><strong>Why Founders Actually Choose This</strong></h3>
+
+<p>
+  A founder looking at their funding options faces a familiar problem: the tools available to them all come with strings
+  attached.
+</p>
+<p>
+  Equity financing means giving up ownership — permanently. Even if the business grows to ten times its current size,
+  that investor owns their percentage forever. Venture capital comes with board control provisions, liquidation
+  preferences, anti-dilution clauses, and redemption rights that can fundamentally change who is really running the
+  company. Bank loans require collateral that most early-stage businesses don't have, come with rigid repayment
+  schedules regardless of how the business is performing, and are practically inaccessible to businesses without years
+  of trading history.
+</p>
+<p>
+  BizYield offers something none of these provide: capital today, with no equity given up, no debt on the balance sheet,
+  and repayment that is directly tied to performance. If the business has a slow month, the revenue distribution to
+  BizYield holders is smaller. If the business has a strong month, holders earn more. The obligation scales with the
+  business's ability to pay, rather than being fixed regardless of circumstances. And when the BizYield term ends, the
+  arrangement is over. The business owes nothing further. The slate is clean.
+</p>
+<p>For a founder, this is an extraordinarily clean deal.</p>
+<hr />
+<h3><strong>This Is Not a New Concept — Only the Delivery Is New</strong></h3>
+
+<p>
+  What BizYield does on-chain has existed in the world of business finance for decades. The instrument is called a
+  Revenue Participation Agreement, sometimes referred to as a Revenue Share Agreement or a Revenue Royalty. It is a
+  well-established, legally recognised financial arrangement used across industries globally.
+</p>
+<p>
+  In a Revenue Participation Agreement, a business receives capital from an investor or group of investors and in return
+  agrees to pay back a defined percentage of its revenue over a set period. There is no equity transfer. There is no
+  fixed repayment schedule. The arrangement lives entirely in the revenue line of the business's income statement, not
+  on its balance sheet as debt or on its cap table as equity.
+</p>
+<p>This structure has been used extensively in:</p>
+<p>
+  <strong>Music and Entertainment</strong> — Record labels and music publishers have used revenue participation deals
+  for generations. An artist receives an advance and agrees to pay a percentage of royalties back over time. The label
+  finances the artist without owning the artist's future. Streaming-era music financing deals are almost entirely
+  structured this way.
+</p>
+<p>
+  <strong>Film and Television Production</strong> — Film financiers routinely receive a percentage of box office and
+  distribution revenue rather than equity in the production company. The film gets made, the financier gets paid from
+  performance, and the production house retains its ownership structure.
+</p>
+<p>
+  <strong>Natural Resources and Mining</strong> — Royalty financing is a cornerstone of the mining industry. A royalty
+  company provides capital to a mining operation in exchange for a percentage of the ore or revenue extracted.
+  Franco-Nevada, one of the world's largest royalty companies, is built entirely on this model.
+</p>
+<p>
+  <strong>Pharmaceutical Licensing</strong> — Drug developers regularly sell royalty streams on future drug revenues to
+  raise capital during development phases. The developer retains the patent and ownership of the drug; the investor
+  receives a cut of future sales.
+</p>
+<p>
+  <strong>Revenue-Based Financing (RBF)</strong> — Over the last decade, a wave of fintech lenders including Clearco,
+  Pipe, and Capchase have built multi-billion dollar businesses entirely around advancing capital to companies in
+  exchange for a percentage of future revenue. This model has financed thousands of businesses across the US, Europe,
+  and increasingly in Africa.
+</p>
+<p>
+  The concept is not experimental. It is not legally ambiguous. It has been tested in courts, structured by lawyers, and
+  used by sophisticated investors for a very long time. What has always limited it is access. Revenue participation
+  deals were historically available only to businesses with existing relationships with private equity firms, royalty
+  funds, or specialised lenders. A restaurant in Abuja, a logistics company in Nairobi, or a tech startup in Lagos had
+  no pathway into this capital structure. The minimum deal sizes were too large, the legal costs too high, and the
+  investor networks too closed.
+</p>
+<hr />
+<h3><strong>What BizMarket Adds: The Tokenization Layer</strong></h3>
+
+<p>
+  BizMarket's contribution is not the invention of the instrument. It is the infrastructure that makes it universally
+  accessible.
+</p>
+<p>
+  By tokenizing revenue participation agreements and putting them on-chain as BizYield instruments, BizMarket collapses
+  the barriers that have always kept this structure exclusive:
+</p>
+<p>
+  The minimum investment drops from hundreds of thousands of dollars to ten dollars. A revenue deal that previously
+  required a private equity firm with a $50 million fund can now be participated in by anyone with a smartphone and a
+  BizMarket account. Geography disappears as a constraint. A user in London, Lagos, or Kuala Lumpur can hold BizYield in
+  a restaurant chain in Enugu or a logistics company in Port Harcourt. The settlement layer that previously required
+  lawyers, wire transfers, and weeks of processing now runs in seconds on the Base blockchain. The distribution
+  mechanism that previously required a finance team to calculate and manually pay investors now runs automatically
+  through a smart contract that distributes revenue proportionally to every holder the moment funds are deposited.
+</p>
+<p>BizYield is a centuries-old financial instrument wrapped in a technology layer that makes it work for everyone.</p>
+<hr />
+<h3><strong>The Legal Framework</strong></h3>
+
+<p>
+  Revenue participation agreements derive their legal validity from contract law, not securities law. This is a critical
+  distinction. Because BizYield instruments do not confer ownership rights, voting rights, or residual claims on the
+  business's assets in the event of liquidation, they do not constitute equity securities under most jurisdictions'
+  definitions. The arrangement is contractual: in exchange for capital, the business commits to a revenue-sharing
+  obligation for a defined period.
+</p>
+<p>BizMarket structures each BizYield instrument around the following legal architecture:</p>
+<p>
+  <strong>Revenue Participation Agreement (RPA)</strong> — A formal contract between the business and BizMarket's
+  operating entity, specifying the percentage of revenue to be shared, the duration of the arrangement, the definition
+  of qualifying revenue, the reporting obligations of the business, and the consequences of non-compliance. This
+  agreement is governed by the country’s law and, where cross-border investors are involved, includes international
+  arbitration clauses.
+</p>
+<p>
+  <strong>BizMarket as Intermediary and Trustee</strong> — BizMarket acts as the intermediary between the business and
+  BizYield holders. The business's obligation under the RPA runs to BizMarket, not directly to thousands of individual
+  token holders. BizMarket then distributes to holders via the smart contract. This structure keeps the business's legal
+  relationship simple — one counterparty — while allowing unlimited investor participation on the BizMarket side.
+</p>
+<p>
+  <strong>Smart Contract as Distribution Mechanism</strong> — The on-chain smart contract does not itself constitute a
+  legal agreement between the business and holders. It is the execution and distribution layer for an agreement that
+  exists in the physical legal world. The underlying RPA is the enforceable instrument; the smart contract is the
+  settlement infrastructure.
+</p>
+<p>
+  <strong>Investor Disclosures</strong> — Every BizYield listing on BizMarket is accompanied by a disclosure document
+  that clearly states that BizYield holders are revenue participants, not shareholders; that they have no equity, no
+  voting rights, and no ownership claim; and that their returns are variable and dependent on business performance. This
+  disclosure framework is aligned with consumer protection principles.
+</p>
+<p>
+  <strong>No Competition with Capital Markets</strong> — Because BizYield does not involve the issuance of shares or
+  equity-equivalent instruments, it does not trigger the public offer provisions of the Investments and Securities Act
+  (ISA) that govern stock market listings. A business that lists on BizYield is not making a public offer of securities.
+  It is entering a commercial revenue-sharing arrangement that is facilitated digitally. This means businesses can use
+  BizYield today and pursue an NGX listing, a private placement, or a Series A round tomorrow without any legal conflict
+  or cap table complication.
+</p>
+<hr />
+<h3><strong>A Summary for Founders</strong></h3>
+
+<p>If you are a business considering BizYield, here is what it means in practice:</p>
+<p>
+  You raise capital today. You keep every percentage point of your company's equity. Your cap table is untouched. Your
+  future fundraising options are completely open. You share a portion of your revenue for an agreed period — and when
+  that period ends, the obligation ends with it. Your business is backed by the BizMarket private equity entity, which
+  gives you access to a network, operational support, and the credibility of being a listed BizMarket instrument. And
+  your business is now accessible to investors anywhere in the world who believe in what you are building.
+</p>
+<p>
+  That is what BizYield is. A capital tool built for founders who want to grow without giving anything permanent away.
+</p>
+
+<pre class="prettyprint">SECTION 02  —  MEDIUM RISK · STEADY WEEKLY RETURNS</pre>
+
+<h1><strong>BizCredit — Tokenized Credit Instruments</strong></h1>
+
+<p>
+  BizCredit instruments give users exposure to BizMarket’s lending book. When you hold BizCredit, you are effectively
+  acting as a lender within a credit pool that BizMarket manages. The loans BizMarket extends to businesses and
+  individuals generate interest, and that interest — minus BizMarket’s operational margin — is paid out weekly to
+  BizCredit holders in USDC, cNGN, or other supported stablecoins.
+</p>
+
+<pre class="prettyprint">
+BizCredit is the most straightforward income instrument on BizMarket. You put in capital, you receive weekly payments for 12 weeks, and at the end of the cycle your principal is returned. No complexity, no volatility in your returns.</pre
+>
+
+<h2><strong>How BizCredit Works</strong></h2>
+
+<table>
+  <tr>
+    <td><strong>Unit Price</strong></td>
+    <td>$100 per BizCredit share</td>
+  </tr>
+  <tr>
+    <td><strong>Return Rate</strong></td>
+    <td>4% per quarter (quarterly interest distributed weekly)</td>
+  </tr>
+  <tr>
+    <td><strong>Weekly Payment</strong></td>
+    <td>$8.67 per BizCredit share per week for 12 weeks</td>
+  </tr>
+  <tr>
+    <td><strong>Payment Currency</strong></td>
+    <td>USDC, cNGN, or other BizMarket-supported stablecoins — user’s choice</td>
+  </tr>
+  <tr>
+    <td><strong>Cycle Duration</strong></td>
+    <td>12 weeks (one quarter) per BizCredit series</td>
+  </tr>
+  <tr>
+    <td><strong>Principal Return</strong></td>
+    <td>Full $100 returned at end of 12-week cycle</td>
+  </tr>
+  <tr>
+    <td><strong>Total Return</strong></td>
+    <td>$104 per BizCredit share over the 12-week cycle ($4 interest + $100 principal)</td>
+  </tr>
+  <tr>
+    <td><strong>Payment Mechanism</strong></td>
+    <td>Automatically deposited to user’s BizMarket wallet every 7 days</td>
+  </tr>
+  <tr>
+    <td><strong>Risk Profile</strong></td>
+    <td>Medium. Returns depend on the health of BizMarket’s underlying loan portfolio</td>
+  </tr>
+</table>
+
+<h2><strong>Payment Schedule — Worked Example</strong></h2>
+
+<p>A user holds 5 BizCredit shares ($500 total investment):</p>
+
+<table>
+  <tr>
+    <td><strong>Week</strong></td>
+    <td><strong>Payment per share</strong></td>
+    <td><strong>Total (5 shares)</strong></td>
+  </tr>
+  <tr>
+    <td>Week 1</td>
+    <td>$8.67</td>
+    <td>$43.35</td>
+  </tr>
+  <tr>
+    <td>Week 2</td>
+    <td>$8.67</td>
+    <td>$43.35</td>
+  </tr>
+  <tr>
+    <td>Week 3</td>
+    <td>$8.67</td>
+    <td>$43.35</td>
+  </tr>
+  <tr>
+    <td>Week 4</td>
+    <td>$8.67</td>
+    <td>$43.35</td>
+  </tr>
+  <tr>
+    <td>Week 5</td>
+    <td>$8.67</td>
+    <td>$43.35</td>
+  </tr>
+  <tr>
+    <td>Week 6</td>
+    <td>$8.67</td>
+    <td>$43.35</td>
+  </tr>
+  <tr>
+    <td>Week 7</td>
+    <td>$8.67</td>
+    <td>$43.35</td>
+  </tr>
+  <tr>
+    <td>Week 8</td>
+    <td>$8.67</td>
+    <td>$43.35</td>
+  </tr>
+  <tr>
+    <td>Week 9</td>
+    <td>$8.67</td>
+    <td>$43.35</td>
+  </tr>
+  <tr>
+    <td>Week 10</td>
+    <td>$8.67</td>
+    <td>$43.35</td>
+  </tr>
+  <tr>
+    <td>Week 11</td>
+    <td>$8.67</td>
+    <td>$43.35</td>
+  </tr>
+  <tr>
+    <td><strong>Week 12 (Final)</strong></td>
+    <td><strong>$8.67 interest + $100.00 principal</strong></td>
+    <td><strong>$43.35 interest + $500.00 principal</strong></td>
+  </tr>
+  <tr>
+    <td><strong>TOTAL</strong></td>
+    <td><strong>$104.04 returned per share</strong></td>
+    <td><strong>$520.20 returned on $500 invested</strong></td>
+  </tr>
+</table>
+
+<h2><strong>What Backs BizCredit?</strong></h2>
+
+<p>BizCredit is backed by BizMarket’s actively managed loan portfolio. The loans in this portfolio are extended to:</p>
+<ul>
+  <li>
+    Businesses that have been assessed through the BizMarket coordination layer and approved for working capital
+    financing
+  </li>
+
+  <li>BizLend borrowers using their tokenized stock assets as collateral to borrow cNGN</li>
+
+  <li>Short-term bridge lending facilities for businesses with clear repayment timelines</li>
+</ul>
+<p>
+  BizMarket underwrites, monitors, and services all loans in the BizCredit pool. The diversification across multiple
+  borrowers reduces single-loan concentration risk, which is why BizCredit sits in the medium risk category rather than
+  high risk.
+</p>
+
+<pre class="prettyprint">
+BizCredit is not capital-guaranteed by a third party. Returns depend on BizMarket's ability to collect on its loan book. BizMarket maintains a reserve fund to cover short-term shortfalls and ensure weekly payments are made on time even during periods of loan delinquency.</pre
+>
+
+<pre class="prettyprint">SECTION 03  —  LOW RISK · FIXED ANNUAL RETURN</pre>
+
+<h1><strong>BizBond — Tokenized Government Instruments</strong></h1>
+
+<p>
+  BizBond instruments are the most conservative offering in the BizShares family. BizMarket purchases sovereign
+  government instruments — including treasury bills, bonds, and other government securities — and resells them to users
+  at a secondary market rate with a fixed 10% annual return. BizBond holders benefit from government-backed security
+  without needing a brokerage account, a large minimum investment, or navigating complex primary market access
+  requirements.
+</p>
+
+<pre class="prettyprint">
+BizBond is designed for the capital-preserving investor. Your return is fixed, your risk is tied to a sovereign government rather than a business, and payments are predictable. This is the BizMarket equivalent of putting your money in a government savings instrument — just with better access and no paperwork.</pre
+>
+
+<h2><strong>How BizBond Works</strong></h2>
+
+<table>
+  <tr>
+    <td><strong>Underlying Asset</strong></td>
+    <td>Government-issued securities (see full list below)</td>
+  </tr>
+  <tr>
+    <td><strong>Annual Return</strong></td>
+    <td>10% per annum — fixed and guaranteed for the instrument’s duration</td>
+  </tr>
+  <tr>
+    <td><strong>Return Type</strong></td>
+    <td>Fixed. Does not change based on market performance</td>
+  </tr>
+  <tr>
+    <td><strong>Payment Frequency</strong></td>
+    <td>Paid at maturity or periodically depending on the underlying instrument series</td>
+  </tr>
+  <tr>
+    <td><strong>Minimum Investment</strong></td>
+    <td>Accessible from small amounts — no large minimum required, unlike primary markets</td>
+  </tr>
+  <tr>
+    <td><strong>Currency</strong></td>
+    <td>Denominated in cNGN or USDC</td>
+  </tr>
+  <tr>
+    <td><strong>Risk Profile</strong></td>
+    <td>Low. Risk is sovereign. Returns are not tied to business performance.</td>
+  </tr>
+  <tr>
+    <td><strong>Liquidity</strong></td>
+    <td>Transferable within BizMarket ecosystem before maturity via BizSwap</td>
+  </tr>
+</table>
+
+<h2><strong>Government Instruments That Back BizBond</strong></h2>
+
+<p>
+  BizBond is not limited to treasury bills alone. BizMarket purchases a range of sovereign and quasi-sovereign
+  instruments across a nation’s local and international markets. These include:
+</p>
+
+<table>
+  <tr>
+    <td><strong>Instrument</strong></td>
+    <td><strong>Issuer / Market</strong></td>
+    <td><strong>Characteristics</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Federal Government of Treasury Bills</strong></td>
+    <td>Debt Management Office (DMO) of the country.</td>
+    <td>
+      Short-term sovereign paper. 91-day, 182-day, 364-day tenors. The most liquid government instrument in any nation.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>FGN Bonds</strong></td>
+    <td>DMO / CB of the country</td>
+    <td>
+      Medium to long-term government bonds. 2, 3, 5, 7, 10, 20 and 30-year tenors. Semi-annual coupon payments.
+      Benchmark risk-free rate in the country.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Savings Bonds</strong></td>
+    <td>DMO</td>
+    <td>
+      Retail-focused government bond. Quarterly coupon payments. Specifically designed for ordinary savers — ideal
+      BizBond backing instrument.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Sukuk (Sovereign Islamic Bond)</strong></td>
+    <td>DMO</td>
+    <td>
+      Infrastructure-linked sovereign instrument compliant with Islamic finance principles. Tied to specific government
+      infrastructure projects.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Infrastructure Bonds</strong></td>
+    <td>State Governments</td>
+    <td>
+      Bonds issued to fund roads, power, housing. Backed by government guarantee and often tied to revenue-generating
+      infrastructure.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>A Nation’s Bond</strong></td>
+    <td>International markets</td>
+    <td>
+      Dollar-denominated sovereign debt issued in international markets. Provides USD yield exposure backed by a
+      country’s sovereign credit.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>World Bank / IFC Bonds</strong></td>
+    <td>World Bank Group</td>
+    <td>
+      Development institution bonds with AAA credit rating. Exceptionally low risk. Available in USD and local currency
+      variants.
+    </td>
+  </tr>
+</table>
+
+<pre class="prettyprint">
+BizMarket pools user funds to purchase these instruments at scale, achieving access and rates that retail investors cannot obtain individually. The 10% annual rate passed to BizBond holders reflects BizMarket's ability to aggregate demand and negotiate secondary market pricing.</pre
+>
+
+<pre class="prettyprint">SECTION 04  —  BIZMARKET COORDINATION LAYER</pre>
+
+<h1><strong>The BizMarket Coordination Layer</strong></h1>
+
+<p>
+  One question every serious investor will ask about any RWA protocol is: how do we know the value on-chain matches the
+  value in the real world? This is the hardest problem in real-world asset tokenization, and BizMarket has built its
+  coordination layer specifically to answer it.
+</p>
+<p>
+  The BizMarket Coordination Layer is the operational, legal, and financial infrastructure that sits between real-world
+  businesses and on-chain instruments. It is the bridge. It handles due diligence, underwriting, revenue verification,
+  conversion, and governance.
+</p>
+<h2><strong>4.1 BizMarket Private Equity Stake</strong></h2>
+
+<p>
+  For every business listed under BizYield, BizMarket’s associated private equity entity takes a direct stake in the
+  business as part of the onboarding process. This is not passive involvement. By becoming a part-owner or strategic
+  partner in each BizYield business, BizMarket gains:
+</p>
+<ul>
+  <li>
+    Direct access to the business’s financial records, bank statements, and management accounts on a monthly basis
+  </li>
+
+  <li>Board-level or observer-level rights to monitor operations and flag underperformance early</li>
+
+  <li>
+    The legal standing to audit revenue figures, challenge discrepancies, and enforce the revenue-sharing agreement
+  </li>
+
+  <li>A seat at the table during major business decisions that could affect revenue distribution</li>
+</ul>
+
+<pre class="prettyprint">
+This private equity model is what separates BizMarket from other RWA protocols that rely purely on self-reported data. We are inside the business, not just looking at it from the outside. Our financial interest is aligned with every BizYield holder's interest.</pre
+>
+
+<h2><strong>4.2 Business Viability Assessment</strong></h2>
+
+<p>
+  Before any business is listed on BizMarket under BizYield, it goes through a structured multi-factor assessment. This
+  is how BizMarket ensures only viable, revenue-generating businesses reach the platform:
+</p>
+
+<table>
+  <tr>
+    <td><strong>Assessment Factor</strong></td>
+    <td><strong>What BizMarket Looks At</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Revenue History</strong></td>
+    <td>
+      Minimum 12 months of audited or verifiable revenue records. Monthly revenue statements, bank statements matching
+      declared income, and trend analysis to identify growth or decline patterns.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Business Model Clarity</strong></td>
+    <td>
+      Can the business clearly explain how it makes money? Is the revenue model sustainable, repeatable, and not
+      dependent on a single customer or event?
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Product / Service Quality</strong></td>
+    <td>
+      Customer reviews, product ratings, physical site visits where applicable. A restaurant’s foot traffic. A hotel’s
+      occupancy rate. An app’s DAU/MAU ratio.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Foot Traffic & Demand Data</strong></td>
+    <td>
+      For physical businesses: foot traffic counts, POS transaction volumes, and booking platform data. For digital
+      businesses: web analytics, app store data, and transaction records.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Ownership & Legal Structure</strong></td>
+    <td>
+      Clean corporate structure with no unresolved legal disputes. Verified directors and shareholders. No undisclosed
+      related-party transactions.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Debt & Obligations</strong></td>
+    <td>
+      Existing loan obligations, creditor relationships, and deferred liabilities that could impair revenue distribution
+      to BizYield holders.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Management Team</strong></td>
+    <td>
+      Track record of the founders and management. Previous ventures, industry experience, and ability to execute at
+      scale.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Revenue Concentration Risk</strong></td>
+    <td>
+      Is 80% of revenue from one client? One event? One season? BizMarket scores diversification of revenue sources as a
+      risk factor.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Growth Trajectory</strong></td>
+    <td>
+      Is revenue growing, flat, or declining? BizMarket prefers businesses in growth phase or with clear catalysts for
+      growth during the BizYield term.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Exit / Wind-Down Plan</strong></td>
+    <td>
+      What happens if the business cannot make a revenue distribution? BizMarket requires a documented contingency plan
+      as part of listing terms.
+    </td>
+  </tr>
+</table>
+
+<h2><strong>4.3 Underwriting BizCredit Loans</strong></h2>
+
+<p>
+  For BizCredit instruments, BizMarket’s coordination layer acts as the underwriter for every loan in the credit pool.
+  The underwriting process determines who gets credit, how much, and at what rate:
+</p>
+<ol>
+  <li>
+    Borrower Application: Businesses or individuals apply through BizMarket’s credit gateway. Applications include
+    business registration, revenue records, bank statements, and the purpose of funds.
+  </li>
+
+  <li>
+    Credit Scoring: BizMarket’s credit team applies a proprietary scoring model that weights revenue consistency,
+    debt-to-revenue ratio, repayment history on previous obligations, and collateral offered.
+  </li>
+
+  <li>
+    Loan Structuring: Approved loans are structured with specific repayment schedules, interest rates, and covenants.
+    For business loans, BizMarket may require revenue reporting rights as a condition.
+  </li>
+
+  <li>
+    Collateral Assessment: For BizLend borrowers, tokenized stocks are valued at live market prices. For business
+    borrowers, physical or contractual assets may be pledged.
+  </li>
+
+  <li>
+    Covenant Monitoring: During the loan term, BizMarket monitors borrower compliance. Triggers can accelerate repayment
+    if covenants are breached.
+  </li>
+
+  <li>
+    Default Management: In the event of a default, BizMarket’s recovery process involves legal action, collateral
+    liquidation, and drawing from the reserve fund to protect BizCredit holders.
+  </li>
+</ol>
+<h2><strong>4.4 How On-Chain Value Equals Off-Chain Value</strong></h2>
+
+<p>
+  This is the central trust question of all RWA tokenization: you see a number on your screen — how do you know it’s
+  real? BizMarket’s answer is a four-layer verification system:
+</p>
+
+<table>
+  <tr>
+    <td></td>
+    <td><strong>Layer</strong></td>
+    <td><strong>Mechanism</strong></td>
+  </tr>
+  <tr>
+    <td><strong>01</strong></td>
+    <td><strong>Private Equity Access</strong></td>
+    <td>
+      BizMarket’s PE entity holds a direct stake in every BizYield business. This gives legal and operational access to
+      actual financial records — not just what the business chooses to share.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>02</strong></td>
+    <td><strong>Monthly Revenue Verification</strong></td>
+    <td>
+      Each month, BizMarket’s finance team reconciles the business’s declared revenue against bank statements, POS data,
+      and sales records. The verified figure is what gets converted and distributed, not a self-reported estimate.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>03</strong></td>
+    <td><strong>Stable Coin Conversion & On-Chain Deposit</strong></td>
+    <td>
+      Once revenue is verified, BizMarket converts the business’s local currency revenue (naira, cedis, etc.) into USDC
+      or cNGN via licensed FX channels and deposits the distribution directly to the smart contract. The on-chain amount
+      matches the verified off-chain amount at the point of conversion.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>04</strong></td>
+    <td><strong>Transparent Smart Contract Distribution</strong></td>
+    <td>
+      The smart contract distributes funds proportionally to BizYield holders based on their recorded share percentages.
+      The distribution logic is on-chain, auditable, and cannot be altered after deployment.
+    </td>
+  </tr>
+</table>
+
+<h2><strong>4.5 BizBond Backing Verification</strong></h2>
+
+<p>
+  For BizBond instruments, on-chain value is backed by actual government securities held in regulated custodial
+  accounts. BizMarket’s process:
+</p>
+<ul>
+  <li>
+    BizMarket pools user subscriptions and purchases the underlying government instruments (FG bonds, T-bills, etc.)
+    through licensed primary dealers and authorized stockbrokers registered with the Securities and Exchange Commission
+    (SEC) of the nation.
+  </li>
+
+  <li>
+    Custodial receipts and holding confirmations from the primary dealer or the Central Securities Clearing System
+    (CSCS) serve as the proof of reserve for each BizBond series.
+  </li>
+
+  <li>
+    The face value and coupon rate of held government instruments are published on BizMarket’s transparency dashboard.
+    Users can verify that the total BizBond supply matches the instruments held in custody.
+  </li>
+
+  <li>
+    At maturity or on each coupon date, government payments are received into BizMarket’s designated account, converted
+    to stablecoin where needed, and distributed via the smart contract.
+  </li>
+</ul>
+
+<pre class="prettyprint">
+BizBond reserves are segregated from BizMarket's operational treasury. Government instruments backing BizBond holders cannot be used for any other purpose, including funding BizMarket's operations or other product lines.</pre
+>
+
+<pre class="prettyprint">SECTION 05  —  WHICH INSTRUMENT IS RIGHT FOR YOU?</pre>
+
+<h1><strong>Choosing the Right BizMarket Instrument</strong></h1>
+
+<p>
+  Every investor’s situation is different. The right BizMarket instrument depends on your risk tolerance, investment
+  horizon, and what you want to do with your returns. Here is a practical guide:
+</p>
+
+<table>
+  <tr>
+    <td></td>
+    <td><strong>BizYield</strong></td>
+    <td><strong>BizCredit</strong></td>
+    <td><strong>BizBond</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Best for</strong></td>
+    <td>Growth seekers, business believers, high-risk tolerance</td>
+    <td>Income seekers, predictable cash flow</td>
+    <td>Capital preservers, conservative investors</td>
+  </tr>
+  <tr>
+    <td><strong>Return type</strong></td>
+    <td>Variable (performance-linked)</td>
+    <td>Fixed weekly</td>
+    <td>Fixed annual</td>
+  </tr>
+  <tr>
+    <td><strong>Risk level</strong></td>
+    <td>High</td>
+    <td>Medium</td>
+    <td>Low</td>
+  </tr>
+  <tr>
+    <td><strong>Minimum term</strong></td>
+    <td>12–36 months</td>
+    <td>12 weeks</td>
+    <td>12 months</td>
+  </tr>
+  <tr>
+    <td><strong>Payment frequency</strong></td>
+    <td>Monthly</td>
+    <td>Weekly</td>
+    <td>At maturity / periodically</td>
+  </tr>
+  <tr>
+    <td><strong>Payment currency</strong></td>
+    <td>USDC / cNGN</td>
+    <td>USDC / cNGN</td>
+    <td>cNGN / USDC</td>
+  </tr>
+  <tr>
+    <td><strong>Can I lose money?</strong></td>
+    <td>Yes, if business underperforms</td>
+    <td>Unlikely, but possible in default</td>
+    <td>Very unlikely (sovereign risk only)</td>
+  </tr>
+  <tr>
+    <td><strong>Is return guaranteed?</strong></td>
+    <td>No</td>
+    <td>No (but historically stable)</td>
+    <td>Yes (fixed rate, sovereign-backed)</td>
+  </tr>
+  <tr>
+    <td><strong>Transferable?</strong></td>
+    <td>Yes, on BizSwap</td>
+    <td>Yes, on BizSwap</td>
+    <td>Yes, on BizSwap</td>
+  </tr>
+</table>
+
+<h1><strong>Risk Disclosures</strong></h1>
+
+<pre class="prettyprint">
+All BizMarket instruments carry risk. Past performance of any instrument, business, or underlying asset does not guarantee future returns. Investing in BizYield, BizCredit, or BizBond involves financial risk, including the possible loss of principal. Users should only invest what they can afford to lose in the case of BizYield, and should read all instrument-specific risk disclosures available on the BizMarket platform before investing.</pre
+>
+
+<p>
+  <strong>BizYield Specific Risks</strong>
+</p>
+<ul>
+  <li>
+    Business underperformance: Revenue may decline due to market conditions, management decisions, or macroeconomic
+    factors.
+  </li>
+
+  <li>Business failure: In the worst case, a listed business may cease operations before the BizYield term ends.</li>
+
+  <li>
+    Currency risk: Revenue collected in local currency is subject to FX conversion risk before stablecoin distribution.
+  </li>
+
+  <li>
+    Regulatory risk: Changes in a Nations internal or international regulations may affect the operation of listed
+    businesses.
+  </li>
+</ul>
+<p>
+  <strong>BizCredit Specific Risks</strong>
+</p>
+<ul>
+  <li>
+    Borrower default: Loans in the credit pool may default. BizMarket’s reserve fund provides a buffer but does not
+    guarantee full recovery.
+  </li>
+
+  <li>
+    Concentration risk: If a significant portion of the loan pool is concentrated in one sector or borrower, systemic
+    issues in that sector could affect returns.
+  </li>
+
+  <li>Liquidity risk: BizCredit shares can be traded on BizSwap, but liquidity is not guaranteed.</li>
+</ul>
+<p>
+  <strong>BizBond Specific Risks</strong>
+</p>
+<ul>
+  <li>
+    Sovereign risk: While extremely low, government default is not zero. A nation's government instruments carry the
+    country’s sovereign credit risk.
+  </li>
+
+  <li>
+    Currency risk: NGN-denominated instruments may be affected by naira devaluation. USD-denominated series mitigate
+    this.
+  </li>
+
+  <li>
+    Reinvestment risk: Upon maturity, the rate available on the next BizBond series may differ from the current 10%
+    rate.
+  </li>
+</ul>
+<hr />
+<h2>Minimum Investment by Instrument Class</h2>
+
+<p>
+  BizMarket instruments are priced differently based on their risk profile, the nature of their underlying asset, and
+  the type of investor each instrument is designed to serve. The minimum buy-in for each instrument class is
+  intentional, not arbitrary.
+</p>
+<hr />
+<p><strong>BizYield — Minimum Buy: $10</strong> <em>High Risk · Backed by Business Revenue</em></p>
+<p>
+  BizYield carries the highest risk in the BizShares family because returns are tied directly to how well a business
+  performs. A business can have a bad month, a bad quarter, or in the worst case, fail entirely. Because of this, the
+  minimum buy-in is set at $10 — the lowest barrier of any BizMarket instrument.
+</p>
+<p>
+  The rationale is straightforward: high-risk instruments should be accessible in small sizes so that investors can
+  participate without overexposing themselves. A user who wants to back Shard, an airline, or a real estate project can
+  do so for the price of a meal. They can hold positions across multiple BizYield listings simultaneously, spreading
+  their risk across different businesses and sectors rather than concentrating capital in one. The $10 minimum is also a
+  democratisation decision — it means that a young professional in Lagos or Accra with limited capital can participate
+  in the upside of real operating businesses in a way that was previously only available to angel investors and venture
+  capitalists.
+</p>
+<p>
+  The low minimum also creates a natural on-ramp. Users who start with $10 and see returns build confidence and tend to
+  increase their positions over time.
+</p>
+<hr />
+<p><strong>BizCredit — Minimum Buy: $100</strong> <em>Medium Risk · Backed by Private Credit</em></p>
+<p>
+  BizCredit is a structured credit instrument. Every BizCredit share represents a $100 unit of participation in
+  BizMarket's lending book, and the weekly payment schedule is engineered around that $100 unit — $8.67 per week for 12
+  weeks, returning $104 in total. Pricing it at $100 keeps the payment maths clean, predictable, and easy for users to
+  understand without a financial background.
+</p>
+<p>
+  The $100 minimum also reflects the nature of credit investing. When you hold BizCredit, you are effectively acting as
+  a lender. Lending, even in a pooled structure, requires a baseline commitment that signals seriousness and ensures the
+  pool is funded by investors with genuine intent rather than micro-allocations that create administrative complexity.
+  It also filters for users who have moved beyond pure speculation and are looking for structured, income-generating
+  instruments — the natural audience for a credit product.
+</p>
+<p>
+  At $100 per share, a user can hold multiple BizCredit shares across different series, building a diversified weekly
+  income stream. Ten shares generate $86.70 per week for 12 weeks — meaningful passive income for most users on the
+  platform.
+</p>
+<hr />
+<p><strong>BizBond — Minimum Buy: $1,000</strong> <em>Low Risk · Backed by Government Instruments</em></p>
+<p>
+  BizBond has the highest minimum buy-in precisely because it is the safest instrument. This is deliberate and reflects
+  how government bond markets work in practice.
+</p>
+<p>
+  Treasury bills, The Bank of Tanzania requires a minimum of <strong>TZS 500,000</strong> for Treasury Bills and
+  <strong>TZS 1,000,000</strong> for Treasury Bonds.
+</p>
+<p>
+  The South African National Treasury requires a minimum of <strong>R1,000</strong> for Fixed Rate or Inflation-Linked
+  bonds, while the "Top-Up" bond allows an initial investment of <strong>R500</strong>.
+</p>
+<p>
+  FGN bonds, and equivalent sovereign instruments are typically traded in large denominations on primary markets — the
+  <a href="https://www.dmo.gov.ng/">Nigerian DMO</a>, for instance, requires a minimum of ₦50 million for direct primary
+  market participation.
+</p>
+<p>
+  For direct participation in the Brazilian Treasury’s multiple-price auctions, the minimum bid is typically
+  <strong>1,000 units</strong> of the security (LFT, LTN, or NTN). Depending on the bond's face value, this often
+  translates to a primary market entry of approximately <strong>R$ 1 million</strong> to <strong>R$ 5 million</strong>.
+</p>
+<p>
+  BizMarket pools user funds to access these instruments at scale, but in order to make that pooling economically
+  efficient and to cover the custodial, compliance, and operational costs of holding sovereign instruments, a $1,000
+  minimum per user is required.
+</p>
+<p>
+  The higher minimum also aligns with the investor profile BizBond is designed for. A user putting $1,000 into a fixed
+  10% annual instrument is not speculating — they are making a deliberate capital preservation decision. This is
+  savings-grade behaviour, and the $1,000 threshold ensures BizBond is used as it is intended: as a meaningful store of
+  value that generates real returns, not as a speculative position funded with spare change.
+</p>
+<p>
+  Finally, the $1,000 minimum creates a natural tiering across the BizMarket ecosystem. Users begin their journey with
+  BizYield at $10, graduate to BizCredit at $100 as they build confidence and capital, and ultimately allocate a
+  meaningful portion of their portfolio to BizBond at $1,000 as a stable foundation. The minimum buy-ins are designed to
+  work together as a progression, not in isolation.
+</p>
+<hr />
+
+<table>
+  <tr>
+    <td><strong>Instrument</strong></td>
+    <td><strong>Min Buy</strong></td>
+    <td><strong>Risk</strong></td>
+    <td><strong>Backed By</strong></td>
+    <td><strong>Investor Profile</strong></td>
+  </tr>
+  <tr>
+    <td>BizYield</td>
+    <td>$10</td>
+    <td>High</td>
+    <td>Business Revenue</td>
+    <td>Growth seekers, first-time RWA investors</td>
+  </tr>
+  <tr>
+    <td>BizCredit</td>
+    <td>$100</td>
+    <td>Medium</td>
+    <td>Private Credit Pool</td>
+    <td>Income seekers, weekly cash flow builders</td>
+  </tr>
+  <tr>
+    <td>BizBond</td>
+    <td>$1,000</td>
+    <td>Low</td>
+    <td>Government Securities</td>
+    <td>Capital preservers, serious savers</td>
+  </tr>
+</table>
+
+<p>How and When You Earn: Payment Schedules and Return Structure</p>
+<h3><strong>The BizMarket Difference: You Earn in Stablecoins, Not Tokens</strong></h3>
+
+<p>
+  Before getting into the payment schedules for each instrument, there is one principle worth stating clearly because it
+  separates BizMarket from almost every other yield-bearing product in the Web3 space.
+</p>
+<p>
+  <strong>When you earn on BizMarket, you earn in stablecoins.</strong>
+</p>
+<p>
+  Most DeFi protocols and yield products pay their returns in their own native token. You stake, you farm, you provide
+  liquidity — and your yield comes back to you as more of the same token you put in, or as a governance token whose
+  value is entirely speculative. This creates a hidden problem that many investors only discover after the fact: your
+  yield is only worth something if the token is worth something. A 200% APY paid in a token that loses 90% of its value
+  is not a 200% return. It is a loss dressed up in impressive numbers.
+</p>
+<p>
+  BizMarket takes a fundamentally different position. Every instrument on BizMarket — BizYield, BizCredit, and BizBond —
+  pays returns in stablecoins. Specifically in cNGN, USDC, or other supported stablecoins depending on the user's
+  preference. The money that arrives in your wallet every week, every month, or every quarter is denominated in a
+  currency pegged to real-world value. It does not fluctuate based on market sentiment about BizMarket's token. It does
+  not evaporate in a bear market. It is real yield, paid in real stable value, derived from real economic activity.
+</p>
+<p>
+  This is what it means to be a real-world asset protocol. The yield comes from revenue, interest, and government
+  coupons — not from token emissions. When a business earns money and BizMarket converts that to stablecoins and
+  deposits it to your wallet, that is income in the truest sense of the word. It behaves like the salary, rent, or
+  interest payment you would receive in traditional finance, just delivered on-chain with none of the friction.
+</p>
+<hr />
+<h3><strong>BizYield — Monthly Payments</strong></h3>
+
+<p>
+  <strong>You earn every month. Payments arrive in your wallet on a monthly cycle.</strong>
+</p>
+<p>
+  BizYield pays monthly because it is backed by business revenue, and businesses generate and report revenue on a
+  monthly cycle. A hotel counts its rooms. A restaurant tallies its covers. A logistics company reconciles its
+  deliveries. Monthly is the natural cadence of operating business performance, and BizYield's payment schedule mirrors
+  that reality rather than imposing an artificial timeline on top of it.
+</p>
+<p>
+  Here is how the monthly cycle works in practice. BizMarket's coordination layer verifies the business's revenue at the
+  close of each calendar month. The agreed percentage of that verified revenue is converted from the business's
+  operating currency into stablecoins through BizMarket's licensed FX and conversion infrastructure. That stablecoin
+  amount is deposited into the BizYield smart contract, which automatically distributes it proportionally to every
+  holder based on their recorded share percentage. The payment arrives in the holder's BizMarket wallet without the
+  holder needing to do anything other than hold their position.
+</p>
+<p>
+  Monthly payments are also appropriate for a high-risk instrument because they give investors frequent visibility into
+  how the business is performing. If a business has two consecutive weak months, a BizYield holder can see that in their
+  returns and make an informed decision about whether to hold or exit their position on BizSwap. Monthly cadence means
+  monthly accountability.
+</p>
+<p>
+  <strong>Example:</strong> You hold $500 worth of BizYield in a business that has allocated 20% of its monthly revenue
+  to the pool, and you own 1% of that pool. If the business generates $80,000 in revenue that month, your 20% pool is
+  $16,000, and your 1% share of that pool is $160 — deposited to your wallet in stablecoins at month end.
+</p>
+<hr />
+<h3><strong>BizCredit — Weekly Payments</strong></h3>
+
+<p>
+  <strong>You earn every week. Payments arrive in your wallet every 7 days for 12 consecutive weeks.</strong>
+</p>
+<p>
+  BizCredit pays weekly because it is a short-duration, income-focused instrument designed for investors who want
+  regular, predictable cash flow. The 12-week cycle is one quarter, and distributing the quarterly interest in weekly
+  instalments rather than a single lump sum at the end serves investors far better in practice. Weekly payments mean
+  your capital is constantly working and returning to you, giving you optionality — you can spend it, reinvest it, or
+  compound it into additional BizCredit shares as each payment arrives.
+</p>
+<p>
+  Weekly payments are also structurally supported by the nature of the underlying credit pool. BizMarket's loan book
+  generates interest daily across a diversified portfolio of borrowers. That daily interest accumulation means the
+  protocol has genuine weekly income to distribute rather than needing to manufacture or front-run payments. The weekly
+  schedule is not a marketing construct — it is a reflection of how a well-managed credit pool actually generates
+  returns.
+</p>
+<p>
+  There is also a behavioural rationale. Weekly payments build a tangible, felt relationship between the investor and
+  their investment. Receiving a stablecoin payment every seven days reinforces the decision to invest, creates a
+  compounding habit, and makes the product genuinely sticky in a way that a single annual payment never could. For many
+  BizMarket users, especially those new to structured financial instruments, weekly payments are a powerful introduction
+  to what consistent, passive income actually feels like.
+</p>
+<p>
+  <strong>Example:</strong> You hold 5 BizCredit shares at $100 each — a $500 total investment. Every week for 12 weeks,
+  $43.35 arrives in your wallet in stablecoins. At Week 12, your final payment includes your $500 principal returned
+  alongside that week's interest. Total received: $520.20. No price speculation involved. No token to monitor. Just a
+  payment, every Monday, for three months.
+</p>
+<hr />
+<h3><strong>BizBond — Quarterly Payments</strong></h3>
+
+<p>
+  <strong>You earn every quarter. Payments arrive in your wallet four times a year.</strong>
+</p>
+<p>
+  BizBond pays quarterly because it mirrors the payment structure of the government instruments that back it. Treasury
+  bills, FGN bonds, savings bonds, and the majority of sovereign debt instruments globally pay interest on a semi-annual
+  or quarterly basis. This is not a convention BizMarket invented — it is the rhythm of government finance that has
+  existed for over a century, and BizBond aligns with it deliberately.
+</p>
+<p>
+  Quarterly payments are appropriate for a low-risk, capital-preservation instrument for several reasons. Investors in
+  BizBond are not seeking frequent liquidity — they are making a deliberate decision to park capital in a safe,
+  yield-bearing position for an extended period. Quarterly distributions match the long-horizon mindset of this investor
+  profile. They also allow BizMarket to faithfully pass through the actual coupon and maturity payments received from
+  the underlying government instruments without imposing additional conversion cycles that could introduce friction or
+  cost.
+</p>
+<p>
+  The quarterly cadence also reinforces the intended use case. BizBond is savings-grade behaviour. It is the portion of
+  your portfolio that you do not need to check every week. It works quietly in the background, compounding the stability
+  of your overall holdings, while the rest of your BizMarket portfolio — BizYield for growth, BizCredit for weekly
+  income — generates more active returns.
+</p>
+<p>
+  <strong>Example:</strong> You hold $1,000 in BizBond at a fixed 10% annual return. Each quarter, $25 arrives in your
+  wallet in stablecoins — four payments of $25 across the year, totalling $100 annually on your $1,000. Your principal
+  is preserved. Your return is fixed regardless of what markets do. At maturity, your $1,000 is returned in full.
+</p>
+<hr />
+<h3><strong>Payment Schedule Summary</strong></h3>
+
+<table>
+  <tr>
+    <td><strong>Instrument</strong></td>
+    <td><strong>Payment Frequency</strong></td>
+    <td><strong>Return Type</strong></td>
+    <td><strong>Currency</strong></td>
+    <td><strong>Rationale</strong></td>
+  </tr>
+  <tr>
+    <td>BizYield</td>
+    <td>Monthly</td>
+    <td>Variable</td>
+    <td>Local Stable coins / USDC</td>
+    <td>Mirrors business revenue cycles. Monthly accountability for a high-risk instrument.</td>
+  </tr>
+  <tr>
+    <td>BizCredit</td>
+    <td>Weekly</td>
+    <td>Fixed</td>
+    <td>Local Stable coins / USDC</td>
+    <td>Short-duration credit product. Weekly income reflects daily interest accrual in the loan pool.</td>
+  </tr>
+  <tr>
+    <td>BizBond</td>
+    <td>Quarterly</td>
+    <td>Fixed</td>
+    <td>Local Stable coins / USDC</td>
+    <td>Matches sovereign debt coupon schedules. Appropriate for long-horizon capital preservation.</td>
+  </tr>
+</table>
+
+<hr />
+<h3><strong>Why Stablecoins Matter More Than You Think</strong></h3>
+
+<p>
+  To understand why earning in stablecoins is significant, consider what the alternative looks like. A protocol that
+  pays yield in its own token is making you a bet you did not sign up for. You invested to earn a return. Instead, you
+  received more exposure to a speculative asset whose price you have no control over. Your yield is only as valuable as
+  the market's confidence in that token on the day you decide to use it. In a bull market this feels fine. In any other
+  market it is a problem.
+</p>
+<p>
+  BizMarket's stablecoin yield model means your return is decoupled from market sentiment about BizMarket itself.
+  Whether the broader crypto market is up 50% or down 70%, your BizCredit payment still arrives on Wednesday. Your
+  BizBond quarterly distribution is still $25 on $1,000. Your BizYield monthly earnings still reflect what the business
+  actually earned that month. The yield is anchored to economic reality, not to a token chart.
+</p>
+<p>
+  This also has a practical implication for Nations with their own stablecoins, means your earnings are denominated in a
+  currency you can actually spend in your daily life without an additional conversion step. Your BizMarket yield can pay
+  a bill, cover groceries, or be saved — immediately, without touching an exchange. That is a level of practical utility
+  that token-denominated yield simply cannot offer.
+</p>
+<p>Real yield. Real currency. Paid on a schedule you can plan around.</p>
+
+<pre class="prettyprint">
+BizMarket — BizYield · BizCredit · BizBond
+docs.bizmarket.io  ·  Version 1.0  ·  2026
+This document is for informational purposes only and does not constitute financial advice. All investments carry risk.</pre
+>

@@ -1,11 +1,11 @@
 ---
 title: "User & Business Flows"
-description: "This documentation provides high-level user and business interaction flows within the BizFi and BizMarket ecosystem."
+description: "This documentation provides high-level user and business interaction flows within the BizMarket ecosystem."
 ---
 
 ### Business Onboarding / Listing Flow
 
-Businesses undergo a structured onboarding and verification process before a tokenized instrument is offered on BizMarket.
+Businesses undergo a structured onboarding and verification process before a BizMarket instrument is offered.
 
 Key Steps:
 
@@ -16,22 +16,22 @@ Key Steps:
 
 ---
 
-### Saver / Investor Onboarding & Limits
+### Investor Onboarding & Limits
 
-Investor participation is mediated by SaveFi savings balances which determine investment capacity via onchain enforcement mechanisms.
+Investor participation is mediated by product-specific limits that are enforced onchain.
 
 Key Steps:
 
 1. **Wallet Connection** — Participant connects an external wallet or provisioned account.
-2. **Stablecoin Deposit (SaveFi)** — Participant deposits supported stablecoins to establish savings balance.
-3. **Onchain Capacity Enforcement** — Smart contracts enforce participation limits based on declared savings balances. This limit is calculated as 100x the stablecoin deposit. For example, a \$100 deposit allows up to \$10,000 in BizShare investments.
+2. **Stablecoin Deposit** — Participant deposits supported stablecoins and completes any required eligibility checks.
+3. **Onchain Capacity Enforcement** — Smart contracts enforce participation limits based on account status, product rules, and jurisdictional restrictions.
 4. **Market Access** — Participant may browse and acquire BizShares within their permitted capacity.
 
 ---
 
 ### Primary Market Purchase Flow
 
-Primary purchases allocate capital to tokenized instruments and mint BizShares representing investor positions.
+Primary purchases allocate capital to BizMarket instruments and mint BizShares representing investor positions.
 
 Key Steps:
 
@@ -41,9 +41,9 @@ Key Steps:
 
 ---
 
-### Secondary Market Exit (BizSwap) Flow — Debt Instruments
+### Secondary Market Exit (BizSwap) Flow
 
-Debt BizShares are non-transferable between users; exits are executed through BizSwap, a protocol-managed liquidity mechanism that provides a discounted settlement option.
+Supported BizShares exit through BizSwap, the protocol-managed liquidity mechanism that provides a controlled settlement option.
 
 Key Steps:
 
@@ -67,7 +67,7 @@ Key Steps:
 
 ### Repayment & Distribution
 
-Businesses remit repayments or revenue shares which are ultimately used to fund onchain distributions to investors.
+Businesses remit repayments, revenue shares, or sovereign coupon proceeds which are ultimately used to fund onchain distributions to investors.
 
 Key Steps:
 

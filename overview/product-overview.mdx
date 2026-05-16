@@ -1,48 +1,36 @@
 ---
 title: "Product Overview"
-description: "This documentation provides a structured, technical, and operational description of the BizFi and BizMarket product layers within the Bitsave ecosystem."
+description: "Technical and operational overview of BizMarket, the marketplace product within the BizFi finance category."
 ---
 
 ### What is BizFi?
 
-BizFi is the business financing layer of the Bitsave ecosystem. It enables real-world businesses to raise capital through structured financial instruments that are represented onchain while being funded and operated offchain.
-
-At a functional level, BizFi:
-
-* Connects pooled stablecoin liquidity from onchain participants to verified businesses
-* Structures funding into defined financial products (primarily tokenized debt in the current phase)
-* Standardizes repayment expectations and yield schedules
-* Routes business-generated cash flows back into the protocol for investor distribution
-
-BizFi acts as the coordination framework between decentralized capital formation and traditional business operations. It defines how funds are deployed, how obligations are tracked, and how investor payouts are maintained under protocol rules.
-
----
+BizMarket is Bitsave's decentralized finance product for tokenized real-world business and sovereign instruments. It provides financial instruments for businesses and individuals by connecting pooled onchain liquidity with verified businesses and issuers.
 
 ### What is BizMarket?
 
-BizMarket is the issuance and market infrastructure layer for business-linked onchain financial instruments.
+BizMarket is the issuance and marketplace layer within BizFi.
 
-It provides the framework through which:
+At a functional level, BizMarket:
 
-* Businesses are mapped to tokenized financial instruments (BizShares/BizTokens)
-* Investors obtain exposure to business financing through onchain tokens
-* Transferability rules and exit mechanisms are defined per instrument type
+* Connects pooled stablecoin liquidity from onchain participants to verified businesses and sovereign issuers
+* Structures funding into three defined financial products: BizYield, BizCredit, and BizBond
+* Maps businesses to tokenized financial instruments (BizShares)
+* Routes business-generated cash flows back into the protocol for investor distribution
 
-In its most mature form, BizMarket supports tokenized debt instruments where BizShares represent structured repayment rights with predefined payout schedules. Other instrument types, such as equity and revenue-based tokens, are part of the broader system design but remain at an earlier specification stage.
-
-BizMarket therefore serves as the protocol’s marketplace and instrument registry, defining how business financing becomes standardized, trackable, and accessible onchain.
+BizMarket acts as the coordination framework between decentralized capital formation and traditional business operations. It defines how funds are deployed, how obligations are tracked, and how investor payouts are maintained under protocol rules.
 
 ---
 
 ### Product Positioning
 
-Bitsave, through BizFi and BizMarket, is positioned as a bridge between traditional business finance (Web2) and onchain capital infrastructure (Web3).
+BizMarket is positioned as a bridge between traditional business finance (Web2) and onchain capital infrastructure (Web3).
 
 **Web2 ↔ Web3 Bridge**
 
 * Businesses operate in the real economy with conventional legal, banking, and operational structures
 * Investors participate through onchain smart contracts using stablecoins
-* Bitsave Smart Limited and protocol operators connect these two environments by handling custody, deployment, and reporting
+* BizMarket’s coordination layer connect these two environments by handling custody, deployment, and reporting
 
 **Target Geographies**
 
@@ -54,7 +42,7 @@ Bitsave, through BizFi and BizMarket, is positioned as a bridge between traditio
 
 * Cash-flow-generating small and medium-sized enterprises
 * Trade, retail, and service businesses with predictable revenue cycles
-* Growth-stage businesses that require working capital or expansion financing without complex equity structuring
+* Growth-stage businesses that require working capital or expansion financing without complex ownership transfer
 
 The system prioritizes businesses with measurable revenue activity and investors seeking structured, stablecoin-denominated returns with predictable payout behavior.
 
@@ -76,50 +64,39 @@ The tagline summarizes the system’s role in connecting real-world economic act
 
 ### Core Actors and Roles
 
-**Business Owner (Fundraiser)**
-Responsibilities:
+**Business Owner (Fundraiser)**:
 
-* Applies for financing through BizFi
+* Applies for financing through BizMarket
 * Undergoes business verification and KYB processes
 * Receives deployed capital offchain
-* Makes scheduled repayments or revenue distributions to Bitsave offchain
+* Makes scheduled repayments or revenue distributions to BizMarket offchain
 * Provides operational and financial reporting as required by the protocol
 
-**Saver / Investor (Onchain Participant)**
-Responsibilities:
+**Saver / Investor (Onchain Participant)**:
 
-* Deposits stablecoins into the SaveFi system
+* Deposits stablecoins into the BizMarket system to establish investment capacity
 * Receives an investment capacity determined by protocol rules
 * Acquires BizShares representing exposure to business financing
 * Receives stablecoin payouts through the protocol’s distribution system
 * Interacts with smart contracts directly; participation is governed by onchain limits
 
-**Liquidity Provider**
-Responsibilities:
+**Liquidity Provider**:
 
-* Supplies stablecoin liquidity to protocol pools that support BizFi financing
+* Supplies stablecoin liquidity to protocol pools that support BizMarket financing
 * Enables capital availability for business funding cycles
-* May participate in yield flows depending on pool structure (implementation-specific)
 
-**Bitsave Smart Limited (SPV Entity)**
-Responsibilities:
-
-* Custodially holds investor funds before deployment to businesses
-* Deploys capital offchain to approved businesses
-* Receives business repayments and revenue distributions offchain
-* Acts as the legal and operational bridge between onchain capital and offchain business activity
-
-**Protocol Treasury**
-Responsibilities:
+**Protocol Treasury**:
 
 * Holds protocol-owned capital reserves
 * Provides financial backing for payout continuity in cases of business default or delay
 * Receives protocol revenues and may fund system-level obligations
-* Supports guarantees embedded in the BizFi payout model
+* Supports guarantees embedded in the BizMarket payout model
 
-**Bitsave Ops (Operational Entity)**
-Responsibilities:
-
+**BizMarket’s coordination layer**:
+* Custodially holds investor funds before deployment to businesses
+* Deploys capital offchain to approved businesses
+* Receives business repayments and revenue distributions offchain
+* Acts as the legal and operational bridge between onchain capital and offchain business activity
 * Conducts business due diligence and onboarding
 * Manages offchain financial operations and reconciliation
 * Oversees reporting, performance tracking, and payout coordination

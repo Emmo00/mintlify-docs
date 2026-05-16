@@ -1,0 +1,73 @@
+---
+title: "BizCredit Lending Instruments"
+description: "BizCredit is BizMarket's credit instrument. It explains the pooled lending book, weekly payouts, fixed quarterly return, maturity flow, and controlled exit mechanics."
+---
+
+BizCredit instruments give users exposure to BizMarket's lending book. When you hold BizCredit, you are effectively participating in a credit pool managed by BizMarket. The loans in that pool generate interest, and that interest is paid out weekly to holders in stablecoins.
+
+## How BizCredit works
+
+| Parameter | Value |
+| --- | --- |
+| **Unit price** | $100 per BizCredit share |
+| **Return rate** | 4% per quarter |
+| **Weekly payment** | $8.67 per share for 12 weeks |
+| **Payment currency** | USDC, cNGN, or another supported stablecoin |
+| **Cycle duration** | 12 weeks per series |
+| **Principal return** | Full $100 returned at the end of the cycle |
+| **Total return** | $104 per share over the 12-week cycle |
+| **Payment mechanism** | Automatically deposited to the user wallet every 7 days |
+| **Risk profile** | Medium. Returns depend on the health of the loan portfolio |
+
+## Payment schedule example
+
+A user holds 5 BizCredit shares, or a $500 total investment.
+
+| Week | Payment per share | Total for 5 shares |
+| --- | --- | --- |
+| Week 1 | $8.67 | $43.35 |
+| Week 2 | $8.67 | $43.35 |
+| Week 3 | $8.67 | $43.35 |
+| Week 4 | $8.67 | $43.35 |
+| Week 5 | $8.67 | $43.35 |
+| Week 6 | $8.67 | $43.35 |
+| Week 7 | $8.67 | $43.35 |
+| Week 8 | $8.67 | $43.35 |
+| Week 9 | $8.67 | $43.35 |
+| Week 10 | $8.67 | $43.35 |
+| Week 11 | $8.67 | $43.35 |
+| Week 12 | $8.67 interest + $100 principal | $43.35 interest + $500 principal |
+
+## What backs BizCredit?
+
+BizCredit is backed by BizMarket's actively managed loan portfolio. The portfolio includes:
+
+- Businesses approved for working capital financing after assessment by the coordination layer.
+- BizLend borrowers using tokenized stock assets as collateral to borrow cNGN.
+- Short-term bridge lending facilities for businesses with clear repayment timelines.
+
+BizMarket underwrites, monitors, and services the loans in the BizCredit pool. Diversification across multiple borrowers reduces single-loan concentration risk.
+
+## Controlled exit via BizSwap
+
+BizCredit shares are not freely traded wallet to wallet. Investors exit through BizSwap, the protocol-managed liquidity mechanism.
+
+- The user requests an exit through BizSwap.
+- The protocol verifies eligibility and calculates the refund value.
+- The swap settles from protocol liquidity, subject to available funds.
+- A flat exit fee applies to the original principal amount.
+
+## Why BizCredit exists
+
+BizCredit is the most straightforward income instrument on BizMarket. You put in capital, receive weekly payments for 12 weeks, and get your principal back at the end of the cycle.
+
+## Risks
+
+- Borrower default can reduce recoveries.
+- Concentration in one sector or borrower can affect returns.
+- Liquidity is not guaranteed at exit.
+- BizMarket's reserve fund is a buffer, not a third-party guarantee.
+
+## Summary
+
+BizCredit is BizMarket's short-duration credit product. It is designed for users who want predictable weekly income from a managed loan pool.

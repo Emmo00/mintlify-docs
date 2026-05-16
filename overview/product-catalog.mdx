@@ -1,97 +1,67 @@
 ---
 title: "Product Catalog"
-description: "This documentation provides a structured overview of the product offerings within the BizFi and BizMarket layers of the Bitsave ecosystem, detailing the various tokenized financial instruments and related components."
+description: "This documentation provides a structured overview of the product offerings within the BizMarket layer of the Bitsave ecosystem."
 ---
 
 ### BizShares — Tokenized Instruments
 
-BizShares are onchain tokens that represent structured financial exposure to real-world businesses funded through BizFi. Each BizShare corresponds to a defined financial agreement between a business and the Bitsave financing framework, with payouts routed to token holders via the protocol’s distribution system.
+BizShares are onchain tokens that represent structured financial exposure to real-world businesses and sovereign instruments funded through BizMarket. Each BizShare corresponds to a defined financial agreement between a business, issuer, or the protocol, with payouts routed to holders via the distribution system.
 
-BizShares can represent different categories of financial instruments, including:
+BizShares are organized into three product classes:
 
-* Tokenized Debt
-* Tokenized Equity
-* Tokenized Revenue
-* Hybrid or structured instruments (e.g., convertible debt)
+* **BizYield** — revenue participation instruments with monthly payouts
+* **BizCredit** — credit pool instruments with weekly payouts
+* **BizBond** — government-backed instruments with fixed annual returns
 
-Each category defines distinct rules for payouts, transferability, and investor rights. In the current system phase, tokenized debt BizShares are the most fully specified and implemented.
-
----
-
-### Tokenized Debt (Primary Product)
-
-Tokenized Debt is the core and most mature financial instrument within BizFi. Under this model:
-
-* A business receives offchain capital deployment
-* A corresponding onchain BizShare issuance represents a structured debt obligation
-* Investors receive stablecoin payouts on a predefined schedule
-
-Debt BizShares are designed with predictable return structures rather than variable market pricing. They are non-transferable wallet-to-wallet and rely on a controlled exit mechanism.
-
-**See [here](/product/tokenized-debt-deep-dive) for a detailed technical and financial deep dive into Tokenized Debt.**
+Each category defines distinct rules for payouts, transferability, and investor rights.
 
 ---
 
-### Tokenized Equity (Introductory)
+### BizYield (Revenue Instruments)
 
-Tokenized Equity instruments represent onchain exposure to offchain business ownership. These tokens are intended to map to equity or equity-like interests held through legal structures managed offchain.
+BizYield represents a share of verified monthly business revenue.
 
-Key characteristics (introductory level):
+* Businesses keep ownership and share revenue for a fixed term.
+* Investors receive monthly payouts in stablecoins.
+* Returns vary with business performance.
 
-* Represent ownership-linked rights rather than fixed repayment schedules
-* Value and returns are tied to long-term business performance
-* Legal and structural mapping between tokens and shares is handled offchain
-
-The equity model is part of the broader BizMarket vision but remains at an early design stage.
+**See [BizYield Revenue Instruments](/product/bizyield-revenue-instruments) for the full product deep dive.**
 
 ---
 
-### Tokenized Revenue (Introductory)
+### BizCredit (Lending Instruments)
 
-Tokenized Revenue instruments represent a share of a business’s revenue streams rather than ownership or fixed debt obligations.
+BizCredit represents exposure to BizMarket's managed credit pool.
 
-Key characteristics (introductory level):
+* Each share is priced at $100.
+* Investors receive weekly stablecoin payments over a 12-week cycle.
+* Principal is returned at the end of the series.
 
-* Payouts are linked to business revenue performance
-* Returns may vary over time depending on business activity
-* Structures may include revenue share until a predefined multiple or term is reached
-
-This model is intended for businesses with consistent cash flow but where traditional debt or equity structures are less suitable. Detailed mechanics are still under development.
+**See [BizCredit Lending Instruments](/product/bizcredit-lending-instruments) for the full product deep dive.**
 
 ---
 
-### Convertible Debt (Introductory)
+### BizBond (Government Instruments)
 
-Convertible Debt is a hybrid instrument combining elements of debt and equity.
+BizBond represents exposure to sovereign and quasi-sovereign instruments held by BizMarket.
 
-At issuance, it functions as a debt obligation with defined payout expectations. Under predefined conditions (such as time, performance milestones, or future financing events), the instrument may convert into an equity-linked tokenized position.
+* Returns are fixed at 10% annually.
+* Payments are made quarterly or at maturity depending on the series.
+* The product is designed for capital preservation.
 
-This structure is part of the long-term product roadmap and has not yet been fully specified within the current BizFi implementation.
-
----
-
-### Indexes (Introductory)
-
-Indexes are planned as pooled instruments that provide diversified exposure across multiple BizShares rather than a single business.
-
-Key characteristics (introductory level):
-
-* Bundle multiple business-linked instruments into a single onchain position
-* Designed to reduce single-business exposure
-* May follow sector, geography, or risk-based allocation logic
-
-Index products are conceptual at this stage and depend on the maturation of underlying BizShare markets.
+**See [BizBond Government Instruments](/product/bizbond-government-instruments) for the full product deep dive.**
 
 ---
 
-### BizSwap (Debt Exit Mechanism)
+### BizSwap
 
-BizSwap is the controlled exit mechanism for tokenized debt BizShares.
+BizSwap is the protocol-managed exit mechanism used for supported instruments where a controlled liquidity path is required.
 
-Because debt BizShares are non-transferable between user wallets, BizSwap provides a protocol-managed pathway for investors to exit positions under defined liquidity conditions. Instead of peer-to-peer trading, exits are handled through a structured swap process that interacts with protocol liquidity.
+---
 
-BizSwap ensures:
+### Coordination Layer
 
-* Standardized exit logic for debt instruments
-* Controlled liquidity management
-* Alignment between payout schedules and available liquidity pools
+BizMarket's coordination layer covers business assessment, revenue verification, underwriting, and custody-backed settlement.
+
+**See [BizMarket Coordination Layer](/product/coordination-layer) for the full operational breakdown.**
+

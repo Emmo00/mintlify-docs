@@ -1,17 +1,17 @@
 ---
-title: "BizFi Documentation Appendices"
+title: "BizMarket Documentation Appendices"
 description: "This appendix contains reference material, formulas, templates, and sample data to support implementation, audits, and operational teams."
 ---
 
 ### A. Glossary of Terms (concise)
 
-* **BizToken** — Generic name for an onchain token managed within the Bitsave ecosystem.
-* **BizShare** — The onchain token representing a specific BizFi instrument (in current implementation, primarily tokenized debt units).
-* **BizSwap** — Protocol-managed, liquidity-gated exit mechanism for debt BizShares (early-exit swap with flat exit fee).
-* **SPV** — Special Purpose Vehicle (Bitsave Smart Limited) — the legal entity that holds offchain custody, signs agreements with businesses, and bridges funds between offchain and onchain.
+* **BizShare** — The onchain token representing a specific BizMarket instrument.
+* **BizSwap** — Protocol-managed, liquidity-gated exit mechanism for supported BizShares.
 * **EAS** — Ethereum Attestation Service — onchain attestation layer used to anchor `dataHash` references linking offchain documents to onchain business records.
-* **SaveFi** — Bitsave’s savings product; user deposits in SaveFi determine investors’ permitted BizFi participation via the 100× multiplier.
-* **BizFi** — The business-finance vertical of Bitsave that structures, funds, and manages tokenized financial instruments for real-world businesses.
+* **BizYield** — The BizMarket revenue participation instrument.
+* **BizCredit** — The BizMarket credit pool instrument.
+* **BizBond** — The BizMarket government-backed instrument.
+* **BizMarket** — The marketplace and issuance layer for BizShares.
 
 ---
 
@@ -19,13 +19,12 @@ description: "This appendix contains reference material, formulas, templates, an
 
 #### B.1 Key constants (current design)
 
-* Principal per BizShare unit: $$ P = \$100 $$
+* BizCredit principal per share: $$ P = \$100 $$
 * Quarterly yield: $$ r_q = 4\% = 0.04 $$
 * Annualized yield (approx): $$ r_{ann} = 16\% $$
-* Duration: $$ T = 12 $$weeks (≈ 90 days)
+* Duration: $$ T = 12 $$ weeks (≈ 90 days)
 * Payout cadence: weekly (12 payouts)
-* BizSwap flat exit fee: $$ f = 10\% = 0.10 $$ (applies to the original principal amount, not the remaining value)
-* BizSwap fee split: LP share = 20% of exit fee; Treasury share = 80% of exit fee
+* BizSwap exit fee: product-specific and defined at the time of listing
 
 #### B.2 Formulas
 
@@ -49,24 +48,9 @@ description: "This appendix contains reference material, formulas, templates, an
    R(w) = V - w \times \text{WeeklyPayout}
    $$
 
-5. **Exit fee**
+5. **Total realized value for an investor who holds to maturity**
    $$
-   \text{ExitFee}(w) = P \times f
-   $$
-
-6. **Net exit payout (received when exiting at week (w))**
-   $$
-   \text{NetExit}(w) = P - (w \times \text{WeeklyPayout}) - \text{ExitFee}(w)
-   $$
-
-7. **Total realized value for investor who had already received (w) weekly payments then exited**
-   $$
-   \text{TotalRealized}(w) = w \times \text{WeeklyPayout} + \text{NetExit}(w)
-   $$
-
-8. **Fee split**
-   $$
-   {LP}_\text{share} = \text{ExitFee} \times 0.20, \quad \text{Treasury}_\text{share} = \text{ExitFee} \times 0.80
+   	ext{TotalRealized} = V
    $$
 
 #### B.3 Worked numeric example (baseline constants)
@@ -74,12 +58,10 @@ description: "This appendix contains reference material, formulas, templates, an
 * $$P=100$$
 * $$r_q=0.04$$ → $$I=100 \times 0.04 = 4$$
 * $$V = 104$$
-* $$T=12$$ → Weekly payout $$= \dfrac{104}{12} \approx 8.6666667$$ (rounded display $8.66)
+* $$T=12$$ → Weekly payout $$= \dfrac{104}{12} \approx 8.6666667$$ (rounded display $8.67)
 
-**Exit after 5 weeks** (example in context):
+**Hold to maturity example**
 
-* Amount already collected: $$5 \times 8.6666667 = 43.3333335$$ $$\approx\$43.33$$
-* Calculated Refund: $$100 - 43.3333335 = 56.6666665$$ $$\approx\$56.67$$
-* Exit fee: $$100 \times 0.10 = 10$$ $$\approx\$10.00$$
-* Net exit payout: $$56.6666665 - 10 = 46.6666665$$ $$\approx\$46.67$$
-* Total realized (collected + exit): $$43.3333335 + 46.6666665 = 90$$ $$\approx\$90.00$$
+* Amount collected over 12 weeks: $$12 \times 8.6666667 = 104$$ $$\approx\$104.00$$
+* Principal returned at maturity: $$100$$
+* Total realized value: $$104$$
