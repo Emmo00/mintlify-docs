@@ -27,7 +27,7 @@
         "tab": "Product",
         "groups": [
           {
-            "group": "Instruments",
+            "group": "BizShares",
             "pages": ["product/bizyield-revenue-instruments", "product/bizcredit-lending-instruments", "product/bizbond-government-instruments"]
           },
           {
