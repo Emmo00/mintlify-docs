@@ -86,6 +86,12 @@
     ],
     "global": {
       "anchors": [
+        {
+          "anchor": "Video tutorials",
+          "icon": "youtube",
+          "iconType": "brands",
+          "href": "https://youtube.com/playlist?list=PLGeDjvoeld0g"
+        }
       ]
     }
   },
